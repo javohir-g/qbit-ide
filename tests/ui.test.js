@@ -35,6 +35,17 @@ const SHOT = (n) => path.join(BASE, 'shots', 'ui_' + n + '.png');
       await click('#btn-sound'); eq(await E(muted), true, 'the header sound button mutes the blocks');
       await click('#btn-sound'); eq(await E(muted), false, 'and unmutes them');
     });
+    await test('the selected category is a plain full-width square: no focus frame after a click or an arrow key', async () => {
+      const frames = `[...document.querySelectorAll('.blocklyToolbox, .blocklyToolbox *')].filter((el) => getComputedStyle(el).outlineStyle !== 'none').length`;
+      await click('.blocklyToolboxCategoryContainer:nth-child(4) .blocklyToolboxCategory');
+      eq(await E(frames), 0, 'after a click');
+      await page.key('ArrowDown', 'ArrowDown'); await sleep(250);
+      eq(await E(`document.activeElement.matches('.blocklyToolboxCategoryContainer:focus-visible')`), true, 'keyboard focus is on a row');
+      eq(await E(frames), 0, 'after an arrow key');
+      const s = await page.rect('.blocklyToolboxSelected'), col = await page.rect('.blocklyToolbox');
+      ok(Math.abs(s.w - (col.w - 1)) < 0.5 && Math.abs(s.w - s.h) < 0.5, 'square up to the divider: ' + JSON.stringify([s.w, s.h, col.w]));
+      await click('.blocklyToolboxCategoryContainer:nth-child(1) .blocklyToolboxCategory');
+    });
     const LED = `QBIT.ide.sim.board.port(3).module.api.isOn()`;
     await test('Run starts the program on the simulator, the LED blinks, Stop switches it off', async () => {
       await click('#btn-run');

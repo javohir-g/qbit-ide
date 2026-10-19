@@ -149,6 +149,9 @@ body.program-running .round.run { background: #1aa85d; }
 .blocklyToolboxCategory { flex: 1; min-width: 0; min-height: 0; display: flex; border-left: 0 !important; margin: 0 !important; padding: 0 !important; border-radius: 0; color: var(--text); cursor: pointer; height: auto !important; }
 .blocklyToolboxCategory:hover { background: #f1f8ff; }
 .blocklyToolboxCategory.blocklyToolboxSelected, .blocklyToolboxCategoryContainer[aria-selected="true"] > .blocklyToolboxCategory { background-color: #e6f3ff !important; }
+/* no focus frame in the column, by mouse or by keys: the page's :focus-visible ring showed as dark lines above and below the
+   full-width square, Blockly's keyboard mode framed the whole column; the filled square already marks the row */
+.blocklyToolbox, .blocklyToolboxCategoryGroup, .blocklyToolboxCategoryContainer, .blocklyToolboxCategory { outline: none !important; }
 .blocklyTreeRowContentContainer { flex: 1; min-width: 0; min-height: 0; display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 3px; height: 100% !important; padding: 0 2px !important; }
 .blocklyToolboxCategoryIcon { visibility: visible !important; width: var(--d) !important; height: var(--d) !important; border-radius: 50%; margin: 0 !important; flex: none; background: var(--cat, #999); display: block; box-sizing: border-box; border: 2px solid var(--cat-edge, rgba(0, 0, 0, .18)); }
 .blocklyToolboxCategoryLabel { font: 600 clamp(9px, 13cqw, 11px) var(--sans) !important; color: #274e6e !important; padding: 0 !important; text-align: center; line-height: 1.1; max-width: 100%; max-height: 2.3em; overflow: hidden; white-space: normal; hyphens: manual; overflow-wrap: break-word; }
