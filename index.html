@@ -5,7 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#22a4ff">
 <title>qblock — блочное программирование для q.bit</title>
+<meta name="description" content="Блочное программирование для платы q.bit: соберите программу из блоков и запустите её на симуляторе или на настоящей плате.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="qblock — блочное программирование для q.bit">
+<meta property="og:description" content="Блоки, Python и симулятор платы q.bit прямо в браузере.">
+<meta property="og:image" content="https://javohir-g.github.io/qbit-ide/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="img/qbit-robot.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="stylesheet" href="css/app.css">
 <link rel="stylesheet" href="css/ide.css">
 </head>
@@ -87,6 +94,16 @@
           <button id="tab-blocks" role="tab" aria-selected="true">Блоки</button>
           <button id="tab-python" role="tab" aria-selected="false">Python</button>
         </div>
+        <!-- on a phone the board sits in a sheet over the editor: Run and Stop are also here -->
+        <div class="ed-run" id="ed-run">
+          <button class="round run" id="btn-run2" title="Запустить программу" aria-label="Запустить"><svg class="ic"><use href="#i-play"/></svg></button>
+          <button class="round stop" id="btn-stop2" title="Остановить программу" aria-label="Стоп" disabled><svg class="ic"><use href="#i-stop"/></svg></button>
+        </div>
+        <!-- an empty project: where to start -->
+        <div class="start-cards" id="start-cards" hidden>
+          <div class="start-title">Начните с примера</div>
+          <div class="start-list" id="start-list"></div>
+        </div>
         <!-- block search: the round button under the categories opens the field next to it -->
         <button class="find-btn" id="btn-find" title="Поиск блоков" aria-label="Поиск блоков" aria-expanded="false" aria-controls="find-pop"><svg class="ic"><use href="#i-search"/></svg></button>
         <div class="find-pop" id="find-pop" hidden>
@@ -156,5 +173,15 @@
 <script src="js/ide/panes.js"></script>
 <script src="js/ide/examples.js"></script>
 <script src="js/ide/ide.js"></script>
+<script>
+/* offline and install: the manifest and the service worker belong to http(s) pages (a page opened from a file has neither: a file:// manifest is an error);
+   the worker only on https (GitHub Pages) or localhost, never on the board's own http address */
+if (/^https?:$/.test(location.protocol)) {
+  var mf = document.createElement('link'); mf.rel = 'manifest'; mf.href = 'manifest.webmanifest'; document.head.appendChild(mf);
+}
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () { /* works without it */ }); });
+}
+</script>
 </body>
 </html>

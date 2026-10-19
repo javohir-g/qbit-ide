@@ -274,6 +274,52 @@ const SHOT = (n) => path.join(BASE, 'shots', 'ui_' + n + '.png');
       await page.viewport(1440, 900, 1, false);
     });
 
+    await test('an empty project offers examples; they go with the first block', async () => {
+      await E(`QBIT.ide.editor.clear(); QBIT.ide.saveProject()`); await page.goto(url, 1500);
+      eq(await E(`document.getElementById('start-cards').hidden`), false, 'cards on an empty project');
+      eq(await E(`document.querySelectorAll('.start-card').length`), 6);
+      await click('.start-card');
+      await sleep(500);
+      ok(await E(`QBIT.ide.editor.ws.getAllBlocks(false).length`) > 0, 'the example is loaded');
+      eq(await E(`document.getElementById('start-cards').hidden`), true, 'cards are gone');
+      await E(`QBIT.ide.setMode('python')`); await E(`QBIT.ide.editor.clear()`); await sleep(200);
+      eq(await E(`document.getElementById('start-cards').hidden`), true, 'not over the Python code');
+      await E(`QBIT.ide.setMode('blocks')`); await E(`QBIT.ide.openExample(QBIT.Examples.list[0], true)`); await sleep(300);
+    });
+    await test('phone: Run and Stop are in the editor, the sheet with the board stays closed', async () => {
+      await page.viewport(390, 844, 1, true); await page.goto(url, 1500);
+      ok(await E(`getComputedStyle(document.getElementById('ed-run')).display !== 'none'`), 'buttons shown');
+      eq(await E(`getComputedStyle(document.getElementById('ide-right')).display`), 'none');
+      ok(await E(`document.getElementById('btn-run2').getBoundingClientRect().width >= 40`), 'a finger-sized button');
+      await click('#btn-run2'); await sleep(500);
+      eq(await E(`QBIT.ide.device().status`), 'running');
+      eq(await E(`document.getElementById('btn-stop2').disabled`), false);
+      await click('#btn-stop2'); await sleep(300);
+      ok(await E(`QBIT.ide.device().status !== 'running'`), 'stopped');
+      const small = JSON.parse(await E(`JSON.stringify([...document.querySelectorAll('.ide-top button, .mode-pills button')].filter((e) => { const b = e.getBoundingClientRect(); return b.width > 0 && (b.height < 34 || b.width < 34); }).map((e) => e.id))`));
+      eq(small.join(','), '', 'small touch targets');
+      await page.viewport(1440, 900, 1, false);
+    });
+    await test('a name the program gave a project follows the language; the browser language is the first choice', async () => {
+      const setName = (n) => E(`(() => { const j = JSON.parse(localStorage.getItem('qbit-ide-project-v1')); j.name = ${JSON.stringify(n)}; localStorage.setItem('qbit-ide-project-v1', JSON.stringify(j)); })()`);
+      await setName('Мой проект'); await page.goto(url + '?lang=en', 1500);
+      eq(await E(`document.getElementById('project-name').value`), 'My project');
+      await E(`QBIT.ide.saveProject()`); await page.goto(url + '?lang=uz', 1500);
+      eq(await E(`document.getElementById('project-name').value`), 'Mening loyiham', 'English name read back into Uzbek');
+      await setName('Мой чертёж'); await page.goto(url + '?lang=en', 1500);
+      eq(await E(`document.getElementById('project-name').value`), 'Мой чертёж', 'a name of the user is left alone');
+      eq(await E(`localStorage.getItem('qbit-lang')`), 'en', '?lang= is remembered');
+      // no choice yet: the language of the browser
+      const ua = await E(`navigator.userAgent`);
+      for (const [accept, want] of [['uz-UZ', 'uz'], ['en-US', 'en'], ['ru-RU', 'ru'], ['tr-TR', 'ru']]) {
+        await page.send('Emulation.setUserAgentOverride', { userAgent: ua, acceptLanguage: accept });
+        await E(`localStorage.removeItem('qbit-lang')`); await page.goto(url, 1200);
+        eq(await E(`QBIT.i18n.lang`), want, 'browser language ' + accept);
+      }
+      await page.send('Emulation.setUserAgentOverride', { userAgent: ua, acceptLanguage: 'ru-RU' });
+      await E(`localStorage.removeItem('qbit-lang')`); await setName('Мой проект'); await page.goto(url, 1200);
+    });
+
     /* ---------------------------------------------------------------- languages: Uzbek and English leave nothing in Russian */
     const SCAN = `JSON.stringify((() => {
       const CYR = /[А-Яа-яЁё]/, out = new Set();

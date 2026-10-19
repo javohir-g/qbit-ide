@@ -61,7 +61,7 @@
 
     this.wireDevice(this.sim);
     this.hub.on('select', function (d, was) { if (was) self.unwireDevice(was); self.wireDevice(d); self.deviceChanged(); });
-    this.editor.on('change', function (code) { self.onEditorChange(code); });
+    this.editor.on('change', function (code) { self.onEditorChange(code); self.syncStart(); });
     this.editor.on('select', function () {});
     app.onKit = function (k) { self.prefs.kit = k; self.savePrefs(); self.editor.refreshToolbox({ kit: k }); if ($('sel-kit')) $('sel-kit').value = String(k); };
     // the header sound button also mutes the clicks of the blocks
@@ -72,6 +72,7 @@
 
     this.buildChrome();
     this.loadProject();
+    this.buildStart();
     this.deviceChanged();
     this.syncRun();
     G.QBIT.ide = this;
@@ -171,6 +172,8 @@
     $('btn-pause').title = s === 'paused' ? T('Продолжить программу') : T('Приостановить программу');
     $('btn-pause').setAttribute('aria-label', s === 'paused' ? T('Продолжить') : T('Пауза'));
     $('btn-stop').disabled = !active;
+    $('btn-stop2').disabled = !active;
+    $('btn-run2').title = $('btn-run').title;
     var el = $('run-status');
     el.className = 'ide-status ' + s;
     el.querySelector('span').textContent = STATUS_TEXT[s] + (active && d && d.kind !== 'sim' ? ' · ' + d.name : '');
@@ -214,6 +217,8 @@
     $('btn-run').addEventListener('click', function () { self.run(); });
     $('btn-pause').addEventListener('click', function () { self.pauseResume(); });
     $('btn-stop').addEventListener('click', function () { self.stop(); });
+    $('btn-run2').addEventListener('click', function () { self.run(); });
+    $('btn-stop2').addEventListener('click', function () { self.stop(); });
     $('btn-file').addEventListener('click', function (e) { e.stopPropagation(); self.toggleMenu(); });
     $('btn-lang').addEventListener('click', function (e) { e.stopPropagation(); self.langMenu(); });
     $('lang-short').textContent = Q.i18n.langs.filter(function (l) { return l.id === Q.i18n.lang; })[0].short;
@@ -264,6 +269,7 @@
     $('blockly-div').hidden = py;
     $('code-view').hidden = !py;
     document.body.classList.toggle('mode-python', py);
+    if (this.syncStart) this.syncStart();
     if (py) this.codeView.render(this.editor.regenerate().code);
     else this.editor.resize();
   };
@@ -317,7 +323,7 @@
     var saved = null;
     try { saved = JSON.parse(G.localStorage.getItem(PROJECT) || 'null'); } catch (e) { /* ignore */ }
     if (saved && saved.v === 1 && saved.blocks && !untouchedStartExample(saved)) {
-      this.project.name = saved.name || T('Мой проект');
+      this.project.name = localName(saved.name) || T('Мой проект');
       try { this.editor.load(saved.blocks); } catch (e) { if (G.console) G.console.error(e); this.editor.clear(); }
     } else {
       this.project.name = T('Новый проект');                // the first start is an empty project (examples are in File)
@@ -327,6 +333,16 @@
   };
   /** versions before rev 2 opened the first example at the first start and saved it as the project: a save of theirs that is still
       exactly that example counts as no project (an example opened on purpose is saved with rev 2 and stays) */
+  /** a name the program itself gave (a default or an example title) is shown in the language of the interface, whichever language it was saved in */
+  function localName(name) {
+    if (!name) return name;
+    var cands = ['Мой проект', 'Новый проект', 'Мой первый проект'].concat((Q.Examples ? Q.Examples.list : []).map(function (e) { return e.title; }));
+    for (var i = 0; i < cands.length; i++) {
+      var c = cands[i];
+      if (name === c || name === Q.i18n.dict.en[c] || name === Q.i18n.dict.uz[c]) return T(c);
+    }
+    return name;
+  }
   function untouchedStartExample(saved) {
     var ex = Q.Examples && Q.Examples.list[0], count = function (j) { return (JSON.stringify(j).match(/"type":/g) || []).length; };
     return !saved.rev && !!ex && saved.name === ex.title && count(saved.blocks) === count(ex.build({ led: 1 }));
@@ -418,6 +434,20 @@
     sel.value = String(this.app.kit);
     sel.addEventListener('change', function () { self.app.setKit(+sel.value); });
     head.insertBefore(h('label', { cls: 'field kit-field', title: T('Какие модули показывать в блоках') }, Q.icon('board'), sel), head.firstChild);
+  };
+  /** an empty project shows a few examples to start from (they disappear with the first block) */
+  I.buildStart = function () {
+    var self = this, list = $('start-list');
+    Q.Examples.list.slice(0, 6).forEach(function (ex) {
+      var b = h('button', { type: 'button', cls: 'start-card', text: ex.title });
+      b.addEventListener('click', function () { self.openExample(ex, true); self.syncStart(); });
+      list.appendChild(b);
+    });
+    this.syncStart();
+  };
+  I.syncStart = function () {
+    var empty = this.mode === 'blocks' && !this.editor.ws.getAllBlocks(false).length;
+    $('start-cards').hidden = !empty;
   };
   /** the interface language: Russian, Uzbek, English (names in their own language); the page reloads in the new one, the project is kept */
   I.langMenu = function () {

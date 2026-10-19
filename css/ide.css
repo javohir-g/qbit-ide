@@ -284,13 +284,36 @@ body.mode-python .find-btn, body.mode-python .find-pop { display: none; }
 .ide-right.mirroring #tray { pointer-events: none; opacity: .4; }
 .ide-right.mirroring .devices-grid > .field { opacity: .4; pointer-events: none; }
 
+/* Run / Stop inside the editor: only where the board is a sheet over it (see the narrow rules below) */
+.ed-run { display: none; position: absolute; left: calc(var(--cat-w) + var(--edge-gap)); top: var(--edge-gap); z-index: 60; gap: 8px; }
+
+/* an empty project: examples to start from; sits under the block column and the buttons, goes away with the first block */
+.start-cards { position: absolute; inset: 0 0 0 var(--cat-w); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 56px 20px; pointer-events: none; z-index: 1; }
+.start-cards[hidden] { display: none; }
+.start-title { font: 700 15px var(--sans); color: var(--muted); }
+.start-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 640px; }
+.start-card { pointer-events: auto; border: 1px solid var(--line2); background: #fff; color: #274e6e; border-radius: 14px; padding: 12px 16px; font: 600 13px var(--sans); }
+.start-card:hover { border-color: var(--accent); color: var(--accent); }
+.start-card:active { background: var(--hover); }
+
 /* ------------------------------------------------------------------ narrower screens */
+@media (max-width: 720px), (pointer: coarse) {              /* fingers: targets of about 40 px */
+  .top-icon { width: 40px; height: 40px; }
+  .top-link { min-height: 40px; }
+  .mode-pills button { height: 34px; }
+  .round { width: 44px; height: 44px; }
+  .round.pause { width: 38px; height: 38px; }
+  .ed-btn { width: 40px; height: 40px; }
+  .find-btn { width: 40px; height: 40px; left: calc((var(--cat-w) - 40px) / 2); }
+  .start-card { padding: 14px 18px; }
+}
 @media (max-width: 1280px) {
   .proj-pill input { width: 116px; }
 }
 @media (max-width: 1099px) {
   .ide-body { grid-template-columns: minmax(0, 1fr); }
   .only-narrow { display: inline-grid !important; }
+  .ed-run { display: flex; }
   .ide-right { position: fixed; top: var(--bar-h); left: 0; bottom: 0; width: min(94vw, 440px); z-index: 300; padding: var(--gap); background: var(--page); display: none; }
   .ide.board-visible .ide-right { display: flex; }
   .proj-pill input { width: 120px; }

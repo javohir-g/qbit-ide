@@ -4,6 +4,12 @@
   'use strict';
   var Q = G.QBIT = G.QBIT || {};
   Q.i18n.add('en', {
+    // site
+    "Wi-Fi работает со страницы, открытой с платы (http://192.168.4.1). Отсюда подключайтесь по USB.": "Wi-Fi works from the page opened from the board (http://192.168.4.1). From here, connect over USB.",
+    "Настоящая плата: подключите её кабелем USB-C. Wi-Fi работает со страницы, открытой с платы (http://192.168.4.1).": "A real board: connect it with a USB-C cable. Wi-Fi works from the page opened from the board (http://192.168.4.1).",
+    "Запустить программу": "Run the program",
+    "Остановить программу": "Stop the program",
+    "Начните с примера": "Start with an example",
     // core/board.js
     "нет такого порта": "no such port",
     "порт P%1 занят": "port P%1 is busy",

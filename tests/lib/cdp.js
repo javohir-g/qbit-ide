@@ -120,7 +120,7 @@ async function launch(opts = {}) {
   for (const d of fs.readdirSync(BASE)) { if (d.startsWith('prof-') && Date.now() - Number(d.slice(5)) > 600000) { try { fs.rmSync(path.join(BASE, d), { recursive: true, force: true }); } catch (e) { /* locked */ } } }
   const dir = path.join(BASE, 'prof-' + Date.now());
   const proc = spawn(CHROME, ['--headless=new', `--remote-debugging-port=${port}`, `--user-data-dir=${dir}`, '--no-first-run', '--no-default-browser-check',
-    '--autoplay-policy=no-user-gesture-required', '--disk-cache-size=1', '--media-cache-size=1', '--hide-scrollbars', '--force-color-profile=srgb', 'about:blank'], { stdio: 'ignore', detached: false });
+    '--lang=ru-RU', '--autoplay-policy=no-user-gesture-required', '--disk-cache-size=1', '--media-cache-size=1', '--hide-scrollbars', '--force-color-profile=srgb', 'about:blank'], { stdio: 'ignore', detached: false });
   let targets = null;
   for (let i = 0; i < 60; i++) {
     try { targets = await getJson(`http://127.0.0.1:${port}/json/list`); if (targets.length) break; } catch (e) { /* not up yet */ }

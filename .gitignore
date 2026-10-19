@@ -3,3 +3,6 @@ dist/
 __pycache__/
 *.pyc
 node_modules/
+
+# design studies (kept locally, not published)
+tools/variants_*.png

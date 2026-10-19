@@ -30,8 +30,12 @@
   function known(id) { return LANGS.some(function (l) { return l.id === id; }); }
   function detect() {
     var id = null, m;
-    try { m = /[?&]lang=(ru|uz|en)(?:&|$|#)/.exec((G.location && G.location.search) || ''); if (m) id = m[1]; } catch (e) { /* no location (Node) */ }
+    try { m = /[?&]lang=(ru|uz|en)(?:&|$|#)/.exec((G.location && G.location.search) || ''); if (m) { id = m[1]; try { G.localStorage.setItem(STORE, id); } catch (e) { /* kept for this visit only */ } } } catch (e) { /* no location (Node) */ }
     if (!id) { try { id = G.localStorage.getItem(STORE); } catch (e) { /* private mode, Node */ } }
+    if (!known(id) && G.document && G.navigator) {                 // a first visit: the language of the browser (a page, not Node)
+      var b = String(G.navigator.language || '').slice(0, 2).toLowerCase();
+      if (b === 'uz' || b === 'en') id = b;
+    }
     return known(id) ? id : 'ru';
   }
   var lang = detect();

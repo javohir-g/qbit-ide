@@ -4,6 +4,12 @@
   'use strict';
   var Q = G.QBIT = G.QBIT || {};
   Q.i18n.add('uz', {
+    // site
+    "Wi-Fi работает со страницы, открытой с платы (http://192.168.4.1). Отсюда подключайтесь по USB.": "Wi-Fi plataning oʻzidan ochilgan sahifada ishlaydi (http://192.168.4.1). Bu yerdan USB orqali ulaning.",
+    "Настоящая плата: подключите её кабелем USB-C. Wi-Fi работает со страницы, открытой с платы (http://192.168.4.1).": "Haqiqiy plata: uni USB-C kabeli bilan ulang. Wi-Fi plataning oʻzidan ochilgan sahifada ishlaydi (http://192.168.4.1).",
+    "Запустить программу": "Dasturni ishga tushirish",
+    "Остановить программу": "Dasturni toʻxtatish",
+    "Начните с примера": "Namunadan boshlang",
     // core/board.js
     "нет такого порта": "bunday port yoʻq",
     "порт P%1 занят": "P%1 port band",

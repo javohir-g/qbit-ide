@@ -202,7 +202,10 @@
     ide.devices.render();
     return dev;
   };
+  /** an https page may not open ws://: Wi-Fi works only from the page the board itself serves (http://192.168.4.1) */
+  var HTTPS = function () { return G.location && G.location.protocol === 'https:'; };
   RemoteLink.prototype.connectWifi = function (addr) {
+    if (HTTPS() && !/^wss:\/\//.test((addr || '').trim())) { this.error = T('Wi-Fi работает со страницы, открытой с платы (http://192.168.4.1). Отсюда подключайтесь по USB.'); this.ide.devices.render(); return null; }
     addr = (addr || '').trim() || '192.168.4.1';
     var url = /^wss?:\/\//.test(addr) ? addr : 'ws://' + addr.replace(/\/.*$/, '') + '/ws';
     return this.connect('wifi', url);
@@ -237,7 +240,7 @@
   /** the IDE served by the board itself: connect without asking */
   RemoteLink.prototype.autodetect = function () {
     var self = this;
-    if (!/^https?:$/.test(location.protocol) || !G.fetch) return;
+    if (location.protocol !== 'http:' || !G.fetch) return;          // a board serves plain http; from an https site (GitHub Pages) there is nothing to probe
     G.fetch('qbit.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
       if (j && j.qbit) self.connectWifi(location.host);
     }).catch(function () { /* served by something that is not a board */ });
@@ -252,8 +255,8 @@
     var usb = h('button', { cls: 'btn small', type: 'button', text: T('Подключить по USB…') });
     usb.addEventListener('click', function () { self.connectSerial(); });
     var box = h('div', { cls: 'connect-box' },
-      h('div', { text: T('Настоящая плата: Wi-Fi «q.bit-…», адрес обычно 192.168.4.1, или USB-C.') }),
-      h('div', { cls: 'row' }, addr, wifi, usb));
+      h('div', { text: HTTPS() ? T('Настоящая плата: подключите её кабелем USB-C. Wi-Fi работает со страницы, открытой с платы (http://192.168.4.1).') : T('Настоящая плата: Wi-Fi «q.bit-…», адрес обычно 192.168.4.1, или USB-C.') }),
+      h('div', { cls: 'row' }, HTTPS() ? null : addr, HTTPS() ? null : wifi, usb));
     if (this.pending) box.appendChild(h('div', { text: T('Подключаюсь…') }));
     if (this.error) box.appendChild(h('div', { style: { color: 'var(--err)' }, text: this.error }));
     return box;

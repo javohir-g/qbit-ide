@@ -11,6 +11,7 @@ const steps = [
   ['interpreter vs CPython', ['tests/conformance.test.js']],
   ['qbit contract and runtime', ['tests/runtime.test.js']],
   ['dictionaries (ru / uz / en)', ['tests/i18n.test.js']],
+  ['offline / install (service worker, manifest)', ['tests/pwa.test.js']],
   ['contract table in mpy/ is current', ['tools/gen_qbit_spec.js', '--check']],
   ['board-side qbit module (CPython)', ['tests/mpy.test.js']],
   ['board protocol (fake board)', ['tests/link.test.js']],
