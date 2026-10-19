@@ -15,6 +15,7 @@
   --gap: 8px;
   --left-w: clamp(344px, 23vw, 440px);
   --cat-w: 76px;
+  --edge-gap: 14px;                     /* Blocks / Python and the round editor buttons: this far from the editor's right, top and bottom edges */
   --text: #27445f; --muted: #5d7f9b; --dim: #8aa8c0;
   --line: #d8ebfa; --line2: #bcdcf5; --hover: #eaf5ff; --panel2: #f2f9ff; --inset: #f4faff; --code-bg: #f4faff;
   --accent: #1ea1ff; --accent-ink: #fff; --go: #1ea1ff;
@@ -32,25 +33,27 @@ body.ide-page { overflow: hidden; background: var(--page); font-family: var(--sa
 .ide-top { display: flex; align-items: center; gap: clamp(8px, .9vw, 16px); padding: 0 clamp(10px, 1vw, 18px); background: var(--bar); color: #fff; z-index: 20; min-width: 0; }
 .ide-top .spacer { flex: 1; }
 .brand { display: flex; align-items: center; gap: 8px; flex: none; user-select: none; }
-.brand-robot { width: clamp(28px, 1.9vw, 36px); height: clamp(28px, 1.9vw, 36px); }
-.brand b { font-size: clamp(19px, 1.45vw, 26px); font-weight: 800; letter-spacing: -.5px; line-height: 1; }
+/* the q.block logo from the first qblock site (E:\qblock\qbit.png, white): robot head + wordmark */
+.brand-logo { display: block; height: clamp(24px, 1.75vw, 30px); width: auto; }
 .top-link { display: inline-flex; align-items: center; gap: 7px; height: 32px; padding: 0 8px; border: 0; background: transparent; color: #fff; font: 600 clamp(12.5px, .9vw, 15px) var(--sans); border-radius: 10px; white-space: nowrap; }
 .top-link:hover { background: rgba(255, 255, 255, .16); }
 .top-link .ic { width: 18px; height: 18px; stroke-width: 1.7; }
 .top-link .caret { width: 14px; height: 14px; margin-left: -2px; stroke-width: 2.2; }
-.proj-pill { display: flex; align-items: center; height: 32px; padding: 0 16px; border-radius: 999px; background: rgba(8, 100, 190, .26); border: 1px solid rgba(255, 255, 255, .28); min-width: 0; }
+.proj-pill { display: flex; align-items: center; gap: 2px; height: 32px; padding: 0 3px 0 14px; border-radius: 999px; background: rgba(8, 100, 190, .26); border: 1px solid rgba(255, 255, 255, .28); min-width: 0; }
 .proj-pill:focus-within { background: rgba(8, 100, 190, .4); border-color: #fff; }
-.proj-pill input { width: clamp(130px, 12vw, 220px); border: 0; outline: 0; background: transparent; color: #fff; font: 500 clamp(12px, .85vw, 14px) var(--sans); text-align: center; text-overflow: ellipsis; }
+.proj-pill input { width: clamp(130px, 12vw, 220px); border: 0; outline: 0; background: transparent; color: #fff; font: 500 clamp(12px, .85vw, 14px) var(--sans); text-overflow: ellipsis; }
+/* save sits inside the project name */
+.pill-btn { flex: none; width: 26px; height: 26px; border: 0; border-radius: 50%; background: transparent; color: #fff; display: grid; place-items: center; padding: 0; }
+.pill-btn:hover { background: rgba(255, 255, 255, .2); }
+.pill-btn .ic { width: 16px; height: 16px; }
 .proj-pill input::placeholder { color: rgba(255, 255, 255, .82); }
 
-.mode-pills { display: inline-flex; padding: 2px; border-radius: 999px; background: rgba(255, 255, 255, .22); }
-.mode-pills button { border: 0; background: transparent; height: 26px; padding: 0 clamp(11px, .9vw, 16px); border-radius: 999px; color: #fff; font: 600 clamp(11.5px, .8vw, 13px) var(--sans); }
-.mode-pills button[aria-selected="true"] { background: #fff; color: var(--bar); }
-.top-search { display: flex; align-items: center; gap: 7px; height: 32px; padding: 0 13px; border-radius: 999px; background: rgba(255, 255, 255, .22); color: #fff; min-width: 0; }
-.top-search:focus-within { background: rgba(255, 255, 255, .34); }
-.top-search .ic { width: 15px; height: 15px; stroke-width: 2; }
-.top-search input { width: clamp(110px, 10vw, 190px); border: 0; outline: 0; background: transparent; color: #fff; font: 500 13px var(--sans); }
-.top-search input::placeholder { color: rgba(255, 255, 255, .85); }
+/* Blocks / Python: in the editor's top right corner (above the workspace and the Python view) */
+/* its own layer: the box starts on a whole device pixel, so at 125 / 150 % the gaps round the same on every side */
+.mode-pills { position: absolute; right: var(--edge-gap); top: var(--edge-gap); z-index: 60; display: inline-flex; padding: 2px; border-radius: 999px; background: #fff; border: 1px solid var(--line2); will-change: transform; }
+.mode-pills button { border: 0; background: transparent; height: 26px; padding: 0 14px; border-radius: 999px; color: var(--muted); font: 600 12.5px var(--sans); }
+.mode-pills button:hover { color: var(--accent); }
+.mode-pills button[aria-selected="true"] { background: var(--accent); color: #fff; }
 .top-icon { width: 32px; height: 32px; border: 0; border-radius: 50%; background: transparent; color: #fff; display: inline-grid; place-items: center; flex: none; }
 .top-icon .ic { width: 18px; height: 18px; }
 .top-icon:hover { background: rgba(255, 255, 255, .18); }
@@ -153,7 +156,7 @@ body.program-running .round.run { background: #1aa85d; }
    full-width square, Blockly's keyboard mode framed the whole column; the filled square already marks the row */
 .blocklyToolbox, .blocklyToolboxCategoryGroup, .blocklyToolboxCategoryContainer, .blocklyToolboxCategory { outline: none !important; }
 .blocklyTreeRowContentContainer { flex: 1; min-width: 0; min-height: 0; display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 3px; height: 100% !important; padding: 0 2px !important; }
-.blocklyToolboxCategoryIcon { visibility: visible !important; width: var(--d) !important; height: var(--d) !important; border-radius: 50%; margin: 0 !important; flex: none; background: var(--cat, #999); display: block; box-sizing: border-box; border: 2px solid var(--cat-edge, rgba(0, 0, 0, .18)); }
+.blocklyToolboxCategoryIcon { visibility: visible !important; width: var(--d) !important; height: var(--d) !important; border-radius: 50%; margin: 0 !important; flex: none; background: var(--cat, #999); display: block; box-sizing: border-box; border: 1.5px solid var(--cat-edge, rgba(0, 0, 0, .18)); }
 .blocklyToolboxCategoryLabel { font: 600 clamp(9px, 13cqw, 11px) var(--sans) !important; color: #274e6e !important; padding: 0 !important; text-align: center; line-height: 1.1; max-width: 100%; max-height: 2.3em; overflow: hidden; white-space: normal; hyphens: manual; overflow-wrap: break-word; }
 .blocklyToolboxSelected .blocklyToolboxCategoryLabel, .blocklyToolboxCategoryContainer[aria-selected="true"] .blocklyToolboxCategoryLabel { color: #0f78d0 !important; font-weight: 700 !important; }
 @container tb (max-height: 430px) {
@@ -161,15 +164,36 @@ body.program-running .round.run { background: #1aa85d; }
   .blocklyToolboxCategoryLabel { display: none !important; }
 }
 
+/* the open block column: thin edge, a slim scrollbar (4 px instead of Blockly's 10), no focus frame in keyboard mode */
 .blocklyFlyoutBackground { fill: #f4faff !important; fill-opacity: 1 !important; stroke: var(--edge); stroke-width: 1px; }
+.blocklyFlyoutScrollbar .blocklyScrollbarHandle { width: 4px; x: 8px; rx: 2px; ry: 2px; }
+.blocklyFlyout { outline: none !important; }
 .blocklyFlyoutLabelText { font: 700 11px var(--sans); fill: #5d7f9b !important; }
 .blocklyMainBackground { stroke: none !important; }
 .blocklyText, .blocklyEditableText > text, .blocklyNonEditableText > text { font-family: var(--sans) !important; font-weight: 600; }
 .blocklyDropdownText { font-family: var(--sans) !important; }
 .blocklyWidgetDiv .blocklyMenu, .blocklyDropDownDiv { font-family: var(--sans); }
-.blocklyTrash, .blocklyZoom { opacity: .85; }
+/* zoom buttons and the bin: round like the undo / redo buttons (editor.js skinControls draws them, Blockly's sprite pictures stay invisible) */
+.blocklyTrash image, .blocklyZoom image { opacity: 0 !important; }
+.blocklyTrashLid { opacity: 1 !important; }
+.blocklyZoom, .qbit-ctl { --ctl: var(--muted); cursor: pointer; outline: none; }
+.blocklyTrash { --ctl: var(--muted); }
+.qbit-ctl-bg { fill: #fff; stroke: var(--line2); stroke-width: 1px; transition: stroke .08s, fill .08s; }
+.qbit-ctl-ic { fill: none; stroke: var(--ctl); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: stroke .08s; }
+.blocklyZoom:hover, .qbit-ctl:hover, .qbit-ctl:focus-visible, .blocklyTrash.blocklyTrashFull:hover { --ctl: var(--accent); }
+.blocklyZoom:hover .qbit-ctl-bg, .qbit-ctl:hover .qbit-ctl-bg, .qbit-ctl:focus-visible .qbit-ctl-bg, .blocklyTrash.blocklyTrashFull:hover .qbit-ctl-bg { stroke: var(--accent); }
+.blocklyZoom:active .qbit-ctl-bg, .qbit-ctl:active .qbit-ctl-bg { fill: var(--hover); }
+.blocklyTrash.blocklyTrashOpen { --ctl: #e5354b; }                       /* a block held over the bin: it goes red, the lid opens */
+.blocklyTrash.blocklyTrashOpen .qbit-ctl-bg { stroke: #e5354b; fill: #fff3f4; }
+.blocklyTrash.blocklyTrashOpen .blocklyTrashLid, .blocklyTrash.blocklyTrashFull:hover .blocklyTrashLid { rotate: 30deg; }
+/* even column: 30 px circles 10 px apart (Blockly puts them 43 / 34 px apart) */
+.blocklyZoomIn { transform: translate(0px, 40px); }
+/* Blockly keeps its buttons 20 px plus a scrollbar's width from the edges; editor.js alignControls moves the column to --edge-gap */
+.qbit-ctl-col, .blocklyTrash { translate: var(--ctl-dx, 0px) var(--ctl-dy, 0px); }
+.blocklyZoomOut { transform: translate(0px, 80px); }
 .blocklySvg { background: #fff !important; outline: none; }
 .blocklyScrollbarHandle { fill: #b7d6ee !important; }
+.blocklyMainWorkspaceScrollbar { display: none; }                       /* the editor scrolls by dragging and the wheel, no bars */
 .qbit-running > path.blocklyPath { stroke: #ffc400 !important; stroke-width: 4px !important; }
 .qbit-error > path.blocklyPath { stroke: #e5354b !important; stroke-width: 4px !important; }
 /* flat: Blockly's own emboss / selection glow / drop shadows are switched off; a selected block gets a plain outline instead */
@@ -178,23 +202,28 @@ body.program-running .round.run { background: #1aa85d; }
 .blocklyTooltipDiv, .blocklyDropDownDiv, .blocklyWidgetDiv .blocklyMenu, .blocklyWidgetDiv .blocklyContextMenu, .blocklyHtmlInput, .blocklyContextMenu { box-shadow: none !important; }
 .blocklyDropDownDiv, .blocklyTooltipDiv { border: 1px solid var(--line2); }
 
-/* undo / redo: in the top right corner of the editor */
-.ed-tools { position: absolute; right: 22px; top: 10px; z-index: 60; display: flex; gap: 6px; }
-.ed-btn { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line2); background: #fff; color: var(--muted); display: grid; place-items: center; padding: 0; }
-.ed-btn:hover { color: var(--accent); border-color: var(--accent); }
-.ed-btn:active { background: var(--hover); }
-.ed-btn .ic { width: 15px; height: 15px; }
-body.mode-python .ed-tools { display: none; }
 
-/* the round "+" under the categories: for which kit's modules the blocks are shown */
-.ext-btn { position: absolute; left: calc((var(--cat-w) - 34px) / 2); bottom: 10px; width: 34px; height: 34px; border: 0; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; z-index: 80; padding: 0; }
-.ext-btn .ic { width: 18px; height: 18px; stroke-width: 2.2; }
-.ext-btn:hover { background: #0f8fe8; }
-body.mode-python .ext-btn { display: none; }
+.kit-field { display: flex; height: 32px; }
+.kit-field .ic { width: 15px; height: 15px; color: var(--muted); }
+.kit-field select { flex: 1; min-width: 0; max-width: none; font-size: 12.5px; }
+
+/* block search: the round button under the categories, its field opens to the right of it (over the bottom of the block column) */
+.find-btn { position: absolute; left: calc((var(--cat-w) - 34px) / 2); bottom: var(--edge-gap); width: 34px; height: 34px; border: 0; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; z-index: 80; padding: 0; }
+.find-btn .ic { width: 17px; height: 17px; stroke-width: 2.2; }
+.find-btn:hover { background: #0f8fe8; }
+.find-pop { position: absolute; left: calc(var(--cat-w) + 8px); bottom: var(--edge-gap); z-index: 80; width: min(280px, calc(100% - var(--cat-w) - 70px)); height: 34px; display: flex; align-items: center; gap: 7px; padding: 0 4px 0 12px; border-radius: 999px; background: #fff; border: 1px solid var(--accent); color: var(--muted); box-sizing: border-box; }
+.find-pop[hidden] { display: none; }
+.find-pop > .ic { flex: none; width: 15px; height: 15px; stroke-width: 2; }
+.find-pop input { flex: 1; min-width: 0; height: 100%; border: 0; outline: 0; background: transparent; color: var(--text); font: 500 13px var(--sans); }
+.find-pop input::-webkit-search-cancel-button { display: none; }
+.find-x { flex: none; width: 26px; height: 26px; border: 0; border-radius: 50%; background: transparent; color: var(--muted); display: grid; place-items: center; padding: 0; }
+.find-x:hover { background: var(--hover); color: var(--accent); }
+.find-x .ic { width: 14px; height: 14px; }
+body.mode-python .find-btn, body.mode-python .find-pop { display: none; }
 
 /* ------------------------------------------------------------------ Python view */
 .code-view { position: absolute; inset: 0; display: flex; flex-direction: column; background: #fff; min-height: 0; }
-.code-copy { position: absolute; right: 12px; top: 10px; z-index: 2; width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line2); background: #fff; color: var(--muted); display: grid; place-items: center; padding: 0; }
+.code-copy { position: absolute; right: 16px; bottom: 14px; z-index: 2; width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line2); background: #fff; color: var(--muted); display: grid; place-items: center; padding: 0; }
 .code-copy:hover { color: var(--accent); border-color: var(--accent); }
 .code-copy .ic { width: 15px; height: 15px; }
 .code-lines { flex: 1; min-height: 0; overflow: auto; padding: 12px 0 24px; font: 13px/1.65 var(--mono); outline: none; tab-size: 4; }
@@ -257,7 +286,6 @@ body.mode-python .ext-btn { display: none; }
 
 /* ------------------------------------------------------------------ narrower screens */
 @media (max-width: 1280px) {
-  .top-search input { width: 100px; }
   .proj-pill input { width: 116px; }
 }
 @media (max-width: 1099px) {
@@ -265,19 +293,19 @@ body.mode-python .ext-btn { display: none; }
   .only-narrow { display: inline-grid !important; }
   .ide-right { position: fixed; top: var(--bar-h); left: 0; bottom: 0; width: min(94vw, 440px); z-index: 300; padding: var(--gap); background: var(--page); display: none; }
   .ide.board-visible .ide-right { display: flex; }
-  .top-search { display: none; }
   .proj-pill input { width: 120px; }
 }
 @media (max-width: 720px) {
-  :root { --cat-w: 54px; }
+  :root { --cat-w: 54px; --edge-gap: 12px; }
   .ide-top { gap: 6px; padding: 0 8px; }
   .mode-pills button { padding: 0 11px; }
-  .brand b, .top-link span, .top-link .caret { display: none; }
+  .brand-logo { height: 22px; }
+  .top-link span, .top-link .caret { display: none; }
   .blocklyToolboxCategoryLabel { display: none !important; }
   .blocklyToolboxCategoryGroup { --k: .62; }
   .proj-pill { padding: 0 12px; }
   .proj-pill input { width: 90px; }
 }
 @media (max-width: 560px) {
-  .proj-pill, #btn-save { display: none; }
+  .proj-pill { display: none; }
 }

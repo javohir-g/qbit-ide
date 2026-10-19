@@ -22,7 +22,7 @@
     this.mode = 'blocks';
     this.saveTimer = 0;
     this.prefs = this.loadPrefs();
-    this.project = { name: T('Мой первый проект') };
+    this.project = { name: T('Новый проект') };
     this.link = null;
     this.errorBlock = null;
   }
@@ -63,7 +63,7 @@
     this.hub.on('select', function (d, was) { if (was) self.unwireDevice(was); self.wireDevice(d); self.deviceChanged(); });
     this.editor.on('change', function (code) { self.onEditorChange(code); });
     this.editor.on('select', function () {});
-    app.onKit = function (k) { self.prefs.kit = k; self.savePrefs(); self.editor.refreshToolbox({ kit: k }); };
+    app.onKit = function (k) { self.prefs.kit = k; self.savePrefs(); self.editor.refreshToolbox({ kit: k }); if ($('sel-kit')) $('sel-kit').value = String(k); };
     // the header sound button also mutes the clicks of the blocks
     var blockAudio = this.editor.ws.getAudioManager(), setSound = app.sound.setEnabled;
     app.sound.setEnabled = function (on) { setSound.call(this, on); blockAudio.setMuted(!on); };
@@ -214,8 +214,6 @@
     $('btn-run').addEventListener('click', function () { self.run(); });
     $('btn-pause').addEventListener('click', function () { self.pauseResume(); });
     $('btn-stop').addEventListener('click', function () { self.stop(); });
-    $('btn-undo').addEventListener('click', function () { self.editor.undo(); });
-    $('btn-redo').addEventListener('click', function () { self.editor.redo(); });
     $('btn-file').addEventListener('click', function (e) { e.stopPropagation(); self.toggleMenu(); });
     $('btn-lang').addEventListener('click', function (e) { e.stopPropagation(); self.langMenu(); });
     $('lang-short').textContent = Q.i18n.langs.filter(function (l) { return l.id === Q.i18n.lang; })[0].short;
@@ -224,7 +222,6 @@
       var d = self.device();
       if (d && d.kind !== 'sim') d.disconnect(); else self.leftTab('devices');
     });
-    $('btn-ext').addEventListener('click', function (e) { e.stopPropagation(); self.kitMenu(); });
     $('tab-blocks').addEventListener('click', function () { self.setMode('blocks'); });
     $('tab-python').addEventListener('click', function () { self.setMode('python'); });
     ['console', 'modules', 'props', 'data', 'devices'].forEach(function (t) { $('btab-' + t).addEventListener('click', function () { self.leftTab(t); }); });
@@ -232,11 +229,16 @@
     $('project-name').addEventListener('input', function () { self.project.name = this.value; clearTimeout(self.saveTimer); self.saveTimer = setTimeout(function () { self.saveProject(); }, 500); });
     $('project-name').addEventListener('keydown', function (e) { if (e.key === 'Enter') this.blur(); });
 
-    var search = $('block-search'), st = 0;
-    search.addEventListener('input', function () {
-      clearTimeout(st);
-      st = setTimeout(function () { self.editor.refreshToolbox({ query: search.value.trim() }); if (search.value.trim()) self.editor.searchSelect(); }, 180);
+    // block search: the round button under the categories opens the field; the cross or Esc clears it and closes it
+    var search = $('block-search');
+    $('btn-find').addEventListener('click', function () { self.openFind($('find-pop').hidden); });
+    $('find-close').addEventListener('click', function () { self.openFind(false); });
+    search.addEventListener('input', function () { clearTimeout(self.findTimer); self.findTimer = setTimeout(function () { self.applyFind(); }, 180); });
+    search.addEventListener('keydown', function (e) { if (e.key === 'Escape') { e.stopPropagation(); self.openFind(false); } });
+    search.addEventListener('blur', function () {          // an empty field closes when it loses the focus
+      setTimeout(function () { if (!search.value.trim() && document.activeElement !== search) self.openFind(false); }, 150);
     });
+    this.buildKitField();
 
     G.addEventListener('resize', function () { self.editor.resize(); });
     G.addEventListener('keydown', function (e) {
@@ -245,7 +247,7 @@
       else if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) { e.preventDefault(); self.saveProject(); self.app.toast(T('Сохранено'), 'ok', 'save'); }
       else if (e.key === 'Escape' && tag !== 'input' && tag !== 'textarea') { self.closeMenu(); var d = self.device(); if (d && d.running && d.running()) self.stop(); }
     });
-    document.addEventListener('click', function (e) { if (!e.target.closest('#menu') && !e.target.closest('#btn-file') && !e.target.closest('#btn-lang') && !e.target.closest('#btn-ext')) self.closeMenu(); });
+    document.addEventListener('click', function (e) { if (!e.target.closest('#menu') && !e.target.closest('#btn-file') && !e.target.closest('#btn-lang')) self.closeMenu(); });
 
     // the left column is a sheet on narrow screens
     this.boardVisible = false;
@@ -264,6 +266,18 @@
     document.body.classList.toggle('mode-python', py);
     if (py) this.codeView.render(this.editor.regenerate().code);
     else this.editor.resize();
+  };
+  I.openFind = function (open) {
+    var pop = $('find-pop'), search = $('block-search');
+    pop.hidden = !open;
+    $('btn-find').setAttribute('aria-expanded', String(open));
+    if (open) search.focus();
+    else if (search.value) { search.value = ''; clearTimeout(this.findTimer); this.applyFind(); }
+  };
+  I.applyFind = function () {
+    var q = $('block-search').value.trim();
+    this.editor.refreshToolbox({ query: q });
+    if (q) this.editor.searchSelect();
   };
   var PANES = { console: 'pane-console', modules: 'tray', props: 'side', data: 'pane-data', devices: 'pane-devices' };
   /** one tab bar for everything under the board picture */
@@ -296,20 +310,27 @@
   /* ---------------------------------------------------------------- project */
   /** saving is silent; only a failure is worth a word */
   I.saveProject = function () {
-    try { G.localStorage.setItem(PROJECT, JSON.stringify({ v: 1, name: this.project.name, blocks: this.editor.serialize() })); }
+    try { G.localStorage.setItem(PROJECT, JSON.stringify({ v: 1, rev: 2, name: this.project.name, blocks: this.editor.serialize() })); }
     catch (e) { this.app.toast(T('Не удалось сохранить проект в браузере'), 'err', 'save'); }
   };
   I.loadProject = function () {
     var saved = null;
     try { saved = JSON.parse(G.localStorage.getItem(PROJECT) || 'null'); } catch (e) { /* ignore */ }
-    if (saved && saved.v === 1 && saved.blocks) {
+    if (saved && saved.v === 1 && saved.blocks && !untouchedStartExample(saved)) {
       this.project.name = saved.name || T('Мой проект');
       try { this.editor.load(saved.blocks); } catch (e) { if (G.console) G.console.error(e); this.editor.clear(); }
     } else {
-      this.openExample(Q.Examples.list[0], true);
+      this.project.name = T('Новый проект');                // the first start is an empty project (examples are in File)
+      this.editor.clear();
     }
     $('project-name').value = this.project.name;
   };
+  /** versions before rev 2 opened the first example at the first start and saved it as the project: a save of theirs that is still
+      exactly that example counts as no project (an example opened on purpose is saved with rev 2 and stays) */
+  function untouchedStartExample(saved) {
+    var ex = Q.Examples && Q.Examples.list[0], count = function (j) { return (JSON.stringify(j).match(/"type":/g) || []).length; };
+    return !saved.rev && !!ex && saved.name === ex.title && count(saved.blocks) === count(ex.build({ led: 1 }));
+  }
   I.newProject = function () {
     if (this.editor.ws.getAllBlocks(false).length && !G.confirm(T('Начать новый проект? Текущие блоки пропадут (сохраните их в файл, если нужны).'))) return;
     this.stop();
@@ -385,20 +406,18 @@
     m.style.left = Math.max(8, r.left) + 'px'; m.style.right = 'auto'; m.style.top = (r.bottom + 6) + 'px'; m.style.bottom = 'auto';
     m.hidden = false;
   };
-  /** "+ Extension": for which kit's modules the block palette shows blocks (attached modules always have theirs) */
-  I.kitMenu = function () {
-    var self = this, m = $('menu');
-    if (!m.hidden && m.dataset.kind === 'kit') return this.closeMenu();
-    m.textContent = ''; m.dataset.kind = 'kit'; m.classList.add('wide');
+  /** For which kit's modules the Modules tab and the block palette offer blocks (attached modules always have theirs): a list at the top of the Modules tab */
+  I.buildKitField = function () {
+    var self = this, head = $('tray') && $('tray').querySelector('.tray-head');
+    if (!head || $('sel-kit')) return;
+    var sel = h('select', { id: 'sel-kit', 'aria-label': T('Комплект модулей') });
     [T('Старт'), T('Базовый'), T('Продвинутый'), T('Профи')].forEach(function (name, i) {
       var k = i + 1, count = Q.moduleList().filter(function (d) { return d.kit <= k; }).length;
-      var b = h('button', { type: 'button', cls: 'kit-row' }, h('span', {}, h('b', { text: T('Комплект %1 · %2', k, name) }), h('small', { text: T('%1 модулей', count) })), self.app.kit === k ? Q.icon('check') : null);
-      b.addEventListener('click', function () { self.closeMenu(); self.app.setKit(k); });
-      m.appendChild(b);
+      sel.appendChild(h('option', { value: String(k), text: T('Комплект %1 · %2', k, name) + ' · ' + T('%1 модулей', count) }));
     });
-    var r = $('btn-ext').getBoundingClientRect();
-    m.style.left = Math.max(8, r.left) + 'px'; m.style.right = 'auto'; m.style.top = 'auto'; m.style.bottom = (G.innerHeight - r.top + 8) + 'px';
-    m.hidden = false;
+    sel.value = String(this.app.kit);
+    sel.addEventListener('change', function () { self.app.setKit(+sel.value); });
+    head.insertBefore(h('label', { cls: 'field kit-field', title: T('Какие модули показывать в блоках') }, Q.icon('board'), sel), head.firstChild);
   };
   /** the interface language: Russian, Uzbek, English (names in their own language); the page reloads in the new one, the project is kept */
   I.langMenu = function () {

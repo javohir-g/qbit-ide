@@ -6,6 +6,7 @@
     dist/*.gz            the same, gzipped: this is what the board serves (its web server has few connections and little flash)
     dist/media/          Blockly's small picture folder (the IDE page refers to it as media/)
 """
+import base64
 import gzip
 import re
 import shutil
@@ -26,11 +27,15 @@ def bundle(page: str, name: str, media: bool):
         code = (ROOT / m.group(1)).read_text(encoding='utf-8').replace('</script', '<\\/script')
         return '<script>\n' + code + '\n</script>'
 
+    def img(m):   # the page's own pictures (logo, tab icon) go in as data: URLs
+        return m.group(1) + '="data:image/png;base64,' + base64.b64encode((ROOT / m.group(2)).read_bytes()).decode('ascii') + '"'
+
     html = re.sub(r'<link rel="stylesheet" href="([^"]+)">', css, html)
     html = re.sub(r'<script src="([^"]+)"></script>', js, html)
+    html = re.sub(r'\b(src|href)="(img/[^"]+\.png)"', img, html)
     if media:   # Blockly looks for its pictures next to the page
         html = html.replace('<script>window.QBIT_NO_AUTOBOOT = true;</script>', "<script>window.QBIT_NO_AUTOBOOT = true; window.QBIT_MEDIA = 'media/';</script>", 1)
-    if re.search(r'<script src=|rel="stylesheet"', html):
+    if re.search(r'<script src=|rel="stylesheet"|="img/', html):
         sys.exit('build: some external resources are left in ' + page)
     data = html.encode('utf-8')
     (OUT / name).write_bytes(data)

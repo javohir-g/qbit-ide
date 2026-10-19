@@ -65,6 +65,7 @@
       self.schedule();
     });
     this.skinToolbox();
+    this.skinControls();
     // like in the design the block column stays open: pick the first category and keep the flyout from closing after a drag
     var tb = this.ws.getToolbox();
     this.fixFlyoutScale();
@@ -112,7 +113,7 @@
   };
   E.undo = function () { this.ws.undo(false); };
   E.redo = function () { this.ws.undo(true); };
-  E.resize = function () { this.layoutFlyout(); this.Blockly.svgResize(this.ws); };
+  E.resize = function () { this.layoutFlyout(); this.Blockly.svgResize(this.ws); this.alignControls(); };
   /** The blocks on offer keep one size: Blockly draws the flyout at the zoom of the workspace, so zooming the editor would resize the palette.
       A block taken from it becomes a block of the workspace (at its zoom). */
   E.fixFlyoutScale = function () {
@@ -127,6 +128,66 @@
   E.layoutFlyout = function () {
     var tb = this.ws.getToolbox(), fl = tb && tb.getFlyout && tb.getFlyout();
     if (fl) fl.autoClose = this.el.clientWidth < 1250;
+  };
+
+  /** Blockly draws its zoom buttons and the bin from a grey sprite sheet. They get the look of the other round buttons (white circle,
+      thin edge, line icon from js/ui/icons.js) drawn into Blockly's own groups, so its clicks, keyboard focus and the bin's drop zone
+      and opening lid stay as they are. The sprite pictures stay too, invisible (CSS): the bin measures its drop zone from them.
+      In the bin's own coordinates (47 x 60) the circle sits where the zoom circles are (right-aligned), the lid hinges at its right end. */
+  var CTL = { r: 15, icon: 15, binX: 31, binY: 7 };
+  E.skinControls = function () {
+    var root = this.el, NS = 'http://www.w3.org/2000/svg';
+    function add(parent, tag, attrs, before) {
+      var e = document.createElementNS(NS, tag);
+      Object.keys(attrs).forEach(function (k) { e.setAttribute(k, attrs[k]); });
+      parent.insertBefore(e, before || null);
+      return e;
+    }
+    function icon(parent, name, cx, cy, before) {
+      var s = CTL.icon;
+      return add(parent, 'use', { href: '#i-' + name, x: cx - s / 2, y: cy - s / 2, width: s, height: s, 'class': 'qbit-ctl-ic' }, before);
+    }
+    [['.blocklyZoomReset', 'focus'], ['.blocklyZoomIn', 'plus'], ['.blocklyZoomOut', 'minus']].forEach(function (z) {
+      var g = root.querySelector(z[0]);
+      if (!g || g.querySelector('.qbit-ctl-bg')) return;
+      add(g, 'circle', { cx: 16, cy: 16, r: CTL.r, 'class': 'qbit-ctl-bg' });
+      icon(g, z[1], 16, 16);
+    });
+    // undo / redo on top of the same column (in the zoom buttons' group, so Blockly moves them along): undo, redo, centre, +, -, bin
+    var reset = root.querySelector('.blocklyZoomReset'), ws = this.ws;
+    if (reset) reset.parentNode.classList.add('qbit-ctl-col');
+    if (reset && !root.querySelector('.qbit-undo')) {
+      [['qbit-undo', 'undo', T('Отменить (Ctrl+Z)'), -80, false], ['qbit-redo', 'redo', T('Повторить (Ctrl+Y)'), -40, true]].forEach(function (u) {
+        var g = add(reset.parentNode, 'g', { 'class': 'qbit-ctl ' + u[0], role: 'button', tabindex: 0, 'aria-label': u[2], transform: 'translate(0, ' + u[3] + ')' });
+        add(g, 'title', {}).textContent = u[2];
+        add(g, 'circle', { cx: 16, cy: 16, r: CTL.r, 'class': 'qbit-ctl-bg' });
+        icon(g, u[1], 16, 16);
+        g.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
+        g.addEventListener('click', function (e) { e.stopPropagation(); ws.undo(u[4]); });
+        g.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ws.undo(u[4]); } });
+      });
+    }
+    var bin = root.querySelector('.blocklyTrash'), lid = bin && bin.querySelector('.blocklyTrashLid');
+    if (!lid || bin.querySelector('.qbit-ctl-bg')) return;
+    add(bin, 'circle', { cx: CTL.binX, cy: CTL.binY, r: CTL.r, 'class': 'qbit-ctl-bg' }, lid);    // under the lid
+    icon(bin, 'trash-can', CTL.binX, CTL.binY, lid);
+    icon(lid, 'trash-lid', CTL.binX, CTL.binY);
+    // the lid's right end (19.5, 7 in the 24-unit icon) is its hinge
+    var k = CTL.icon / 24, x0 = CTL.binX - CTL.icon / 2, y0 = CTL.binY - CTL.icon / 2;
+    lid.style.transformOrigin = (x0 + 19.5 * k).toFixed(2) + 'px ' + (y0 + 7 * k).toFixed(2) + 'px';
+  };
+
+  /** the column of round buttons sits --edge-gap from the editor's right and bottom edges, like Blocks / Python in the top corner */
+  E.alignControls = function () {
+    var el = this.el, circles = el.querySelectorAll('.qbit-ctl-bg');
+    if (!circles.length) return;
+    el.style.setProperty('--ctl-dx', '0px'); el.style.setProperty('--ctl-dy', '0px');
+    var box = el.getBoundingClientRect(), right = -Infinity, bottom = -Infinity;
+    if (!box.width) return;                                // hidden (Python view)
+    circles.forEach(function (c) { var r = c.getBoundingClientRect(); right = Math.max(right, r.right); bottom = Math.max(bottom, r.bottom); });
+    var gap = parseFloat(G.getComputedStyle(el).getPropertyValue('--edge-gap')) || 14;
+    el.style.setProperty('--ctl-dx', (box.right - gap - right).toFixed(2) + 'px');
+    el.style.setProperty('--ctl-dy', (box.bottom - gap - bottom).toFixed(2) + 'px');
   };
 
   /* ---------------------------------------------------------------- toolbox */

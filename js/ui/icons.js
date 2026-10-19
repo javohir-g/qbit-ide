@@ -17,6 +17,8 @@
     check: '<path d="M5 12.6l4.4 4.4L19 7.4"/>',
     x: '<path d="M6.2 6.2l11.6 11.6M17.8 6.2L6.2 17.8"/>',
     plus: '<path d="M12 5v14M5 12h14"/>',
+    minus: '<path d="M5 12h14"/>',
+    focus: '<path d="M4 9V6.5A2.5 2.5 0 0 1 6.5 4H9M15 4h2.5A2.5 2.5 0 0 1 20 6.5V9M20 15v2.5a2.5 2.5 0 0 1-2.5 2.5H15M9 20H6.5A2.5 2.5 0 0 1 4 17.5V15"/><circle cx="12" cy="12" r="2.2"/>',
     search: '<circle cx="10.6" cy="10.6" r="6"/><path d="M15.2 15.2L20 20"/>',
     chevron: '<path d="M6.5 9.5l5.5 5.5 5.5-5.5"/>',
     alert: '<circle cx="12" cy="12" r="9"/><path d="M12 7.4v5.6M12 16.6v.01"/>',
@@ -30,6 +32,8 @@
     pencil: '<path d="M4.5 19.5l.9-4L16.6 4.3a2.1 2.1 0 0 1 3 3L8.5 18.6z"/><path d="M14.6 6.3l3 3"/>',
     code: '<path d="M8.6 7.2L3.8 12l4.8 4.8M15.4 7.2l4.8 4.8-4.8 4.8"/>',
     trash: '<path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l.8 11.6a2 2 0 0 0 2 1.9h5.4a2 2 0 0 0 2-1.9L17.5 7"/>',
+    'trash-lid': '<path d="M4.5 7h15M9.5 7V4.5h5V7"/>',                        // the trash in two parts: the editor's bin opens its lid
+    'trash-can': '<path d="M6.5 7l.8 11.6a2 2 0 0 0 2 1.9h5.4a2 2 0 0 0 2-1.9L17.5 7M10.2 10.5v6M13.8 10.5v6"/>',
     refresh: '<path d="M19.6 11.2A7.8 7.8 0 1 0 17.4 17"/><path d="M19.8 4.6v6.2h-6.2"/>',
     copy: '<rect x="8.6" y="8.6" width="11" height="11" rx="2.4"/><path d="M15.4 8.6V6.4a2 2 0 0 0-2-2H6.4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2.2"/>',
     undo: '<path d="M9 5L4 10l5 5"/><path d="M4.6 10H14a5 5 0 0 1 0 10h-3"/>',

@@ -19,11 +19,70 @@ const SHOT = (n) => path.join(BASE, 'shots', 'ui_' + n + '.png');
   try {
     await page.goto(url, 1800);
 
-    await test('starts without errors; eight categories; an example is loaded', async () => {
+    await test('starts without errors; eight categories; the first start is an empty project', async () => {
       eq(page.errors.length, 0, page.errors.join(' | '));
       eq(await E(`document.querySelectorAll('.blocklyToolboxCategory').length`), 8);
+      eq(await E(`QBIT.ide.editor.ws.getAllBlocks(false).length`), 0, 'no blocks');
+      eq(await E(`document.getElementById('project-name').value`), 'Новый проект');
+      ok(await E(`document.querySelector('.brand-logo').naturalWidth`) > 100, 'the q.block logo is loaded');
+      await E(`QBIT.ide.openExample(QBIT.Examples.list[0], true)`); await sleep(300);    // blink: the tests below run it
       ok(await E(`QBIT.ide.editor.ws.getAllBlocks(false).length`) >= 5, 'example blocks');
-      ok(/Мигаем/.test(await E(`document.getElementById('project-name').value`)));
+    });
+    await test('editor layout: Blocks / Python in its corner, save in the project name, search under the categories, no scrollbars', async () => {
+      const inside = (a, b) => `(() => { const a = document.querySelector('${a}').getBoundingClientRect(), b = document.querySelector('${b}').getBoundingClientRect(); return a.left >= b.left && a.right <= b.right && a.top >= b.top && a.bottom <= b.bottom; })()`;
+      ok(await E(inside('.mode-pills', '#ide-editor')), 'mode switch in the editor');
+      ok(await E(inside('#btn-save', '.proj-pill')), 'save inside the project name');
+      ok(await E(inside('#btn-find', '#ide-editor')) && await E(`!document.querySelector('.ide-top input[type=search]')`), 'search left the header');
+      eq(await E(`[...document.querySelectorAll('.blocklyMainWorkspaceScrollbar')].filter((e) => getComputedStyle(e).display !== 'none').length`), 0, 'scrollbars');
+      eq(await E(`document.getElementById('find-pop').hidden`), true);
+      await click('#btn-find');
+      eq(await E(`document.getElementById('find-pop').hidden`), false, 'the field opens');
+      eq(await E(`document.activeElement.id`), 'block-search', 'and takes the typing');
+      await E(`(() => { const s = document.getElementById('block-search'); s.value = 'мотор'; s.dispatchEvent(new Event('input')); })()`); await sleep(600);
+      eq(await E(`document.querySelectorAll('.blocklyToolboxCategory').length`), 9, 'a row of results');
+      await click('#find-close'); await sleep(300);
+      eq(await E(`document.getElementById('find-pop').hidden`), true, 'the cross closes it');
+      eq(await E(`document.getElementById('block-search').value`), '', 'and clears it');
+      eq(await E(`document.querySelectorAll('.blocklyToolboxCategory').length`), 8);
+    });
+    await test('one column of round buttons: undo, redo, centre, +, -, bin; undo and redo work', async () => {
+      const col = JSON.parse(await E(`JSON.stringify([...document.querySelectorAll('.qbit-ctl-bg')].map((c) => { const r = c.getBoundingClientRect(); return [Math.round(r.x), Math.round(r.y), Math.round(r.width)]; }).sort((a, b) => a[1] - b[1]))`));
+      eq(col.length, 6, 'six buttons');
+      ok(col.every((c) => c[0] === col[0][0] && c[2] === 30), 'one column of 30 px circles: ' + JSON.stringify(col));
+      ok(col.slice(1).every((c, i) => c[1] - col[i][1] === 40), 'evenly spaced: ' + JSON.stringify(col));
+      const n0 = await E(`QBIT.ide.editor.ws.getAllBlocks(false).length`);
+      await E(`QBIT.ide.editor.ws.getTopBlocks(false)[0].dispose(true)`); await sleep(200);
+      ok(await E(`QBIT.ide.editor.ws.getAllBlocks(false).length`) < n0, 'deleted');
+      await click('.qbit-undo'); await sleep(300);
+      eq(await E(`QBIT.ide.editor.ws.getAllBlocks(false).length`), n0, 'undo brings it back');
+      await click('.qbit-redo'); await sleep(300);
+      ok(await E(`QBIT.ide.editor.ws.getAllBlocks(false).length`) < n0, 'redo deletes it again');
+      await click('.qbit-undo'); await sleep(300);
+      eq(await E(`QBIT.ide.editor.ws.getAllBlocks(false).length`), n0);
+      const gaps = JSON.parse(await E(`JSON.stringify((() => { const b = document.getElementById('blockly-div').getBoundingClientRect(), p = document.querySelector('.mode-pills').getBoundingClientRect();
+        const c = [...document.querySelectorAll('.qbit-ctl-bg')].map((e) => e.getBoundingClientRect());
+        return [b.right - p.right, p.top - b.top, b.right - Math.max(...c.map((r) => r.right)), b.bottom - Math.max(...c.map((r) => r.bottom))].map(Math.round); })())`));
+      ok(gaps.every((g) => g === gaps[0]), 'switch and buttons equally far from the right / top / bottom edges: ' + JSON.stringify(gaps));
+      // the bin still takes a block dropped on its circle (its drop zone moved with it); the palette is closed so it does not cover the block
+      await E(`QBIT.ide.editor.ws.getToolbox().clearSelection()`); await sleep(300);
+      const from = JSON.parse(await E(`JSON.stringify((() => { const r = QBIT.ide.editor.ws.getTopBlocks(false)[0].inputList[0].fieldRow[0].getSvgRoot().getBoundingClientRect(); return [r.x + r.width / 2, r.y + r.height / 2]; })())`));
+      const bin = await page.rect('.blocklyTrash .qbit-ctl-bg');
+      let opened = false;
+      await page.drag(from[0], from[1], bin.cx, bin.cy, { shotBeforeUp: async () => { opened = await E(`!!document.querySelector('.blocklyTrashOpen')`); } }); await sleep(400);
+      ok(opened, 'the lid opens over the bin');
+      eq(await E(`QBIT.ide.editor.ws.getAllBlocks(false).length`), 0, 'dropped on the bin');
+      await click('.qbit-undo'); await sleep(300);
+      eq(await E(`QBIT.ide.editor.ws.getAllBlocks(false).length`), n0, 'and back');
+      await E(`QBIT.ide.editor.ws.getToolbox().selectItemByPosition(0)`);
+    });
+    await test('the kit is chosen in the Modules tab', async () => {
+      await click('#btab-modules');
+      eq(await E(`document.querySelectorAll('#sel-kit option').length`), 4);
+      await E(`(() => { const s = document.getElementById('sel-kit'); s.value = '1'; s.dispatchEvent(new Event('change')); })()`); await sleep(300);
+      eq(await E(`QBIT.ide.app.kit`), 1);
+      await E(`(() => { const s = document.getElementById('sel-kit'); s.value = '4'; s.dispatchEvent(new Event('change')); })()`); await sleep(300);
+      eq(await E(`QBIT.ide.app.kit`), 4);
+      await click('#btab-console');
     });
     const until = async (js, want, ms) => { for (let t = 0; t < ms; t += 40) { if ((await E(js)) === want) return true; await sleep(40); } return false; };
     await test('block sounds are loaded even from file:// (data: URLs), the workspace has its grid', async () => {
@@ -115,7 +174,7 @@ const SHOT = (n) => path.join(BASE, 'shots', 'ui_' + n + '.png');
       const measure = `JSON.stringify((() => {
         const tb = document.querySelector('.blocklyToolbox'), t = tb.getBoundingClientRect(), cs = getComputedStyle(tb);
         const rows = [...document.querySelectorAll('.blocklyToolboxCategory')].map(r => r.getBoundingClientRect());
-        const ext = document.getElementById('btn-ext').getBoundingClientRect();
+        const ext = document.getElementById('btn-find').getBoundingClientRect();
         return { sw: tb.scrollWidth - tb.clientWidth, sh: tb.scrollHeight - tb.clientHeight, ov: cs.overflowX + '/' + cs.overflowY, n: rows.length,
           inside: rows.every(r => r.top >= t.top - 1 && r.bottom <= t.bottom + 1 && r.left >= t.left - 1 && r.right <= t.right + 1),
           clear: rows.every(r => r.bottom <= ext.top + 1), icon: Math.round(document.querySelector('.blocklyToolboxCategoryIcon').getBoundingClientRect().width) };
@@ -193,10 +252,18 @@ const SHOT = (n) => path.join(BASE, 'shots', 'ui_' + n + '.png');
       }
       eq(bad.join(' | '), '');
     });
-    await test('project survives a reload (saved in the browser)', async () => {
+    await test('project survives a reload (saved in the browser), also the first example opened on purpose', async () => {
       await E(`QBIT.ide.saveProject()`);
       await page.goto(url, 1500);
       ok(await E(`QBIT.ide.editor.ws.getAllBlocks(false).length`) >= 5);
+      await E(`QBIT.ide.openExample(QBIT.Examples.list[0], true)`); await sleep(300);
+      await page.goto(url, 1500);
+      ok(await E(`QBIT.ide.editor.ws.getAllBlocks(false).length`) >= 5, 'the blink example stays');
+      // a save of an older version that is just the example it opened by itself at the first start: an empty project instead
+      await E(`(() => { const j = JSON.parse(localStorage.getItem('qbit-ide-project-v1')); delete j.rev; localStorage.setItem('qbit-ide-project-v1', JSON.stringify(j)); })()`);
+      await page.goto(url, 1500);
+      eq(await E(`QBIT.ide.editor.ws.getAllBlocks(false).length`), 0, 'the old automatic example is not kept');
+      await E(`QBIT.ide.openExample(QBIT.Examples.list[0], true)`); await sleep(300);
     });
     await test('phone width: no horizontal scroll, board sheet opens', async () => {
       await page.viewport(390, 844, 1, true); await page.goto(url, 1500);
@@ -227,7 +294,7 @@ const SHOT = (n) => path.join(BASE, 'shots', 'ui_' + n + '.png');
         const scan = async (js) => { JSON.parse(await E(js || SCAN)).forEach((s) => leaks.add(s)); };
         await scan();
         for (const t of ['modules', 'props', 'data', 'devices', 'console']) { await click('#btab-' + t); await scan(); }
-        for (const id of ['#btn-file', '#btn-ext', '#btn-lang']) { await click(id); await scan(); await click('#ide-main'); }
+        for (const id of ['#btn-file', '#btn-find', '#btn-lang']) { await click(id); await scan(); await click('#ide-main'); }
         await click('#btn-file'); await E(`QBIT.ide.examplesMenu()`); await sleep(200); await scan(); await click('#ide-main');
         const cats = await E(`document.querySelectorAll('.blocklyToolboxCategory').length`);
         for (let i = 0; i < cats; i++) { await E(`(() => { const t = QBIT.ide.editor.ws.getToolbox(); t.clearSelection(); t.selectItemByPosition(${i}); })()`); await sleep(350); await scan(); }
