@@ -138,13 +138,15 @@ body.program-running .round.run { background: #1aa85d; }
 /* Blockly skin ------------------------------------------------------------------------------------------------------------------------- */
 /* The category column: no scrollbars, nothing hidden by overflow. It is a container; the rows share its real height, the dots and the
    captions scale with that share (and the captions go when there is no room), so it fits any window, and a search result simply adds a row. */
-.blocklyToolbox { background: #fff !important; border-right: 1px solid var(--edge); width: var(--cat-w) !important; box-sizing: border-box; padding: 8px 2px 56px !important; overflow: hidden !important; scrollbar-width: none; font-family: var(--sans); container: tb / size; }
+.blocklyToolbox { background: #fff !important; border-right: 1px solid var(--edge); width: var(--cat-w) !important; box-sizing: border-box; padding: 8px 0 56px !important; overflow: hidden !important; scrollbar-width: none; font-family: var(--sans); container: tb / size; }
 .blocklyToolbox::-webkit-scrollbar { display: none; }
 .blocklyToolboxCategoryGroup { display: flex !important; flex-direction: column; flex-wrap: nowrap !important; width: 100%; height: 100%; margin: 0 !important; padding: 0 !important; overflow: hidden;
-  --r: min(78px, calc((100cqh - 64px) / var(--n, 8)));          /* height of one row */
+  --sq: calc(var(--cat-w) - 1px);                               /* the column inside its divider: a row is at most this tall (a square) */
+  --r: min(var(--sq), calc((100cqh - 64px) / var(--n, 8)));     /* height of one row */
   --k: .46; --d: clamp(14px, calc(var(--r) * var(--k)), 30px); }  /* diameter of the dot */
-.blocklyToolboxCategoryContainer { flex: 1 1 0; min-height: 0; max-height: 78px; margin: 0 !important; display: flex; }
-.blocklyToolboxCategory { flex: 1; min-width: 0; min-height: 0; display: flex; border-left: 0 !important; padding: 0 !important; border-radius: 12px; color: var(--text); cursor: pointer; height: auto !important; }
+.blocklyToolboxCategoryContainer { flex: 1 1 0; min-height: 0; max-height: var(--sq); margin: 0 !important; display: flex; }
+/* a row is filled edge to edge (up to the divider), full height, square corners: the selected one reads as a plain square */
+.blocklyToolboxCategory { flex: 1; min-width: 0; min-height: 0; display: flex; border-left: 0 !important; margin: 0 !important; padding: 0 !important; border-radius: 0; color: var(--text); cursor: pointer; height: auto !important; }
 .blocklyToolboxCategory:hover { background: #f1f8ff; }
 .blocklyToolboxCategory.blocklyToolboxSelected, .blocklyToolboxCategoryContainer[aria-selected="true"] > .blocklyToolboxCategory { background-color: #e6f3ff !important; }
 .blocklyTreeRowContentContainer { flex: 1; min-width: 0; min-height: 0; display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 3px; height: 100% !important; padding: 0 2px !important; }
