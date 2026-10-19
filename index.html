@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#22a4ff">
+<title>qblock — блочное программирование для q.bit</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='28' height='28' rx='8' fill='%2322a4ff'/%3E%3Crect x='7' y='9' width='18' height='15' rx='6' fill='none' stroke='white' stroke-width='2.4'/%3E%3Ccircle cx='12.5' cy='16.5' r='1.8' fill='white'/%3E%3Ccircle cx='19.5' cy='16.5' r='1.8' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/ide.css">
+</head>
+<body class="ide-page">
+
+<svg id="svg-defs" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute"></svg>
+
+<div id="ide" class="ide">
+  <!-- ============================================================ top bar -->
+  <header class="ide-top">
+    <div class="brand" title="qblock · q.bit">
+      <svg class="brand-robot" viewBox="0 0 48 48" aria-hidden="true">
+        <circle cx="24" cy="5" r="2.6" fill="#fff"/><path d="M24 7.4V11" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+        <rect x="2.2" y="21" width="4.6" height="10.5" rx="2.3" fill="#fff"/><rect x="41.2" y="21" width="4.6" height="10.5" rx="2.3" fill="#fff"/>
+        <rect x="7.4" y="11.4" width="33.2" height="28" rx="13" fill="none" stroke="#fff" stroke-width="3.6"/>
+        <rect x="11.5" y="15.5" width="25" height="19.8" rx="9" fill="#0f7fdc"/>
+        <ellipse cx="18.4" cy="25.4" rx="3" ry="4" fill="#fff"/><ellipse cx="29.6" cy="25.4" rx="3" ry="4" fill="#fff"/>
+      </svg>
+      <b>qblock</b>
+    </div>
+    <button class="top-link" id="btn-file" aria-haspopup="menu">
+      <svg class="ic"><use href="#i-file"/></svg><span>Файл</span><svg class="ic caret"><use href="#i-chevron"/></svg>
+    </button>
+    <label class="proj-pill">
+      <input id="project-name" type="text" value="Мой первый проект" maxlength="60" placeholder="Название проекта" aria-label="Название проекта" spellcheck="false">
+    </label>
+    <button class="top-icon" id="btn-save" title="Сохранить проект в файл" aria-label="Сохранить"><svg class="ic"><use href="#i-save"/></svg></button>
+
+    <div class="mode-pills" role="tablist" aria-label="Режим редактора">
+      <button id="tab-blocks" role="tab" aria-selected="true">Блоки</button>
+      <button id="tab-python" role="tab" aria-selected="false">Python</button>
+    </div>
+    <label class="top-search"><svg class="ic"><use href="#i-search"/></svg>
+      <input id="block-search" type="search" placeholder="Поиск блоков" autocomplete="off" aria-label="Поиск блоков"></label>
+
+    <div class="spacer"></div>
+    <button class="top-icon only-narrow" id="btn-board" aria-label="Плата" title="Плата и консоль" aria-pressed="false"><svg class="ic"><use href="#i-board"/></svg></button>
+    <button class="top-link" id="btn-lang" title="Язык интерфейса" aria-haspopup="menu"><svg class="ic"><use href="#i-globe"/></svg><span id="lang-short">RU</span><svg class="ic caret"><use href="#i-chevron"/></svg></button>
+    <button class="top-icon" id="btn-sound" data-keep="1" aria-label="Звук" title="Звук" aria-pressed="true"><svg class="ic snd-on"><use href="#i-sound-on"/></svg><svg class="ic snd-off"><use href="#i-sound-off"/></svg></button>
+  </header>
+
+  <div class="ide-body" id="ide-body">
+    <!-- ============================================================ left: the board and its tools -->
+    <aside class="ide-right" id="ide-right" aria-label="Плата">
+      <div class="ctl-row">
+        <button class="connect-pill" id="btn-target" title="Где запускается программа">
+          <svg class="ic"><use href="#i-plug"/></svg><span id="target-name">Подключить</span>
+        </button>
+        <div class="spacer"></div>
+        <button class="round pause" id="btn-pause" title="Приостановить программу" aria-label="Пауза" disabled><svg class="ic"><use href="#i-pause"/></svg></button>
+        <button class="round stop" id="btn-stop" title="Остановить программу (Esc)" aria-label="Стоп" disabled><svg class="ic"><use href="#i-stop"/></svg></button>
+        <button class="round run" id="btn-run" title="Запустить программу (Ctrl+Enter)" aria-label="Запустить"><svg class="ic"><use href="#i-play"/></svg></button>
+      </div>
+
+      <div class="left-card">
+        <div class="right-head">
+          <div class="ide-status" id="run-status" aria-live="polite"><i class="dot"></i><span>Готов</span></div>
+          <span class="ide-batt" id="top-batt" title="Заряд батареи платы"><svg class="ic bolt"><use href="#i-bolt"/></svg><svg class="batt" viewBox="0 0 24 14" aria-hidden="true"><rect x="1" y="1.5" width="19" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="21" y="5" width="2" height="4" rx="1" fill="currentColor"/><rect id="top-batt-fill" x="3" y="3.5" width="15" height="7" rx="1.2" fill="currentColor"/></svg><b id="top-batt-text">—</b></span>
+        </div>
+        <div class="board-wrap" id="board-wrap">
+          <svg id="board-svg" class="board-svg" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Плата q.bit, вид сверху"></svg>
+          <div class="hint" id="hint"></div>
+        </div>
+        <div class="left-tabs" role="tablist">
+          <button id="btab-console" role="tab" aria-selected="true">Консоль</button>
+          <button id="btab-modules" role="tab" aria-selected="false">Модули</button>
+          <button id="btab-props" role="tab" aria-selected="false">Свойства</button>
+          <button id="btab-data" role="tab" aria-selected="false">Данные</button>
+          <button id="btab-devices" role="tab" aria-selected="false">Устройства</button>
+        </div>
+        <div class="left-panes">
+          <div class="pane" id="pane-console"></div>
+          <div class="pane" id="tray" aria-label="Модули" hidden></div>
+          <div class="pane side" id="side" aria-label="Свойства" hidden></div>
+          <div class="pane" id="pane-data" hidden></div>
+          <div class="pane" id="pane-devices" hidden>
+            <div class="devices-grid">
+              <div id="device-list"></div>
+              <label class="field" title="Что подключено к USB-C (в симуляторе)"><svg class="ic"><use href="#i-bolt"/></svg><select id="sel-source" aria-label="Питание"></select></label>
+              <div><div class="hud" id="hud"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ============================================================ editor -->
+    <main class="ide-main" id="ide-main">
+      <div class="work-card ide-editor" id="ide-editor">
+        <div id="blockly-div" class="blockly-host"></div>
+        <div id="code-view" class="code-view" hidden></div>
+        <div class="ed-tools">
+          <button class="ed-btn" id="btn-undo" title="Отменить (Ctrl+Z)" aria-label="Отменить"><svg class="ic"><use href="#i-undo"/></svg></button>
+          <button class="ed-btn" id="btn-redo" title="Повторить (Ctrl+Y)" aria-label="Повторить"><svg class="ic"><use href="#i-redo"/></svg></button>
+        </div>
+        <button class="ext-btn" id="btn-ext" title="Какие модули показывать в блоках" aria-label="Модули"><svg class="ic"><use href="#i-plus"/></svg></button>
+      </div>
+    </main>
+  </div>
+</div>
+
+<svg id="drag-svg" class="drag-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g id="drag-root"></g></svg>
+<div id="toasts" class="toasts" aria-live="polite"></div>
+<div id="menu" class="menu" hidden></div>
+<div class="scrim" id="scrim" hidden></div>
+
+<script>window.QBIT_NO_AUTOBOOT = true;</script>
+<script src="vendor/blockly/blockly_compressed.js"></script>
+<script src="vendor/blockly/blocks_compressed.js"></script>
+<script src="vendor/blockly/python_compressed.js"></script>
+<script src="vendor/blockly/msg/ru.js"></script>
+<script src="js/core/i18n.js"></script>
+<script src="js/i18n/en.js"></script>
+<script src="js/i18n/uz.js"></script>
+<script src="js/data/hw-data.js"></script>
+<script src="js/core/util.js"></script>
+<script src="js/core/passport.js"></script>
+<script src="js/core/env.js"></script>
+<script src="js/core/power.js"></script>
+<script src="js/core/module.js"></script>
+<script src="js/core/font5x7.js"></script>
+<script src="js/core/board.js"></script>
+<script src="js/core/modules/_common.js"></script>
+<script src="js/core/modules/inputs.js"></script>
+<script src="js/core/modules/outputs.js"></script>
+<script src="js/core/modules/i2c.js"></script>
+<script src="js/core/modules/chips.js"></script>
+<script src="js/core/modules/oled.js"></script>
+<script src="js/core/modules/misc.js"></script>
+<script src="js/core/demo.js"></script>
+<script src="js/runtime/pyinterp.js"></script>
+<script src="js/runtime/spec.js"></script>
+<script src="js/runtime/contract.js"></script>
+<script src="js/runtime/runtime.js"></script>
+<script src="js/ui/svgkit.js"></script>
+<script src="js/ui/icons.js"></script>
+<script src="js/ui/faces/base.js"></script>
+<script src="js/ui/faces/input.js"></script>
+<script src="js/ui/faces/output.js"></script>
+<script src="js/ui/faces/sensor.js"></script>
+<script src="js/ui/audio.js"></script>
+<script src="js/ui/board-view.js"></script>
+<script src="js/ui/tray.js"></script>
+<script src="js/ui/widgets.js"></script>
+<script src="js/ui/inspector.js"></script>
+<script src="js/ui/hud.js"></script>
+<script src="js/ui/console.js"></script>
+<script src="js/ui/app.js"></script>
+<script src="js/ide/catalog.js"></script>
+<script src="js/ide/blocks.js"></script>
+<script src="js/ide/toolbox.js"></script>
+<script src="js/ide/editor.js"></script>
+<script src="js/ide/device.js"></script>
+<script src="js/ide/link.js"></script>
+<script src="js/ide/panes.js"></script>
+<script src="js/ide/examples.js"></script>
+<script src="js/ide/ide.js"></script>
+</body>
+</html>

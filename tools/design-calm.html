@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>q.bit · спокойный дизайн</title>
+<style>
+  :root { --ink: #1d2a44; --muted: #66748f; --line: #e0e5ee; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.45 Inter, "Segoe UI", Arial, sans-serif; color: var(--ink); background: #fff; }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 22px 20px 44px; }
+  h1 { margin: 0 0 4px; font-size: 22px; }
+  p { margin: 0 0 16px; color: var(--muted); }
+  .box { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+  figure { margin: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  figcaption { padding: 6px 10px; font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--line); }
+  svg { display: block; }
+  #sw { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .chip { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--muted); border: 1px solid var(--line); border-radius: 99px; padding: 4px 11px 4px 5px; }
+  .chip i { width: 18px; height: 18px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, .12); }
+  .chip b { font: 600 11.5px ui-monospace, Consolas, monospace; color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>q.bit · спокойный плоский вариант</h1>
+  <p>Цвета как у оригинальных плат: графитовая основная плата, чёрные модули. Только то, что есть на настоящей плате; без градиентов, обводок и украшений.</p>
+  <div class="box" id="board"></div>
+  <div class="row" id="mods"></div>
+  <div id="sw"></div>
+</div>
+<script src="calm.js"></script>
+</body>
+</html>

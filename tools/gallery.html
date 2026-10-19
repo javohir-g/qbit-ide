@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><title>q.bit — галерея модулей (отладка)</title>
+<style>
+  body { margin: 0; background: #f3f5f8; color: #1d2a44; font: 13px Segoe UI, Arial, sans-serif; }
+  h1 { font-size: 16px; margin: 14px 16px 4px; } p { margin: 0 16px 10px; color: #66748f; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px 14px; padding: 8px 16px 24px; }
+  .cell { text-align: center; } .cell svg { width: 100%; height: auto; display: block; background: #f3f5f8; border-radius: 10px; }
+  .cell.wide { grid-column: span 2; } .cell b { display: block; margin-top: 4px; font-size: 12px; }
+</style></head><body>
+<svg id="svg-defs" width="0" height="0" style="position:absolute"></svg>
+<h1>Лицевые стороны всех модулей (рабочее состояние)</h1><p>Инструмент разработчика: тот же код рисования, что и на плате. Для каждого модуля включено характерное действие.</p>
+<div class="grid" id="grid"></div>
+<script src="../js/core/i18n.js"></script><script src="../js/i18n/en.js"></script><script src="../js/i18n/uz.js"></script>
+<script src="../js/data/hw-data.js"></script>
+<script src="../js/core/util.js"></script><script src="../js/core/passport.js"></script><script src="../js/core/env.js"></script><script src="../js/core/power.js"></script>
+<script src="../js/core/module.js"></script><script src="../js/core/font5x7.js"></script><script src="../js/core/board.js"></script>
+<script src="../js/core/modules/_common.js"></script><script src="../js/core/modules/inputs.js"></script><script src="../js/core/modules/outputs.js"></script>
+<script src="../js/core/modules/i2c.js"></script><script src="../js/core/modules/chips.js"></script><script src="../js/core/modules/oled.js"></script><script src="../js/core/modules/misc.js"></script>
+<script src="../js/ui/svgkit.js"></script><script src="../js/ui/faces/base.js"></script><script src="../js/ui/faces/input.js"></script><script src="../js/ui/faces/output.js"></script><script src="../js/ui/faces/sensor.js"></script>
+<script>
+(function () {
+  var Q = QBIT, S = Q.S;
+  Q.installDefs(document.getElementById('svg-defs'));
+  var DO = {
+    button: function (m) { m.set('pressed', true); }, pot: function (m) { m.set('pos', 0.8); }, slider: function (m) { m.set('pos', 0.3); },
+    touch: function (m) { m.set('touched', true); }, switch: function (m) { m.set('on', true); }, light: function (m, b) { b.env.lux = 900; m.set('cover', 0.0); },
+    tilt: function (m, b) { b.env.roll = 45; }, led: function (m) { m.api.on(); }, rgb: function (m) { m.api.color(255, 90, 20); },
+    buzzer: function (m) { m.api.tone(2700); }, temphum: function (m) { m.set('warm', true); }, pir: function (m) { m.set('motion', true); },
+    ultrasonic: function (m) { m.set('objectCm', 40); }, irrx: function (m) { m.def.irReceive(m, { protocol: 'NEC', address: 0, command: 0x45, duration: 0.5 }); },
+    servo: function (m) { m.api.angle(40); }, irtx: function (m) { m.api.send(0, 0x45); }, encoder: function (m) { m.set('counts', 28); },
+    pressure: function () {}, color: function (m) { m.api.light(true); }, imu: function (m, b) { b.env.shakeNow(5); }, compass: function (m, b) { b.env.yaw = 50; },
+    oled: function (m) { m.api.demo(); }, motor: function (m) { m.api.speed(70); }, relay: function (m) { m.api.on(); }, rtc: function () {},
+    joystick: function (m) { m.set('dx', 0.9); m.set('dy', -0.6); }, keypad: function (m) { m.state.keys = [false, true, false, false]; },
+    airq: function (m, b) { b.env.voc = 400; m.out.age = 20; }, hall: function (m) { m.set('magnet', true); }, gesture: function (m) { m.set('hand', 4); },
+    pulse: function (m) { m.set('finger', true); }, proto2: function () {}, rfid: function (m) { m.set('card', 0); }
+  };
+  var grid = document.getElementById('grid');
+  Q.moduleList({ debug: true }).forEach(function (d) {
+    var b = new Q.Board({ source: 'usb-pd' });
+    b.run(1.5);
+    var inst = b.attach(d.fmt === 65 ? 1 : 2, d.key, { variant: d.variants[1] });
+    b.run(0.8);
+    try { (DO[d.key] || function () {})(inst, b); } catch (e) { console.error(d.key, e); }
+    b.run(0.9);
+    var face = Q.Faces.build(inst, { interactive: false });
+    var svg = S('svg', { viewBox: '-1 -1 ' + (face.w + 2) + ' ' + (face.h + 2), xmlns: S.NS });
+    svg.appendChild(S.rect(0.1, 0.9, face.w, face.h, { r: 3.8, fill: '#000', opacity: 0.3 }));
+    svg.appendChild(face.root);
+    for (var i = 0; i < 40; i++) face.update(0.05);
+    var cell = document.createElement('div'); cell.className = 'cell' + (d.fmt === 65 ? ' wide' : '');
+    cell.appendChild(svg);
+    var cap = document.createElement('b'); cap.textContent = d.key + ' · ' + d.name; cell.appendChild(cap);
+    grid.appendChild(cell);
+  });
+})();
+</script></body></html>
