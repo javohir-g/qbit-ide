@@ -26,6 +26,15 @@ const SHOT = (n) => path.join(BASE, 'shots', 'ui_' + n + '.png');
       ok(/Мигаем/.test(await E(`document.getElementById('project-name').value`)));
     });
     const until = async (js, want, ms) => { for (let t = 0; t < ms; t += 40) { if ((await E(js)) === want) return true; await sleep(40); } return false; };
+    await test('block sounds are loaded even from file:// (data: URLs), the workspace has its grid', async () => {
+      ok(await until(`QBIT.ide.editor.ws.getAudioManager().sounds.size`, 4, 3000), 'click / disconnect / delete / drop decoded');
+      eq(await E(`performance.getEntriesByType('resource').filter((e) => /\\.mp3$/.test(e.name)).length`), 0, 'no mp3 fetched');
+      ok(await E(`!!QBIT.ide.editor.ws.getGrid()`), 'grid');
+      const muted = `QBIT.ide.editor.ws.getAudioManager().getMuted()`;
+      eq(await E(muted), false, 'sound on at start');
+      await click('#btn-sound'); eq(await E(muted), true, 'the header sound button mutes the blocks');
+      await click('#btn-sound'); eq(await E(muted), false, 'and unmutes them');
+    });
     const LED = `QBIT.ide.sim.board.port(3).module.api.isOn()`;
     await test('Run starts the program on the simulator, the LED blinks, Stop switches it off', async () => {
       await click('#btn-run');

@@ -16,6 +16,16 @@
   var START_SCALE = 0.8;                 // the workspace starts at this zoom and the palette of blocks stays at it
   var FLYOUT_SCALE = START_SCALE;
 
+  /** Blockly fetch()es its sounds from media/, which a page opened from a file may not do:
+      the sounds come from js/ide/sounds.js (data: URLs) instead, on every page */
+  function builtInSounds(Blockly) {
+    var A = Blockly.WorkspaceAudio, data = Q.BLOCKLY_SOUNDS;
+    if (!A || !data || A.prototype.qbitSounds) return;
+    var load = A.prototype.load;
+    A.prototype.load = function (files, name) { return load.call(this, data[name] ? [data[name]] : files, name); };
+    A.prototype.qbitSounds = true;
+  }
+
   function BlockEditor(el, opts) {
     opts = opts || {};
     var self = this, Blockly = G.Blockly;
@@ -29,16 +39,18 @@
 
     Q.i18n.blockly(Blockly);                             // Blockly's own sentences (menus, variables, built-in blocks)
     Q.Blocks.install(Blockly);
+    builtInSounds(Blockly);
     this.ws = Blockly.inject(el, {
       toolbox: Q.Toolbox.build(this.toolboxState),
       theme: Q.Toolbox.theme(Blockly),
       renderer: 'zelos',
       media: opts.media || G.QBIT_MEDIA || 'vendor/blockly/media/',
-      sounds: false,
+      sounds: true,                                      // click / snap / delete sounds from media/
       trashcan: true,
       collapse: false,
       comments: false,
       disable: false,
+      grid: { spacing: 24, length: 24, colour: '#eef5fb', snap: false },   // faint full-line grid behind the blocks
       zoom: { controls: true, wheel: true, startScale: START_SCALE, maxScale: 2, minScale: 0.35, scaleSpeed: 1.12, pinch: true },
       move: { scrollbars: true, drag: true, wheel: true },
       toolboxPosition: 'start'

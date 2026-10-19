@@ -64,6 +64,10 @@
     this.editor.on('change', function (code) { self.onEditorChange(code); });
     this.editor.on('select', function () {});
     app.onKit = function (k) { self.prefs.kit = k; self.savePrefs(); self.editor.refreshToolbox({ kit: k }); };
+    // the header sound button also mutes the clicks of the blocks
+    var blockAudio = this.editor.ws.getAudioManager(), setSound = app.sound.setEnabled;
+    app.sound.setEnabled = function (on) { setSound.call(this, on); blockAudio.setMuted(!on); };
+    blockAudio.setMuted(!app.sound.enabled);
     app.frameHooks.push(function (dt) { self.data.frame(dt); });
 
     this.buildChrome();
