@@ -425,9 +425,9 @@
   /** For which kit's modules the Modules tab and the block palette offer blocks (attached modules always have theirs): a list at the top of the Modules tab */
   I.buildKitField = function () {
     var self = this, head = $('tray') && $('tray').querySelector('.tray-head');
-    if (!head || $('sel-kit')) return;
+    if (!head || $('sel-kit') || Q.kitNames().length < 2) return;      // one kit: nothing to choose
     var sel = h('select', { id: 'sel-kit', 'aria-label': T('Комплект модулей') });
-    [T('Старт'), T('Базовый'), T('Продвинутый'), T('Профи')].forEach(function (name, i) {
+    Q.kitNames().forEach(function (name, i) {
       var k = i + 1, count = Q.moduleList().filter(function (d) { return d.kit <= k; }).length;
       sel.appendChild(h('option', { value: String(k), text: T('Комплект %1 · %2', k, name) + ' · ' + T('%1 модулей', count) }));
     });

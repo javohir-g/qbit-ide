@@ -20,16 +20,22 @@ function boardUp(src, soc) {
 function ready(b, n) { return b.port(n).state === 'ready'; }
 
 console.log('data & passports');
-test('catalog has 33 modules, all defined', () => {
-  eq(Q.DATA.modules.length, 33);
+test('catalog has 32 modules, all defined, each with its M5 print', () => {
+  eq(Q.DATA.modules.length, 32);
   Q.DATA.modules.forEach(m => ok(Q.moduleDef(m.key), 'no definition for ' + m.key));
+  Q.DATA.modules.forEach(m => ok(Q.DATA.print.modules[m.key], 'no print for ' + m.key));
+});
+test('a module taken out of the kit (switch) still works but is listed nowhere', () => {
+  ok(Q.moduleDef('switch') && Q.moduleDef('switch').retired);
+  ok(!Q.moduleList().some(d => d.key === 'switch'));
+  ok(Q.moduleByTypeId(Q.moduleDef('switch').id) === Q.moduleDef('switch'), 'the firmware still knows its TYPE_ID');
 });
 test('every passport image decodes, CRC ok, matches the catalog', () => {
   let n = 0;
   Object.keys(Q.DATA.passports).forEach(name => {
     const info = P.decode(U.fromHex(Q.DATA.passports[name]));
     ok(info.ok, name + ': ' + info.reason);
-    const cat = Q.DATA.modules.find(m => m.id === info.typeId);
+    const cat = Q.DATA.modules.concat(Q.DATA.retired).find(m => m.id === info.typeId);      // retired: built, then taken out of the kit
     ok(cat, name + ': type ' + info.typeId + ' is not in the catalogue');
     eq(info.formatMm, cat.fmt, name + ' format');
     eq(P.IFACE[info.iface], cat.io === 'I2C' || cat.io === 'MCU' || cat.io === 'DI' || cat.io === 'DO' || cat.io === 'AI' ? cat.io : '-', name + ' interface');

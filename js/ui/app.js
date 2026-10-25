@@ -8,7 +8,12 @@
   var STORE = 'qbit-sim-v1';
   var STEP = 0.02;
   var STARTER = [[1, 'button'], [2, 'pot'], [3, 'led', 'red'], [4, 'rgb'], [5, 'oled'], [7, 'servo'], [8, 'buzzer']];
-  var KIT_NAMES = [T('Старт'), T('Базовый'), T('Продвинутый'), T('Профи')];
+  /** the kits the catalogue ships (modules/catalog.py STAGE_NAMES), lowest first: one since 2026-10-24 */
+  function kitNames() {
+    var k = (Q.DATA && Q.DATA.kits) || {};
+    return Object.keys(k).sort(function (a, b) { return a - b; }).map(function (n) { return k[n]; });
+  }
+  Q.kitNames = kitNames;
 
   /** opts.ide: the block IDE embeds the simulator (no demo, no global keyboard shortcuts, its own console and header) */
   function App(opts) {
@@ -16,7 +21,7 @@
     this.store = this.opts.store || STORE;
     this.frameHooks = [];
     this.saved = this.load();
-    this.kit = this.saved.kit || 4;
+    this.kit = Math.max(1, Math.min(this.saved.kit || 99, kitNames().length));     // a saved kit 4 from the four-kit days -> the full one
     this.lastUsb = 'usb-pd';
     this.dirty = false;
     this.toasts = {};
@@ -101,7 +106,8 @@
   App.prototype.header = function () {
     var self = this, $ = function (id) { return document.getElementById(id); };
     var seg = $('kit-seg');
-    if (seg) KIT_NAMES.forEach(function (n, i) {
+    if (seg && kitNames().length < 2) seg.hidden = true;           // one kit: nothing to choose
+    else if (seg) kitNames().forEach(function (n, i) {
       var b = h('button', { type: 'button', text: n, title: T('Модули комплектов 1…%1', (i + 1)) });
       b.addEventListener('click', function () { self.setKit(i + 1); });
       seg.appendChild(b);

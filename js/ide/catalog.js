@@ -128,8 +128,9 @@
     Vn('board', 'board_amps', T('ток платы, А'), [], 'qbit.board.amps')
   ];
 
-  /* the order modules are listed in the toolbox: what children reach for first */
-  var MODULE_ORDER = ['led', 'rgb', 'buzzer', 'servo', 'motor', 'relay', 'oled', 'button', 'touch', 'switch', 'pot', 'slider', 'light', 'joystick', 'keypad', 'encoder',
+  /* the order modules are listed in the toolbox: what children reach for first (the switch left the
+     kit on 2026-10-24: its blocks stay defined so old projects still load, but the palette leaves it out) */
+  var MODULE_ORDER = ['led', 'rgb', 'buzzer', 'servo', 'motor', 'relay', 'oled', 'button', 'touch', 'pot', 'slider', 'light', 'joystick', 'keypad', 'encoder',
     'temphum', 'pressure', 'airq', 'ultrasonic', 'tilt', 'pir', 'hall', 'imu', 'compass', 'gesture', 'color', 'pulse', 'rtc', 'irrx', 'irtx', 'rfid'];
 
   Q.Catalog = {

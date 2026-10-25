@@ -75,13 +75,11 @@ const SHOT = (n) => path.join(BASE, 'shots', 'ui_' + n + '.png');
       eq(await E(`QBIT.ide.editor.ws.getAllBlocks(false).length`), n0, 'and back');
       await E(`QBIT.ide.editor.ws.getToolbox().selectItemByPosition(0)`);
     });
-    await test('the kit is chosen in the Modules tab', async () => {
+    await test('one kit: the Modules tab has no kit list and offers every module', async () => {
       await click('#btab-modules');
-      eq(await E(`document.querySelectorAll('#sel-kit option').length`), 4);
-      await E(`(() => { const s = document.getElementById('sel-kit'); s.value = '1'; s.dispatchEvent(new Event('change')); })()`); await sleep(300);
+      eq(await E(`document.querySelectorAll('#sel-kit').length`), 0);
       eq(await E(`QBIT.ide.app.kit`), 1);
-      await E(`(() => { const s = document.getElementById('sel-kit'); s.value = '4'; s.dispatchEvent(new Event('change')); })()`); await sleep(300);
-      eq(await E(`QBIT.ide.app.kit`), 4);
+      eq(await E(`QBIT.moduleList().filter(d => d.kit <= QBIT.ide.app.kit).length`), 32);
       await click('#btab-console');
     });
     const until = async (js, want, ms) => { for (let t = 0; t < ms; t += 40) { if ((await E(js)) === want) return true; await sleep(40); } return false; };

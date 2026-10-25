@@ -21,7 +21,7 @@
     var body = S.rect(cx - 1.5, cy - 1.0, 3.0, 2.0, { r: 0.25, fill: '#e9e1cf', stroke: '#8d8470', 'stroke-width': 0.12 });
     var lens = S.rect(cx - 0.9, cy - 0.55, 1.8, 1.1, { r: 0.2, fill: LED_OFF[f.inst.variant || 'white'] });
     f.add(body, lens);
-    f.add(S.rect(cx - 2.0, cy - 0.7, 0.5, 1.4, { fill: 'url(#g-gold)' }), S.rect(cx + 1.5, cy - 0.7, 0.5, 1.4, { fill: 'url(#g-gold)' }));
+    f.add(S.rect(cx - 2.0, cy - 0.7, 0.5, 1.4, { fill: C.silver }), S.rect(cx + 1.5, cy - 0.7, 0.5, 1.4, { fill: C.silver }));
     f.silk(({ white: '', red: 'RED', yellow: 'YEL', green: 'GRN', blue: 'BLU' })[f.inst.variant || 'white'], cx, cy + 5.2, 1.8);
     var cur = 0;
     f.onUpdate(function (dt) {
@@ -70,7 +70,7 @@
   F.define('buzzer', function (f) {
     f.base('BUZZER');
     resistorsAndFet(f);
-    var cx = 14.8, cy = 12.0;
+    var cx = 14.85, cy = 14.85;                    // the 9.6 mm can over the port, as on the board (the icon sits above it)
     f.add(S.rect(cx - 4.5, cy - 4.5, 9, 9, { r: 1.0, fill: 'url(#g-black)', stroke: '#000', 'stroke-width': 0.2 }));
     f.add(S.circle(cx, cy, 3.6, { fill: '#0e0f12', stroke: '#2f323a', 'stroke-width': 0.25 }));
     f.add(S.circle(cx, cy, 1.0, { fill: '#000', stroke: '#3a3d46', 'stroke-width': 0.2 }));
@@ -92,10 +92,11 @@
   /* ---------------------------------------------------------------- servo */
   F.define('servo', function (f) {
     f.base('SERVO');
-    P.smd(f.root, 19.8, 8.4, 1.0, 0.55, 90); P.smd(f.root, 22.0, 8.4, 1.0, 0.55, 90);
-    f.add(S.rect(6.4, 3.4, 7.8, 2.9, { r: 0.3, fill: 'url(#g-black)', stroke: '#000', 'stroke-width': 0.15 }));
-    for (var i = 0; i < 3; i++) f.add(S.rect(8.1 + i * 2.54 - 0.32, 2.6, 0.64, 1.7, { fill: 'url(#g-gold)' }));
-    f.silk('G  5V  S', 10.3, 8.2, 1.4);
+    P.smd(f.root, 20.25, 9.25, 1.0, 0.55, 90); P.smd(f.root, 21.75, 9.25, 1.0, 0.55, 90);
+    // the 3-pin servo header across the middle, as on the board (icon left of it, q.bit above)
+    f.add(S.rect(10.9, 7.8, 7.9, 2.9, { r: 0.3, fill: 'url(#g-black)', stroke: '#000', 'stroke-width': 0.15 }));
+    for (var i = 0; i < 3; i++) f.add(S.rect(12.29 + i * 2.54 - 0.32, 8.9, 0.64, 0.64, { fill: 'url(#g-gold)' }));
+    f.silk('G  5V  S', 14.83, 6.6, 1.4);
     var cx = 17.6, cy = 20.0, R = 6.6;
     f.add(S.path('M' + (cx - R) + ' ' + cy + 'A' + R + ' ' + R + ' 0 0 1 ' + (cx + R) + ' ' + cy, { fill: 'none', stroke: C.silk, 'stroke-width': 0.3, 'stroke-opacity': 0.7 }));
     for (i = 0; i <= 6; i++) {
@@ -143,37 +144,39 @@
   /* ---------------------------------------------------------------- relay (65 mm) */
   F.define('relay', function (f) {
     f.base('RELAY 30VDC', { labelSize: 3.2 });
-    P.sot(f.root, 28.0, 22.6, 3);
+    // where the parts are on the board: the relay standing in the middle, the terminal block top right,
+    // the MOSFET and the ON LED bottom right
+    P.sot(f.root, 47.6, 22.0, 3);
     var body = S.g(null,
-      S.rect(9.6, 3.4, 19.4, 15.8, { r: 0.8, fill: '#1c9cf2', stroke: '#0d62a8', 'stroke-width': 0.3 }),
-      S.rect(10.2, 4.0, 18.2, 4.0, { r: 0.4, fill: '#fff', opacity: 0.18 }),
-      S.rect(12.6, 9.2, 13.4, 5.4, { r: 0.3, fill: '#e6f4ff', opacity: 0.95 }),
-      S.text('SRD-05VDC-SL-C', 19.3, 11.6, { 'font-size': 1.6, 'font-weight': 700, 'text-anchor': 'middle', fill: '#10304e', 'font-family': 'Arial' }),
-      S.text('5V  10A 250VAC', 19.3, 13.7, { 'font-size': 1.3, 'text-anchor': 'middle', fill: '#10304e', 'font-family': 'Arial' }));
+      S.rect(27.1, 4.1, 16.1, 19.6, { r: 0.8, fill: '#1c9cf2', stroke: '#0d62a8', 'stroke-width': 0.3 }),
+      S.rect(27.7, 4.7, 14.9, 4.0, { r: 0.4, fill: '#fff', opacity: 0.18 }),
+      S.rect(28.4, 11.2, 13.5, 5.4, { r: 0.3, fill: '#e6f4ff', opacity: 0.95 }),
+      S.text('SRD-05VDC-SL-C', 35.15, 13.6, { 'font-size': 1.4, 'font-weight': 700, 'text-anchor': 'middle', fill: '#10304e', 'font-family': 'Arial' }),
+      S.text('5V  10A 250VAC', 35.15, 15.6, { 'font-size': 1.2, 'text-anchor': 'middle', fill: '#10304e', 'font-family': 'Arial' }));
     f.add(body);
-    var tb = S.g(null, S.rect(40.4, 3.6, 17.6, 9.6, { r: 0.6, fill: '#1c8fe0', stroke: '#0d5a9a', 'stroke-width': 0.25 }));
+    var tb = S.g(null, S.rect(43.9, 1.6, 15.0, 7.7, { r: 0.6, fill: '#1c8fe0', stroke: '#0d5a9a', 'stroke-width': 0.25 }));
     for (var i = 0; i < 3; i++) {
-      var x = 43.8 + i * 5.1;
-      tb.appendChild(S.circle(x, 7.2, 1.7, { fill: 'url(#g-metal)', stroke: '#5a6472', 'stroke-width': 0.2 }));
-      tb.appendChild(S.line(x - 1.1, 7.2, x + 1.1, 7.2, { stroke: '#4a5260', 'stroke-width': 0.35, transform: 'rotate(' + (20 + i * 40) + ' ' + x + ' 7.2)' }));
-      tb.appendChild(S.rect(x - 1.3, 10.4, 2.6, 1.6, { r: 0.3, fill: '#0b1a2a' }));
+      var x = 46.4 + i * 5.0;
+      tb.appendChild(S.circle(x, 4.6, 1.6, { fill: 'url(#g-metal)', stroke: '#5a6472', 'stroke-width': 0.2 }));
+      tb.appendChild(S.line(x - 1.0, 4.6, x + 1.0, 4.6, { stroke: '#4a5260', 'stroke-width': 0.35, transform: 'rotate(' + (20 + i * 40) + ' ' + x + ' 4.6)' }));
+      tb.appendChild(S.rect(x - 1.3, 7.0, 2.6, 1.6, { r: 0.3, fill: '#0b1a2a' }));
     }
     f.add(tb);
-    ['NC', 'COM', 'NO'].forEach(function (t, k) { f.silk(t, 43.8 + k * 5.1, 16.6, 1.6); });
+    ['NC', 'COM', 'NO'].forEach(function (t, k) { f.silk(t, 46.4 + k * 5.0, 11.4, 1.6); });
     var contact = S.path('M0 0', { fill: 'none', stroke: '#ffd34d', 'stroke-width': 0.6, 'stroke-linecap': 'round' });
     f.add(contact);
-    var led = S.rect(35.0, 18.2, 1.6, 0.8, { r: 0.1, fill: '#7a1c18', stroke: '#2a0907', 'stroke-width': 0.08 });
+    var led = S.rect(54.25, 20.85, 1.6, 0.8, { r: 0.1, fill: '#7a1c18', stroke: '#2a0907', 'stroke-width': 0.08 });
     f.add(led);
-    var glow = P.glow(f.root, 35.8, 18.6, 6, '#ff3b30');
-    f.silk('ON', 35.8, 21.4, 1.5);
+    var glow = P.glow(f.root, 55.05, 21.25, 6, '#ff3b30');
+    f.silk('ON', 55.05, 19.6, 1.5);
     var shift = 0;
     f.onUpdate(function (dt) {
       var on = f.inst.powered && f.inst.out.on;
       led.setAttribute('fill', on ? '#ff3b30' : '#7a1c18');
       glow.setAttribute('opacity', on ? 1 : 0);
       var tgt = on ? 1 : 0; shift += (tgt - shift) * Math.min(1, dt * 40);
-      var a = 43.8 + 5.1, b = on ? 43.8 + 10.2 : 43.8;
-      contact.setAttribute('d', 'M' + a + ' 15.2L' + (a + (b - a) * 0.5) + ' 14.6L' + b + ' 15.2');
+      var a = 46.4 + 5.0, b = on ? 46.4 + 10.0 : 46.4;
+      contact.setAttribute('d', 'M' + a + ' 13.2L' + (a + (b - a) * 0.5) + ' 12.6L' + b + ' 13.2');
       body.setAttribute('transform', 'translate(' + (on ? 0.05 : 0) + ' 0)');
     });
   });
@@ -182,7 +185,7 @@
   F.define('motor', function (f) {
     f.base('MOTOR 0x60');
     P.soic(f.root, 12.4, 12.6, 3.0, 3.0, 4, 90, 'DRV8830');
-    P.smd(f.root, 7.6, 8.0, 1.0, 0.55, 0); P.smd(f.root, 17.2, 8.0, 1.0, 0.55, 0); P.smd(f.root, 17.2, 17.6, 1.0, 0.55, 90);
+    P.smd(f.root, 8.6, 18.6, 1.0, 0.55, 0); P.smd(f.root, 17.2, 8.0, 1.0, 0.55, 0); P.smd(f.root, 17.2, 17.6, 1.0, 0.55, 90);
     var tb = S.g(null, S.rect(50.4, 4.2, 10.6, 10.2, { r: 0.6, fill: '#1c8fe0', stroke: '#0d5a9a', 'stroke-width': 0.25 }));
     for (var i = 0; i < 2; i++) {
       var x = 53.6 + i * 5.0;
@@ -199,7 +202,8 @@
     for (i = 0; i < 3; i++) rotor.appendChild(S.path('M0 0L5.3 -1.7A5.6 5.6 0 0 1 5.3 1.7Z', { fill: i === 0 ? '#ff7a2e' : '#8d96a8', transform: 'rotate(' + (i * 120) + ')', stroke: '#2b2f38', 'stroke-width': 0.15 }));
     rotor.appendChild(S.circle(0, 0, 1.2, { fill: 'url(#g-metal)' }));
     f.add(rotor);
-    var arrow = S.path('M0 0', { fill: 'none', stroke: '#19c3ff', 'stroke-width': 0.5, 'stroke-linecap': 'round', opacity: 0 });
+    // the direction arrow runs under the wheel (turned 180 degrees: same sense of rotation), the q.bit logo is above it
+    var arrow = S.path('M0 0', { fill: 'none', stroke: '#19c3ff', 'stroke-width': 0.5, 'stroke-linecap': 'round', opacity: 0, transform: 'rotate(180 ' + cx + ' ' + cy + ')' });
     f.add(arrow);
     var spin = 0, last = '';
     f.onUpdate(function (dt) {
@@ -220,7 +224,7 @@
   F.define('oled', function (f) {
     f.base('OLED 0x3C', { labelX: 8.2, labelAnchor: 'start', labelRoom: 22, labelSize: 3.0 });
     P.smd(f.root, 11.4, 13.4, 1.0, 0.55, 90); P.smd(f.root, 11.4, 11.0, 1.0, 0.55, 90);
-    var x0 = 30.4, y0 = 1.4;
+    var x0 = 17.6, y0 = 1.5;                       // the display board where it sits on the module: q.bit, icon and name are right of it
     f.add(S.rect(x0, y0, 29.0, 26.8, { r: 1.2, fill: '#101821', stroke: '#2a3b50', 'stroke-width': 0.3 }));
     for (var i = 0; i < 4; i++) f.add(S.rect(x0 + 8.2 + i * 2.54 - 0.6, y0 + 0.7, 1.2, 1.2, { r: 0.2, fill: 'url(#g-gold)' }));
     f.silk('GND VCC SCL SDA', x0 + 14.5, y0 + 4.2, 1.2, 'middle', { fill: '#9fb4cc' });

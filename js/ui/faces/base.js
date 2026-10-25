@@ -143,28 +143,73 @@
     return z;
   };
 
-  /* -------------------------------------------------------------- the PCB every module shares */
-  var HOLE = 3.2;
+  /* -------------------------------------------------------------- the PCB every module shares
+     M5 look (2026-10-24): white solder mask, black pixel print, HASL. The print - name, q.bit, icon - is the
+     one on the real boards: Q.DATA.print comes from modules/tools/module_print.py through gen_hw_data.py. */
+  var HOLE = 3.2, MAG_DX = 10.04;
+  var MASK = '#f4f4f1', MASK_EDGE = '#cdcdc6', INK = '#1b1b1c';
+  Q.COLORS.mask = MASK; Q.COLORS.ink = INK;
+  Q.COLORS.silk = INK;                     // module silk is black now (the faces draw their scales and labels with C.silk)
+
+  /** the '#' runs of a bitmap as path data, top-left at (x, y), pixel p (a hair taller, so rows do not show seams) */
+  function pixels(rows, x, y, p) {
+    var d = '';
+    for (var j = 0; j < rows.length; j++) {
+      for (var i = 0; i < rows[j].length; i++) {
+        if (rows[j][i] !== '#') continue;
+        var k = i;
+        while (k < rows[j].length && rows[j][k] === '#') k++;
+        d += 'M' + (x + i * p).toFixed(3) + ' ' + (y + j * p).toFixed(3) + 'h' + ((k - i) * p).toFixed(3) + 'v' + (p + 0.01).toFixed(3) + 'h' + (-(k - i) * p).toFixed(3) + 'z';
+        i = k;
+      }
+    }
+    return d;
+  }
+  function pixelText(s, x, y, p, font) {
+    var d = '';
+    for (var i = 0; i < s.length; i++) {
+      var gl = font[s[i]];
+      if (!gl) continue;
+      d += pixels(gl, x, y, p);
+      x += (gl[0].length + 1) * p;
+    }
+    return d;
+  }
+  Q.pixelText = pixelText;
 
   Face.prototype.base = function (label, o) {
     o = o || {};
-    var f = this, w = this.w, h = this.h, g = this.root;
-    g.appendChild(S.rect(0, 0, w, h, { r: 3.4, fill: 'url(#g-pcb)' }));
+    var w = this.w, h = this.h, g = this.root, c = h / 2;
+    var P = Q.DATA && Q.DATA.print, pr = P && P.modules[this.inst.key];
+    g.appendChild(S.rect(0, 0, w, h, { r: 3.8, fill: MASK, stroke: MASK_EDGE, 'stroke-width': 0.2, cls: 'pcb' }));
+    // the M2 holes for the tray's snap posts: bare (no ring with HASL), the lid shows through
     [[HOLE, HOLE], [w - HOLE, HOLE], [HOLE, h - HOLE], [w - HOLE, h - HOLE]].forEach(function (p) {
-      g.appendChild(S.circle(p[0], p[1], 1.7, { fill: '#222429', stroke: C.gold, 'stroke-width': 0.8 }));
+      g.appendChild(S.circle(p[0], p[1], 1.1, { fill: '#2b2d32', stroke: MASK_EDGE, 'stroke-width': 0.15, cls: 'pcb' }));
     });
-    if (label) {
-      // as big as the room allows: between the left hole and the right hole (about 17.6 mm on a one-port module)
+    // D4 x 1.5 magnets pressed flush into the port's holes (a 65 mm module has a pair over the second port too)
+    (w > 40 ? [c - MAG_DX, c + MAG_DX, c + 35 - MAG_DX, c + 35 + MAG_DX] : [c - MAG_DX, c + MAG_DX]).forEach(function (x) {
+      g.appendChild(S.circle(x, c, 2.0, { fill: '#aeb3b8', cls: 'pcb' }));
+      g.appendChild(S.circle(x - 0.5, c - 0.5, 0.9, { fill: '#d3d7db', cls: 'pcb' }));
+    });
+    if (pr) {
+      var keys = '';
+      pr.keys.forEach(function (k) { keys += pixelText(k.text, k.x, k.y, k.p, P.font); });
+      [['name', pixelText(pr.name.text, pr.name.x, pr.name.y, pr.name.p, P.font)], ['logo', pixelText(pr.logo.text, pr.logo.x, pr.logo.y, pr.logo.p, P.logo)],
+       ['icon', pixels(pr.icon_rows, pr.icon.x, pr.icon.y, pr.icon.p)], ['keys', keys]].forEach(function (a) {
+        if (a[1]) g.appendChild(S.path(a[1], { fill: INK, cls: 'm5 m5-' + a[0] }));
+      });
+    } else if (label) {
+      // a debug module (no real board): its name as plain text, bottom centre
       var room = (o.labelRoom || (w - 12.0)), size = Math.min(o.labelSize || 3.5, room / (0.8 * label.length));
-      g.appendChild(S.text(label, o.labelX !== undefined ? o.labelX : (w < 40 ? w / 2 : w - 6.8), o.labelY || 26.5, { 'font-size': size.toFixed(2), 'font-weight': 700, fill: '#ffffff',
-        'text-anchor': o.labelAnchor || (w < 40 ? 'middle' : 'end'), 'letter-spacing': 0.4, 'font-family': '"DejaVu Sans", "Segoe UI", Arial, sans-serif' }));
+      g.appendChild(S.text(label, w < 40 ? w / 2 : w - 6.8, 26.5, { 'font-size': size.toFixed(2), 'font-weight': 700, fill: INK,
+        'text-anchor': w < 40 ? 'middle' : 'end', 'letter-spacing': 0.4, 'font-family': '"DejaVu Sans", "Segoe UI", Arial, sans-serif' }));
     }
     return this;
   };
 
   /** a text on the silkscreen */
   Face.prototype.silk = function (str, x, y, size, anchor, o) {
-    this.root.appendChild(S.text(str, x, y, Object.assign({ 'font-size': size || 2, 'font-weight': 700, fill: C.silk, 'fill-opacity': 0.85, 'text-anchor': anchor || 'middle',
+    this.root.appendChild(S.text(str, x, y, Object.assign({ 'font-size': size || 2, 'font-weight': 700, fill: INK, 'fill-opacity': 0.85, 'text-anchor': anchor || 'middle',
       'font-family': '"DejaVu Sans", "Segoe UI", Arial, sans-serif' }, o)));
   };
 
@@ -203,8 +248,8 @@
       parent.appendChild(g);
       return g;
     },
-    /** one gold pad / test point */
-    pad: function (parent, x, y, r) { var c = S.circle(x, y, r || 0.6, { fill: 'url(#g-gold)', stroke: '#8a6a14', 'stroke-width': 0.08 }); parent.appendChild(c); return c; },
+    /** one pad / test point: tinned (HASL), silver */
+    pad: function (parent, x, y, r) { var c = S.circle(x, y, r || 0.6, { fill: 'url(#g-metal)', stroke: '#8a9099', 'stroke-width': 0.08 }); parent.appendChild(c); return c; },
     /** glow behind a lit part: returns the circle, set its opacity / fill from an updater */
     glow: function (parent, cx, cy, r, color) {
       var id = S.uid('gl');

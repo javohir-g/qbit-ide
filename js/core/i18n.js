@@ -68,7 +68,7 @@
     if (lang === 'ru' || !D || D._localized) return;
     D._localized = true;
     ['kits', 'categories'].forEach(function (k) { Object.keys(D[k] || {}).forEach(function (n) { D[k][n] = t(D[k][n]); }); });
-    (D.modules || []).forEach(function (m) { m.name = t(m.name); });
+    (D.modules || []).concat(D.retired || []).forEach(function (m) { m.name = t(m.name); });     // a retired module can still be on a saved board
   }
 
   /** the static HTML of a page: attributes and the text of elements that hold nothing but text */

@@ -45,7 +45,7 @@ function collect() {
   new Function('G', fs.readFileSync(path.join(root, 'js/data/hw-data.js'), 'utf8').replace(/\}\)\(typeof globalThis[\s\S]*$/, '})(G);'))(G);
   const D = G.QBIT.DATA;
   ['kits', 'categories'].forEach((k) => Object.values(D[k]).forEach((v) => add(v, 'hw-data:' + k)));
-  D.modules.forEach((m) => add(m.name, 'hw-data:name'));
+  D.modules.concat(D.retired || []).forEach((m) => add(m.name, 'hw-data:name'));
   return keys;
 }
 

@@ -29,6 +29,9 @@
   function catalogEntry(key) {
     var mods = (Q.DATA && Q.DATA.modules) || [];
     for (var i = 0; i < mods.length; i++) if (mods[i].key === key) return mods[i];
+    // taken out of the product but built (the firmware still knows it): it behaves, but no list shows it
+    var old = (Q.DATA && Q.DATA.retired) || [];
+    for (i = 0; i < old.length; i++) if (old[i].key === key) return Object.assign({ retired: true }, old[i]);
     return null;
   }
 
@@ -38,7 +41,7 @@
     if (cat) {
       def.id = cat.id; def.name = cat.name; def.fmt = cat.fmt; def.io = cat.io; def.part = cat.part;
       def.addr = cat.addr; def.kit = cat.kit; def.cat = cat.cat; def.note = cat.note;
-      def.variants = cat.variants; def.variantIndex = cat.variantIndex;
+      def.variants = cat.variants; def.variantIndex = cat.variantIndex; def.retired = !!cat.retired;
       def.defaultVariant = cat.variants.length ? (cat.variants.indexOf('white') >= 0 ? 'white' : cat.variants[0]) : null;
     } else if (!def.debug) {
       throw new Error('module "' + key + '" is not in the catalogue (modules/catalog.py)');

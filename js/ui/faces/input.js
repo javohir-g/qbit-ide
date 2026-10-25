@@ -26,13 +26,13 @@
   /* ---------------------------------------------------------------- touch */
   F.define('touch', function (f) {
     f.base('TOUCH');
-    var cx = 13.2, cy = 12.2;
-    f.add(S.circle(cx, cy, 5.6, { fill: '#241b14', stroke: C.silk, 'stroke-width': 0.4, 'stroke-opacity': 0.9 }));
-    f.add(S.circle(cx, cy, 4.3, { fill: '#c98b4e', 'fill-opacity': 0.28 }));
-    f.add(S.path('M' + (cx - 1.7) + ' ' + cy + 'a1.7 1.7 0 0 1 3.4 0M' + (cx - 2.8) + ' ' + cy + 'a2.8 2.8 0 0 1 5.6 0', { fill: 'none', stroke: C.silk, 'stroke-width': 0.3, 'stroke-opacity': 0.7 }));
-    P.sot(f.root, 22.2, 11.6, 5);
+    // the 9.6 mm electrode as on the board: copper under the white mask (a pale cream disc), the TTP223 right of it
+    var cx = 14.85, cy = 10.85;
+    f.add(S.circle(cx, cy, 4.8, { fill: '#ebe7dc', stroke: '#d6d0bf', 'stroke-width': 0.3 }));
+    f.add(S.path('M' + (cx - 1.5) + ' ' + cy + 'a1.5 1.5 0 0 1 3 0M' + (cx - 2.5) + ' ' + cy + 'a2.5 2.5 0 0 1 5 0', { fill: 'none', stroke: C.silk, 'stroke-width': 0.3, 'stroke-opacity': 0.7 }));
+    P.sot(f.root, 22.35, 10.65, 5);
     var glow = P.glow(f.root, cx, cy, 10, '#19c3ff');
-    var ring = S.circle(cx, cy, 5.6, { fill: 'none', stroke: '#19c3ff', 'stroke-width': 0.6, opacity: 0 });
+    var ring = S.circle(cx, cy, 4.8, { fill: 'none', stroke: '#19c3ff', 'stroke-width': 0.6, opacity: 0 });
     f.add(ring);
     f.hold(f.zone(cx - 7, cy - 7, 14, 14, 7), function (v) { f.inst.set('touched', v); });
     f.bind(glow, 'opacity', function () { return f.inst.state.touched ? 0.9 : 0; });
@@ -113,19 +113,19 @@
   /* ---------------------------------------------------------------- pir */
   F.define('pir', function (f) {
     f.base('PIR');
-    var cx = 14.8, cy = 11.4;
-    f.add(S.circle(cx, cy, 5.6, { fill: 'url(#g-dome)', stroke: '#9aa3b2', 'stroke-width': 0.25 }));
-    f.add(S.circle(cx, cy, 4.7, { fill: 'none', stroke: '#c5ccd8', 'stroke-width': 0.2 }));
-    f.add(S.rect(cx - 2.3, cy - 1.7, 4.6, 3.4, { r: 0.35, fill: '#2a1b66', stroke: '#150d3a', 'stroke-width': 0.2 }));
-    f.add(S.rect(cx - 2.0, cy - 1.4, 4.0, 1.2, { r: 0.3, fill: '#fff', 'fill-opacity': 0.18 }));
-    var ring = S.circle(cx, cy, 7.6, { fill: 'none', stroke: '#ffb020', 'stroke-width': 0.7, opacity: 0 });
-    var ring2 = S.circle(cx, cy, 7.6, { fill: 'none', stroke: '#ffb020', 'stroke-width': 0.4, opacity: 0 });
+    var cx = 14.8, cy = 8.6;                       // the AS312 where it sits on the board (icon left of it, logo above)
+    f.add(S.circle(cx, cy, 4.0, { fill: 'url(#g-dome)', stroke: '#9aa3b2', 'stroke-width': 0.25 }));
+    f.add(S.circle(cx, cy, 3.3, { fill: 'none', stroke: '#c5ccd8', 'stroke-width': 0.2 }));
+    f.add(S.rect(cx - 1.7, cy - 1.25, 3.4, 2.5, { r: 0.3, fill: '#2a1b66', stroke: '#150d3a', 'stroke-width': 0.2 }));
+    f.add(S.rect(cx - 1.45, cy - 1.0, 2.9, 0.9, { r: 0.25, fill: '#fff', 'fill-opacity': 0.18 }));
+    var ring = S.circle(cx, cy, 5.4, { fill: 'none', stroke: '#ffb020', 'stroke-width': 0.7, opacity: 0 });
+    var ring2 = S.circle(cx, cy, 5.4, { fill: 'none', stroke: '#ffb020', 'stroke-width': 0.4, opacity: 0 });
     f.add(ring, ring2);
-    f.hold(f.zone(cx - 8, cy - 8, 16, 16, 8), function (v) { f.inst.set('motion', v); });
+    f.hold(f.zone(cx - 7, cy - 7, 14, 14, 7), function (v) { f.inst.set('motion', v); });
     f.onUpdate(function () {
       var h = f.inst.out.hold || 0;
       ring.setAttribute('opacity', h > 0 ? 0.5 + 0.5 * Math.sin(f.t * 9) : 0);
-      ring2.setAttribute('r', h > 0 ? 7.6 + ((f.t * 6) % 3) : 7.6);
+      ring2.setAttribute('r', h > 0 ? 5.4 + ((f.t * 6) % 3) : 5.4);
       ring2.setAttribute('opacity', h > 0 ? 0.6 - ((f.t * 6) % 3) / 5 : 0);
     });
   });
@@ -152,7 +152,7 @@
   }
   F.define('pot', function (f) {
     f.base('POT');
-    var cx = 14.8, cy = 10.8;
+    var cx = 14.8, cy = 9.0;                       // up, like the RV09 on the board: the q.bit logo sits under the scale
     for (var i = 0; i <= 10; i++) {
       var a = (-135 + 27 * i) * U.RAD, r1 = 6.4, r2 = i % 5 === 0 ? 7.7 : 7.1;
       f.add(S.line(cx + Math.sin(a) * r1, cy - Math.cos(a) * r1, cx + Math.sin(a) * r2, cy - Math.cos(a) * r2, { stroke: C.silk, 'stroke-width': 0.28, 'stroke-opacity': 0.85, 'stroke-linecap': 'round' }));
@@ -211,11 +211,8 @@
   /* ---------------------------------------------------------------- joystick */
   F.define('joystick', function (f) {
     f.base('JOY');
-    var cx = 14.8, cy = 11.2, R = 2.4;
-    f.add(S.g({ transform: 'translate(' + cx + ' ' + cy + ') rotate(45)' }, S.rect(-4.6, -4.6, 9.2, 9.2, { r: 1.0, fill: 'url(#g-black)', stroke: '#050607', 'stroke-width': 0.25 })));
-    [[0, -8.2, 'M0 -9.3L1.1 -7.6H-1.1Z'], [8.2, 0, 'M9.3 0L7.6 1.1V-1.1Z'], [0, 8.2, 'M0 9.3L1.1 7.6H-1.1Z'], [-8.2, 0, 'M-9.3 0L-7.6 1.1V-1.1Z']].forEach(function (a) {
-      f.add(S.path(a[2], { transform: 'translate(' + cx + ' ' + cy + ')', fill: C.silk, 'fill-opacity': 0.85 }));
-    });
+    var cx = 14.85, cy = 9.25, R = 2.4;            // the SKRH body (8.8 mm) where it sits on the board
+    f.add(S.rect(cx - 4.4, cy - 4.4, 8.8, 8.8, { r: 0.8, fill: 'url(#g-black)', stroke: '#050607', 'stroke-width': 0.25 }));
     var cap = S.g(null, S.circle(0, 0, 3.4, { fill: 'url(#g-knob)', stroke: '#06070a', 'stroke-width': 0.25 }),
       S.circle(0, 0, 2.3, { fill: 'none', stroke: '#8c929e', 'stroke-width': 0.2, 'stroke-opacity': 0.6 }),
       S.circle(-0.6, -0.8, 0.9, { fill: '#fff', opacity: 0.22 }));
@@ -246,11 +243,10 @@
   /* ---------------------------------------------------------------- keypad (65 mm) */
   F.define('keypad', function (f) {
     f.base('KEYS');
-    var xs = [17.0, 29.0, 41.0, 53.0], tacts = [];
+    var xs = [14.35, 26.35, 38.35, 50.35], y = 8.55, tacts = [];       // the four keys as on the board; their numbers are in the print
     xs.forEach(function (x, i) {
-      f.silk(String(i + 1), x, 6.2, 2.6);
-      tacts.push(P.tact(f.root, x, 13.0));
-      f.hold(f.zone(x - 5, 7.2, 10, 11.6, 2), function (v) { Q.moduleDef('keypad').setKey(f.inst, i, v); });
+      tacts.push(P.tact(f.root, x, y));
+      f.hold(f.zone(x - 5, y - 4.5, 10, 10, 2), function (v) { Q.moduleDef('keypad').setKey(f.inst, i, v); });
     });
     f.onUpdate(function () { tacts.forEach(function (t, i) { t.press(f.inst.state.keys[i]); }); });
   });

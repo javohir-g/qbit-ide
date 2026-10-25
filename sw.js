@@ -2,7 +2,7 @@
    Every file of the page is cached on the first visit; later the page opens offline. Online the network is asked first, so a new version
    reaches the user at once, and the cached copy is only the fallback. */
 'use strict';
-const CACHE = 'qbit-ide-c27f380a80';
+const CACHE = 'qbit-ide-3498c9dcbd';
 const FILES = [
   './',
   'vendor/blockly/blockly_compressed.js',
