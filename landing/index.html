@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>q.bit station — образовательная робототехника</title>
+<meta name="description" content="q.bit station — конструктор электроники и программирования для детей 7–18 лет: модули на магнитах, блоки и Python в браузере.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">К содержанию</a>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top" aria-label="q.bit — наверх"><span class="chip-logo"><svg class="px" viewBox="0 0 84 36" height="28" width="65" role="img" aria-label="q.bit"><path fill="#1D4BFF" d="M4 8h16v4h-16zM0 12h4v4h-4zM16 12h4v4h-4zM0 16h4v4h-4zM16 16h4v4h-4zM0 20h4v4h-4zM16 20h4v4h-4zM4 24h16v4h-16zM16 28h4v4h-4zM16 32h4v4h-4zM24 20h8v4h-8zM24 24h8v4h-8zM36 0h4v4h-4zM36 4h4v4h-4zM36 8h16v4h-16zM36 12h4v4h-4zM52 12h4v4h-4zM36 16h4v4h-4zM52 16h4v4h-4zM36 20h4v4h-4zM52 20h4v4h-4zM36 24h16v4h-16zM60 0h4v4h-4zM60 8h4v4h-4zM60 12h4v4h-4zM60 16h4v4h-4zM60 20h4v4h-4zM60 24h4v4h-4zM72 0h4v4h-4zM72 4h4v4h-4zM68 8h16v4h-16zM72 12h4v4h-4zM72 16h4v4h-4zM72 20h4v4h-4zM76 24h8v4h-8z"/></svg></span><span class="brand-t">station</span></a>
+    <nav aria-label="Разделы"><a href="#how">Как работает</a><a href="#product">Станция</a><a href="#editor">Редактор</a><a href="#kits">Наборы</a><a href="#specs">Характеристики</a></nav>
+    <a class="btn btn-blue btn-sm" href="https://javohir-g.github.io/qbit-ide/" target="_blank" rel="noopener">Открыть редактор</a>
+  </div>
+</header>
+
+<main id="main">
+<section class="hero" id="top">
+  <img class="hero-img" src="assets/cover_scene3d_v2.jpg" alt="Станция q.bit в чёрном корпусе с модулями на синем коврике, рядом модули, планшет с программой из блоков и стилус" width="2880" height="1620">
+  <div class="wrap hero-in">
+    <div class="hero-text">
+      <p class="pill">q.bit · сделано в Узбекистане</p>
+      <h1>Образовательная робототехника, доступная каждому</h1>
+      <p class="lead">q.bit station — конструктор электроники и программирования для детей 7–18 лет.</p>
+      <ul class="chips"><li class="c-mint">8 портов</li><li class="c-blue">32 модуля</li><li class="c-blue">Блоки и Python</li></ul>
+      <div class="ctas"><a class="btn btn-blue" href="https://javohir-g.github.io/qbit-ide/" target="_blank" rel="noopener">Открыть редактор</a><a class="btn btn-ghost" href="#how">Как это работает</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="dark" id="problem">
+  <div class="wrap two">
+    <div>
+      <p class="pill pill-dark">Проблема</p>
+      <h2>Начать заниматься робототехникой сложно</h2>
+      <p class="lead">Слишком много нужно понять раньше, чем появится первый результат.</p>
+    </div>
+    <ul class="xcard">
+      <li><span class="x">×</span><div><b>Провода</b><span>Одна ошибка в схеме — и ничего не работает.</span></div></li>
+      <li><span class="x">×</span><div><b>Электроника</b><span>Схемы нужно понять до того, как появится интерес.</span></div></li>
+      <li><span class="x">×</span><div><b>Настройка</b><span>Драйверы, среда разработки, нужен компьютер.</span></div></li>
+      <li><span class="x">×</span><div><b>Цена</b><span>Наборы LEGO SPIKE Prime стоят $440–530 — почти средняя зарплата.</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="blue" id="solution">
+  <div class="wrap two">
+    <div>
+      <p class="pill pill-blue">Решение</p>
+      <h2>Подключи.<br>Запрограммируй.<br>Создай.</h2>
+      <p class="lead">Модули на магнитах и программа из блоков в браузере. Первый результат — на первом же уроке.</p>
+      <ul class="chips"><li class="c-mint">без проводов и пайки</li><li class="c-soft">без установки</li><li class="c-soft">блоки → Python</li></ul>
+    </div>
+    <img class="shot" src="assets/station_34.webp" alt="Станция q.bit в чёрном корпусе с модулями в портах" loading="lazy" width="1600" height="827">
+  </div>
+</section>
+
+<section class="white" id="how">
+  <div class="wrap">
+    <div class="zz">
+      <div class="zz-head"><h2>Как это работает</h2><p>Четыре шага на одном примере: кнопка в порту 1 включает RGB в порту 2.</p></div>
+      <figure class="zz-tile" style="left:0.000%;top:55.752%"><picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/mod_rgb.webp"><img src="assets/how_snap.webp" alt="Модуль RGB опускается в порт 2 станции и встаёт на магниты" loading="lazy" width="760" height="476"></picture><figcaption><span class="tag"><b class="n">1</b>Прижми модуль</span><span class="cap">магниты держат, контакты дают сигнал</span></figcaption></figure><div class="zz-down" aria-hidden="true"><svg viewBox="0 0 60 70"><path d="M30 6C27 26 33 40 30 58" fill="none" stroke="#2D63FF" stroke-width="6" stroke-linecap="round"/><path d="M30 60L18 44M30 60L42 45" fill="none" stroke="#2D63FF" stroke-width="6" stroke-linecap="round"/></svg></div><figure class="zz-tile" style="left:21.012%;top:0.000%"><picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/station_top.webp"><img src="assets/how_recog.webp" alt="От порта расходится волна, светодиод мигает, появляется подпись «RGB · порт 2»" loading="lazy" width="760" height="476"></picture><figcaption><span class="tag"><b class="n">2</b>Станция узнаёт его</span><span class="cap">тип модуля и порт видны сразу</span></figcaption></figure><div class="zz-down" aria-hidden="true"><svg viewBox="0 0 60 70"><path d="M30 6C27 26 33 40 30 58" fill="none" stroke="#2D63FF" stroke-width="6" stroke-linecap="round"/><path d="M30 60L18 44M30 60L42 45" fill="none" stroke="#2D63FF" stroke-width="6" stroke-linecap="round"/></svg></div><figure class="zz-tile" style="left:42.024%;top:55.752%"><picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/blocks_prog.webp"><img src="assets/how_blocks.webp" alt="Блок «RGB порт 2 цвет зелёный» защёлкивается под блоком «когда кнопка порт 1 нажата»" loading="lazy" width="760" height="476"></picture><figcaption><span class="tag"><b class="n">3</b>Собери программу</span><span class="cap">блоки в браузере, без установки</span></figcaption></figure><div class="zz-down" aria-hidden="true"><svg viewBox="0 0 60 70"><path d="M30 6C27 26 33 40 30 58" fill="none" stroke="#2D63FF" stroke-width="6" stroke-linecap="round"/><path d="M30 60L18 44M30 60L42 45" fill="none" stroke="#2D63FF" stroke-width="6" stroke-linecap="round"/></svg></div><figure class="zz-tile" style="left:63.036%;top:0.000%"><picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/station_34.webp"><img src="assets/how_run.webp" alt="Нажатие кнопки в порту 1, модуль RGB загорается зелёным" loading="lazy" width="760" height="476"></picture><figcaption><span class="tag"><b class="n ok">4</b>Запусти — работает!</span><span class="cap">кнопка нажата — RGB горит зелёным</span></figcaption></figure><div class="zz-down" aria-hidden="true"><svg viewBox="0 0 60 70"><path d="M30 6C27 26 33 40 30 58" fill="none" stroke="#2D63FF" stroke-width="6" stroke-linecap="round"/><path d="M30 60L18 44M30 60L42 45" fill="none" stroke="#2D63FF" stroke-width="6" stroke-linecap="round"/></svg></div>
+      <svg class="zz-arrows" viewBox="0 0 1680 904" preserveAspectRatio="none" aria-hidden="true"><path d="M179.6 488.4C166.3 391.7 214.0 309.9 332.2 292.3" fill="none" stroke="#2D63FF" stroke-width="7" stroke-linecap="round" opacity="0.92"/><path d="M180.3 487.6C168.7 392.9 216.4 309.5 333.4 293.8" fill="none" stroke="#2D63FF" stroke-width="3.5" stroke-linecap="round" opacity="0.35"/><path d="M332.0 292.0Q321.7 302.5 307.9 309.8" fill="none" stroke="#2D63FF" stroke-width="7" stroke-linecap="round" opacity="0.92"/><path d="M332.0 292.0Q317.7 288.2 307.2 284.2" fill="none" stroke="#2D63FF" stroke-width="7" stroke-linecap="round" opacity="0.92"/><path d="M980.5 340.5C1031.5 349.5 1050.4 420.3 1040.2 489.8" fill="none" stroke="#2D63FF" stroke-width="7" stroke-linecap="round" opacity="0.92"/><path d="M981.9 341.4C1033.9 350.0 1051.4 420.8 1042.3 492.7" fill="none" stroke="#2D63FF" stroke-width="3.5" stroke-linecap="round" opacity="0.35"/><path d="M1040.0 490.0Q1033.7 476.2 1027.1 462.9" fill="none" stroke="#2D63FF" stroke-width="7" stroke-linecap="round" opacity="0.92"/><path d="M1040.0 490.0Q1045.8 477.6 1055.4 469.0" fill="none" stroke="#2D63FF" stroke-width="7" stroke-linecap="round" opacity="0.92"/><path d="M1337.7 664.1C1415.8 656.1 1432.2 521.5 1383.4 418.4" fill="none" stroke="#2D63FF" stroke-width="7" stroke-linecap="round" opacity="0.92"/><path d="M1338.8 664.2C1419.2 657.0 1434.7 523.0 1386.0 418.0" fill="none" stroke="#2D63FF" stroke-width="3.5" stroke-linecap="round" opacity="0.35"/><path d="M1384.0 418.0Q1397.9 426.5 1408.8 434.8" fill="none" stroke="#2D63FF" stroke-width="7" stroke-linecap="round" opacity="0.92"/><path d="M1384.0 418.0Q1383.1 429.2 1380.8 443.8" fill="none" stroke="#2D63FF" stroke-width="7" stroke-linecap="round" opacity="0.92"/></svg>
+      <a class="zz-note" href="https://javohir-g.github.io/qbit-ide/" target="_blank" rel="noopener">Соберите эту программу сами в редакторе →</a>
+    </div>
+  </div>
+</section>
+
+<section class="white" id="product">
+  <div class="wrap">
+    <div class="sec-head"><h2>q.bit station</h2><p>Станция, 32 модуля и редактор — одна система</p></div>
+    <div class="anat">
+      <img src="assets/station_front.webp" alt="Станция q.bit в чёрном корпусе с модулями, вид спереди" loading="lazy" width="2192" height="770" style="left:17.262%;top:19.333%;width:65.476%">
+      <div class="an-label" style="left:0.000%;top:22.667%"><b>Узнаёт модуль</b><span>станция читает его паспорт</span></div><div class="an-label" style="left:0.000%;top:49.333%"><b>8 портов</b><span>модули на магнитах, без проводов</span></div><div class="an-label" style="left:83.929%;top:31.000%"><b>ESP32-S3 и Wi-Fi</b><span>своя точка доступа</span></div><div class="an-label" style="left:83.929%;top:57.667%"><b>Без винтов</b><span>корпус на защёлках</span></div><div class="an-label" style="left:52.381%;top:4.000%"><b>USB-C</b><span>питание и прошивка</span></div><div class="an-label mid" style="left:39.286%;top:86.333%"><b>Аккумулятор</b><span>внутри корпуса</span></div>
+      <svg class="an-lines" viewBox="0 0 1680 600" preserveAspectRatio="none" aria-hidden="true"><path d="M278.1 161.9C378.4 171.3 479.0 181.7 579.2 190.6" fill="none" stroke="#2D63FF" stroke-width="5" stroke-linecap="round" opacity="0.92"/><path d="M279.7 162.5C379.1 174.2 481.9 181.0 581.8 192.4" fill="none" stroke="#2D63FF" stroke-width="2.5" stroke-linecap="round" opacity="0.35"/><circle cx="579.0" cy="191.0" r="9" fill="#2D63FF" stroke="#FFFFFF" stroke-width="3"/><path d="M277.9 322.1C438.4 395.6 594.6 389.4 747.6 303.0" fill="none" stroke="#2D63FF" stroke-width="5" stroke-linecap="round" opacity="0.92"/><path d="M280.0 324.0C438.2 396.1 594.9 391.4 750.2 302.6" fill="none" stroke="#2D63FF" stroke-width="2.5" stroke-linecap="round" opacity="0.35"/><circle cx="748.0" cy="303.0" r="9" fill="#2D63FF" stroke="#FFFFFF" stroke-width="3"/><path d="M1402.0 212.2C1344.6 242.4 1282.5 260.6 1217.7 266.4" fill="none" stroke="#2D63FF" stroke-width="5" stroke-linecap="round" opacity="0.92"/><path d="M1404.2 213.4C1346.2 244.4 1283.6 261.7 1218.5 268.4" fill="none" stroke="#2D63FF" stroke-width="2.5" stroke-linecap="round" opacity="0.35"/><circle cx="1218.0" cy="266.0" r="9" fill="#2D63FF" stroke="#FFFFFF" stroke-width="3"/><path d="M1401.7 372.2C1357.9 363.5 1314.3 367.1 1272.6 384.7" fill="none" stroke="#2D63FF" stroke-width="5" stroke-linecap="round" opacity="0.92"/><path d="M1404.3 371.9C1359.4 363.3 1315.6 368.3 1275.7 386.4" fill="none" stroke="#2D63FF" stroke-width="2.5" stroke-linecap="round" opacity="0.35"/><circle cx="1273.0" cy="385.0" r="9" fill="#2D63FF" stroke="#FFFFFF" stroke-width="3"/><path d="M869.5 76.2C868.6 101.5 858.2 121.7 840.3 139.2" fill="none" stroke="#2D63FF" stroke-width="5" stroke-linecap="round" opacity="0.92"/><path d="M871.0 77.7C869.7 103.0 858.8 122.2 842.9 139.6" fill="none" stroke="#2D63FF" stroke-width="2.5" stroke-linecap="round" opacity="0.35"/><circle cx="840.0" cy="139.0" r="9" fill="#2D63FF" stroke="#FFFFFF" stroke-width="3"/><path d="M840.6 515.4C865.5 501.5 884.2 481.0 895.5 455.2" fill="none" stroke="#2D63FF" stroke-width="5" stroke-linecap="round" opacity="0.92"/><path d="M842.7 518.7C866.0 502.5 885.9 482.0 895.8 455.2" fill="none" stroke="#2D63FF" stroke-width="2.5" stroke-linecap="round" opacity="0.35"/><circle cx="895.0" cy="455.0" r="9" fill="#2D63FF" stroke="#FFFFFF" stroke-width="3"/></svg>
+    </div>
+    <ol class="an-list"><li><b>Узнаёт модуль</b> — станция читает его паспорт</li><li><b>8 портов</b> — модули на магнитах, без проводов</li><li><b>ESP32-S3 и Wi-Fi</b> — своя точка доступа</li><li><b>Без винтов</b> — корпус на защёлках</li><li><b>USB-C</b> — питание и прошивка</li><li><b>Аккумулятор</b> — внутри корпуса</li></ol>
+    <div class="duo">
+      <div class="card"><div><h3>32 модуля</h3><p>кнопки, датчики, дисплеи, моторы</p></div><img src="assets/kit_modules.webp" alt="Три модуля в лотках: кнопка, RGB, зуммер" loading="lazy" width="900" height="227"></div>
+      <div class="card"><div><h3>Блоки и Python</h3><p>редактор qblock и симулятор в браузере · RU · UZ · EN</p></div><img src="assets/blocks_prog.webp" alt="Программа из двух блоков: когда кнопка в порту 1 нажата, RGB в порту 2 загорается зелёным" loading="lazy" width="1238" height="387"></div>
+    </div>
+  </div>
+</section>
+
+<section class="white" id="editor">
+  <div class="wrap ipad">
+    <div>
+      <p class="pill">Редактор</p>
+      <h2>Редактор qblock</h2>
+      <p class="lead">Программа из блоков собирается за минуту и сразу работает — на станции или в симуляторе.</p>
+      <ul class="checks">
+        <li><b>Блоки → Python</b><span>тот же код, когда ребёнок готов</span></li>
+        <li><b>Симулятор станции</b><span>можно учиться без железа</span></li>
+        <li><b>Без установки</b><span>по ссылке или со станции по Wi-Fi</span></li>
+        <li><b>RU · UZ · EN</b><span>русский, узбекский, английский</span></li>
+      </ul>
+      <a class="btn btn-blue" href="https://javohir-g.github.io/qbit-ide/" target="_blank" rel="noopener">Попробовать в браузере</a>
+    </div>
+    <picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/blocks_prog.webp">
+      <img src="assets/qblock_ipad.webp" alt="iPad с редактором qblock: курсор перетаскивает два блока, нажимает «Запустить» и кнопку в симуляторе, RGB станции загорается зелёным" loading="lazy" width="1354" height="994"></picture>
+  </div>
+</section>
+
+<section class="dark" id="kits">
+  <div class="wrap">
+    <div class="sec-head center"><p class="pill pill-dark">Наборы</p><h2>Станция приводит, модули остаются</h2><p>Начните со стартового комплекта и докупайте модули под новые проекты.</p></div>
+    <div class="kits">
+      <article class="kit"><h3>Стартовый комплект</h3><p>Станция и 12 модулей — первая покупка семьи или класса.</p><div class="kit-img"><img src="assets/kit_starter.webp" alt="Станция и модули стартового комплекта" loading="lazy" width="900" height="358"></div></article>
+      <article class="kit"><h3>Дополнительные модули</h3><p>32 типа, докупаются по одному под новый проект.</p><div class="kit-img"><img src="assets/kit_modules.webp" alt="Три модуля в лотках: кнопка, RGB, зуммер" loading="lazy" width="900" height="227"></div></article>
+      <article class="kit"><h3>Образовательный набор</h3><p>Все 32 модуля и уроки — для школ и учебных центров.</p><div class="kit-img"><img src="assets/kit_edu.webp" alt="Станция и модули образовательного набора" loading="lazy" width="900" height="370"></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="white" id="specs">
+  <div class="wrap">
+    <div class="sec-head"><h2>Характеристики</h2></div>
+    <dl class="specs">
+      <div><dt>Процессор</dt><dd>ESP32-S3</dd></div>
+      <div><dt>Связь</dt><dd>своя точка доступа Wi-Fi, USB-C</dd></div>
+      <div><dt>Порты</dt><dd>8, модули на магнитах D4 × 1,5 мм</dd></div>
+      <div><dt>Модули</dt><dd>32 типа: датчики, дисплеи, моторы, звук</dd></div>
+      <div><dt>Питание</dt><dd>аккумулятор внутри корпуса, USB-C</dd></div>
+      <div><dt>Плата</dt><dd>155 × 85 мм, 6 слоёв</dd></div>
+      <div><dt>Прошивка</dt><dd>C на ESP-IDF и MicroPython</dd></div>
+      <div><dt>Редактор</dt><dd>qblock: блоки и Python, симулятор, RU · UZ · EN</dd></div>
+      <div><dt>Корпус</dt><dd>лоток, прозрачная пластина и рамка на защёлках, без винтов</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="blue" id="try">
+  <div class="wrap two">
+    <div>
+      <h2>Попробуйте редактор прямо сейчас</h2>
+      <p class="lead">Симулятор станции работает в браузере — без установки и без железа.</p>
+      <div class="ctas"><a class="btn btn-white" href="https://javohir-g.github.io/qbit-ide/" target="_blank" rel="noopener">Открыть редактор</a></div>
+    </div>
+    <figure class="qr"><img src="assets/qr.png" alt="QR-код: javohir-g.github.io/qbit-ide" width="340" height="340"><figcaption>javohir-g.github.io/qbit-ide</figcaption></figure>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <span class="chip-logo chip-dark"><svg class="px" viewBox="0 0 84 36" height="28" width="65" role="img" aria-label="q.bit"><path fill="#FFFFFF" d="M4 8h16v4h-16zM0 12h4v4h-4zM16 12h4v4h-4zM0 16h4v4h-4zM16 16h4v4h-4zM0 20h4v4h-4zM16 20h4v4h-4zM4 24h16v4h-16zM16 28h4v4h-4zM16 32h4v4h-4zM24 20h8v4h-8zM24 24h8v4h-8zM36 0h4v4h-4zM36 4h4v4h-4zM36 8h16v4h-16zM36 12h4v4h-4zM52 12h4v4h-4zM36 16h4v4h-4zM52 16h4v4h-4zM36 20h4v4h-4zM52 20h4v4h-4zM36 24h16v4h-16zM60 0h4v4h-4zM60 8h4v4h-4zM60 12h4v4h-4zM60 16h4v4h-4zM60 20h4v4h-4zM60 24h4v4h-4zM72 0h4v4h-4zM72 4h4v4h-4zM68 8h16v4h-16zM72 12h4v4h-4zM72 16h4v4h-4zM72 20h4v4h-4zM76 24h8v4h-8z"/></svg></span>
+    <nav aria-label="Ссылки"><a href="#how">Как работает</a><a href="#product">Станция</a><a href="#editor">Редактор</a><a href="#kits">Наборы</a><a href="https://javohir-g.github.io/qbit-ide/" target="_blank" rel="noopener">Редактор онлайн</a></nav>
+    <p>Сделано в Узбекистане · © 2026 q.bit. Характеристики могут измениться.</p>
+  </div>
+</footer>
+</body>
+</html>
