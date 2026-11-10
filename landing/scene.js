@@ -10,7 +10,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const QB = (window.QB = window.QB || {});
-const Q = new URLSearchParams(location.search), num = (k, d) => (Q.has(k) ? +Q.get(k) : d);
+const Q = new URLSearchParams(location.search);
 const doc = document.documentElement, hint = document.querySelector('.hero-hint');
 const rad = THREE.MathUtils.degToRad, clamp = THREE.MathUtils.clamp;
 const ease = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
@@ -202,7 +202,7 @@ function put(obj, x, z, yawDeg, y = TOP) { obj.position.set(x, y, z); obj.rotati
 const FOV = 24, cam = new THREE.PerspectiveCamera(FOV, 16 / 9, 20, 5000);
 cam.up.set(0, 0, -1);                                   // screen up = far side of the desk, also when the camera tilts
 let W = 1, H = 1;
-function distFor(widthPx, planeY) {                     // camera distance at which the station (161.2 mm) is widthPx wide on screen
+function distFor(widthPx) {                     // camera distance at which the station (161.2 mm) is widthPx wide on screen
   return 161.2 / (widthPx / W) / (2 * Math.tan(rad(FOV / 2)) * (W / H));
 }
 function poses() {
@@ -210,7 +210,7 @@ function poses() {
   return {
     hero: { tx: 0, ty: RIM, tz: 0, el: 90, az: 0, d: distFor(sw) },
     near: { tx: 0, ty: RIM, tz: 0, el: 90, az: 0, d: distFor(sw * 1.14) },
-    say: { tx: 0, ty: TOP + 7, tz: 2, el: num('s_el', 54), az: num('s_az', -22), d: distFor(Math.min(0.3 * W, 0.62 * H)) },
+    say: { tx: 0, ty: TOP + 7, tz: 2, el: 54, az: -22, d: distFor(Math.min(0.3 * W, 0.62 * H)) },
   };
 }
 let P = null;
@@ -249,8 +249,7 @@ function overButton(e) {
   ptr.set(e.clientX / W * 2 - 1, -(e.clientY / H) * 2 + 1);
   ray.setFromCamera(ptr, cam); return ray.intersectObject(hitBox).length > 0;
 }
-function press() { pressT = performance.now(); litTo = litTo ? 0 : 1; QB.onLed && QB.onLed(litTo); if (hint) hint.classList.add('done'); dirty = true; }
-QB.pressButton = press;
+function press() { pressT = performance.now(); litTo = litTo ? 0 : 1; if (hint) hint.classList.add('done'); dirty = true; }
 
 // ---------------------------------------------------------------- frame loop (renders only when something changed)
 let dirty = true, hp = 0, yp = 0, mx = 0, my = 0, tmx = 0, tmy = 0, last = 0, envNow = -1, stageNow = -1, live = false, slow = [];
@@ -307,17 +306,17 @@ function frame(now) {
   const mat = new THREE.Group();
   const matMesh = new THREE.Mesh(slab(594, 420, 8, TOP), [new THREE.MeshStandardMaterial({ map: matTex, roughness: 0.78, envMapIntensity: ENV }), new THREE.MeshStandardMaterial({ color: 0x1f47c8, roughness: 0.8, envMapIntensity: ENV })]);
   matMesh.receiveShadow = matMesh.castShadow = true; mat.add(matMesh, contact(594, 420, 8, 3, 0.45));
-  mat.position.set(num('m_x', 186), 0, num('m_z', -96)); mat.rotation.y = rad(num('m_yaw', 3.5)); scene.add(fading(mat));
+  mat.position.set(186, 0, -96); mat.rotation.y = rad(3.5); scene.add(fading(mat));
 
   const st = await station(); put(st, 0, 0, 0);
   fading(st.userData.pad);                              // its shadow pad goes with the mat
-  const loose = [['temphum', num('a_x', -190), num('a_z', -22), 16, 0], ['buzzer', num('b_x', -78), num('b_z', 96), -12, TOP], ['led', num('c_x', 108), num('c_z', 70), -26, TOP]];
+  const loose = [['temphum', -190, -22, 16, 0], ['buzzer', -78, 96, -12, TOP], ['led', 108, 70, -26, TOP]];
   await Promise.all(loose.map(async ([name, x, z, yaw, y]) => {
     const m = await module(name), pad = contact(32.2, 32.2, 5, 1.6, 0.4); pad.position.y = -1.14; m.add(pad);
     put(fading(m), x, z, yaw, y + 1.2);
   }));
-  put(fading(tablet(scrTex)), num('t_x', 292), num('t_z', 184), num('t_yaw', 14));
-  put(fading(stylus()), num('s_x', 64), num('s_z', -116), num('s_yaw', -46));
+  put(fading(tablet(scrTex)), 292, 184, 14);
+  put(fading(stylus()), 64, -116, -46);
   wireDemo();
 
   resize(); addEventListener('resize', resize);

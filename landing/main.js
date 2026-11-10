@@ -70,7 +70,7 @@
   var scenes = $$('[data-scene]').map(function (el) { return { el: el, name: el.dataset.scene, top: 0, h: 0, p: -1, tp: 0, inn: -1, out: -1 }; });
   var byName = {}; scenes.forEach(function (s) { byName[s.name] = s; });
   var secs = [], vh = innerHeight, vw = innerWidth, docH = 1, lastT = 0, running = false;
-  var top = $('.top'), hint = $('.hint'), edge = $('.edge');
+  var hint = $('.hint');
 
   var film = byName.film && { steps: $$('.film-step', byName.film.el), thumbs: $$('.film-thumb', byName.film.el), frame: $('.film-frame', byName.film.el),
     head: $('.film-head', byName.film.el), word: $('.film-word', byName.film.el), kick: $('.film-kicker', byName.film.el), fw: 0, tw: 0 };
@@ -100,7 +100,6 @@
   var H = {
     hero: function (s) { QB.heroP = s.tp; s.el.classList.toggle('gone', s.p > 0.23); },
     say: function (s) { QB.sayP = s.tp; },
-    big: function (s) { if (edge) edge.style.setProperty('--glow', (smooth(0.5, 0.72, s.p) * (1 - smooth(0.9, 1, s.p))).toFixed(3)); },
     film: function (s) {
       var n = film.steps.length, t = clamp((s.p - 0.24) / 0.56, 0, 1) * (n - 1), b = Math.min(Math.floor(t), n - 2);   // the last step rests from 0.8 to the fade at 0.93
       t = b + smooth(0.3, 0.7, t - b);
@@ -198,7 +197,6 @@
       at(3300, function () { doc.classList.add('ready'); });
     };
     QB.fail = done;
-    QB.onLed = function (on) { if (edge) edge.style.setProperty('--led', on ? 1 : 0); };
     import('./scene.js').catch(function (e) { console.warn('hero scene not loaded', e); done(); });
     setTimeout(function () { if (!doc.classList.contains('ui')) done(); }, 25000);
   } else done();

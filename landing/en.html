@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>q.bit station — educational robotics</title>
+<meta name="description" content="q.bit station — an electronics and programming kit for kids aged 7–18: magnetic modules, blocks and Python in the browser.">
+<meta name="theme-color" content="#0A0B0F">
+<link rel="alternate" hreflang="uz" href="index.html">
+<link rel="alternate" hreflang="ru" href="ru.html">
+<link rel="alternate" hreflang="en" href="en.html">
+<link rel="alternate" hreflang="x-default" href="index.html">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500&family=Literata:opsz,wght@7..72,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+<script>if (matchMedia('(min-width: 900px) and (min-height: 520px) and (prefers-reduced-motion: no-preference)').matches && !/[?&](plain|no3d)(=|&|$)/.test(location.search)) document.documentElement.classList.add('loading');</script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<a class="skip" href="#problem">Skip to content</a>
+<div class="loader" aria-hidden="true"><div class="loader-fig"><span class="loader-fill"></span><svg viewBox="-80.6 -45.6 161.2 91.2" aria-hidden="true"><path class="g" d="M-900 -45.6H900M-900 45.6H900M-80.6 -900V900M80.6 -900V900M-900 -43.7H900M-900 43.7H900"/><rect class="o" x="-80.6" y="-45.6" width="161.2" height="91.2" rx="17.0"/><rect class="o o2" x="-78.7" y="-43.7" width="157.4" height="87.4" rx="15.2"/><rect class="k" style="--k:0.060" x="-68.8" y="-33.8" width="32.6" height="32.6" rx=".8"/><rect class="k" style="--k:0.504" x="-33.8" y="-33.8" width="32.6" height="32.6" rx=".8"/><rect class="k" style="--k:0.949" x="1.1999999999999993" y="-33.8" width="32.6" height="32.6" rx=".8"/><rect class="k" style="--k:1.393" x="36.2" y="-33.8" width="32.6" height="32.6" rx=".8"/><rect class="k" style="--k:0.171" x="-68.8" y="1.1999999999999993" width="32.6" height="32.6" rx=".8"/><rect class="k" style="--k:0.616" x="-33.8" y="1.1999999999999993" width="32.6" height="32.6" rx=".8"/><rect class="k" style="--k:1.060" x="1.1999999999999993" y="1.1999999999999993" width="32.6" height="32.6" rx=".8"/><rect class="k" style="--k:1.504" x="36.2" y="1.1999999999999993" width="32.6" height="32.6" rx=".8"/><path class="h" d="M-26 -45.6L26 -45.6"/><rect class="hs" x="-0.9" y="-46.5" width="1.8" height="1.8"/><circle class="hd" cx="-26" cy="-45.6" r="0.75"/><circle class="hd" cx="26" cy="-45.6" r="0.75"/><path class="h" d="M-26 45.6L26 45.6"/><rect class="hs" x="-0.9" y="44.7" width="1.8" height="1.8"/><circle class="hd" cx="-26" cy="45.6" r="0.75"/><circle class="hd" cx="26" cy="45.6" r="0.75"/><path class="h" d="M-80.6 -20L-80.6 20"/><rect class="hs" x="-81.5" y="-0.9" width="1.8" height="1.8"/><circle class="hd" cx="-80.6" cy="-20" r="0.75"/><circle class="hd" cx="-80.6" cy="20" r="0.75"/><path class="h" d="M80.6 -20L80.6 20"/><rect class="hs" x="79.69999999999999" y="-0.9" width="1.8" height="1.8"/><circle class="hd" cx="80.6" cy="-20" r="0.75"/><circle class="hd" cx="80.6" cy="20" r="0.75"/><path class="h" d="M-15 -43.7L15 -43.7"/><rect class="hs" x="-0.7200000000000001" y="-44.42" width="1.4400000000000002" height="1.4400000000000002"/><circle class="hd" cx="-15" cy="-43.7" r="0.6000000000000001"/><circle class="hd" cx="15" cy="-43.7" r="0.6000000000000001"/><path class="h" d="M-15 43.7L15 43.7"/><rect class="hs" x="-0.7200000000000001" y="42.980000000000004" width="1.4400000000000002" height="1.4400000000000002"/><circle class="hd" cx="-15" cy="43.7" r="0.6000000000000001"/><circle class="hd" cx="15" cy="43.7" r="0.6000000000000001"/><path class="h" d="M-78.7 -11L-78.7 11"/><rect class="hs" x="-79.42" y="-0.7200000000000001" width="1.4400000000000002" height="1.4400000000000002"/><circle class="hd" cx="-78.7" cy="-11" r="0.6000000000000001"/><circle class="hd" cx="-78.7" cy="11" r="0.6000000000000001"/><path class="h" d="M78.7 -11L78.7 11"/><rect class="hs" x="77.98" y="-0.7200000000000001" width="1.4400000000000002" height="1.4400000000000002"/><circle class="hd" cx="78.7" cy="-11" r="0.6000000000000001"/><circle class="hd" cx="78.7" cy="11" r="0.6000000000000001"/></svg></div></div>
+<div class="bg" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="top-l">
+    <a class="top-logo" href="#top" aria-label="q.bit station — back to top"><i class="top-dot"></i><svg class="px" viewBox="0 0 84 36" role="img" aria-label="q.bit"><path d="M4 8h16v4h-16zM0 12h4v4h-4zM16 12h4v4h-4zM0 16h4v4h-4zM16 16h4v4h-4zM0 20h4v4h-4zM16 20h4v4h-4zM4 24h16v4h-16zM16 28h4v4h-4zM16 32h4v4h-4zM24 20h8v4h-8zM24 24h8v4h-8zM36 0h4v4h-4zM36 4h4v4h-4zM36 8h16v4h-16zM36 12h4v4h-4zM52 12h4v4h-4zM36 16h4v4h-4zM52 16h4v4h-4zM36 20h4v4h-4zM52 20h4v4h-4zM36 24h16v4h-16zM60 0h4v4h-4zM60 8h4v4h-4zM60 12h4v4h-4zM60 16h4v4h-4zM60 20h4v4h-4zM60 24h4v4h-4zM72 0h4v4h-4zM72 4h4v4h-4zM68 8h16v4h-16zM72 12h4v4h-4zM72 16h4v4h-4zM72 20h4v4h-4zM76 24h8v4h-8z"/></svg></a>
+    <nav class="lang" aria-label="Language"><a href="index.html" hreflang="uz" lang="uz">UZ</a><a href="ru.html" hreflang="ru" lang="ru">RU</a><a href="en.html" hreflang="en" lang="en" aria-current="true">EN</a></nav>
+  </div>
+  <nav class="top-nav" aria-label="Sections"><a href="#how">How it works</a><a href="#station">Station</a><a href="#modules">Modules</a><a href="#editor">Editor</a><a href="#kits">Kits</a></nav>
+</header>
+<a class="side" href="https://javohir-g.github.io/qbit-ide/?lang=en" target="_blank" rel="noopener"><span><i></i>Open the editor</span></a>
+<p class="hint" aria-hidden="true"><i></i>Scroll down</p>
+
+<main>
+<section class="hero" id="top" data-scene="hero">
+  <div class="pin">
+    <div class="hero-stage"><img class="hero-poster" src="assets/cover_scene3d_v2.jpg" alt="The q.bit station in a black case with modules on a blue mat, next to loose modules, a tablet with a block program and a stylus" width="2880" height="1620"></div>
+    <div class="hero-ui">
+      <p class="up hero-tag">Magnetic modules. Programs made of blocks.</p>
+      <h1 class="hero-mark" aria-label="q.bit station"><svg class="px" viewBox="0 0 84 36" role="img" aria-label="q.bit"><path d="M4 8h16v4h-16zM0 12h4v4h-4zM16 12h4v4h-4zM0 16h4v4h-4zM16 16h4v4h-4zM0 20h4v4h-4zM16 20h4v4h-4zM4 24h16v4h-16zM16 28h4v4h-4zM16 32h4v4h-4zM24 20h8v4h-8zM24 24h8v4h-8zM36 0h4v4h-4zM36 4h4v4h-4zM36 8h16v4h-16zM36 12h4v4h-4zM52 12h4v4h-4zM36 16h4v4h-4zM52 16h4v4h-4zM36 20h4v4h-4zM52 20h4v4h-4zM36 24h16v4h-16zM60 0h4v4h-4zM60 8h4v4h-4zM60 12h4v4h-4zM60 16h4v4h-4zM60 20h4v4h-4zM60 24h4v4h-4zM72 0h4v4h-4zM72 4h4v4h-4zM68 8h16v4h-16zM72 12h4v4h-4zM72 16h4v4h-4zM72 20h4v4h-4zM76 24h8v4h-8z"/></svg></h1>
+      <p class="hero-lead">An electronics and programming kit for kids aged <span class="nw">7–18</span>. The first result comes in the very first lesson.</p>
+      <div class="hero-card"><p class="up">Educational robotics within everyone’s reach.</p><i class="dots"></i><p class="hero-card-s">q.bit station.<br>Made<br>in Uzbekistan.</p></div>
+      <button class="hero-hint" type="button"><i></i><span>Press the button</span></button>
+    </div>
+  </div>
+</section>
+
+<section class="say" id="problem" data-scene="say">
+  <div class="pin">
+    <h2 class="up say-title" data-split="words">Getting into robotics is hard.</h2>
+    <p class="say-text" data-split="words">There is too much to learn before the first result.*</p>
+    <p class="up say-note"><i class="dots"></i>* Wires, circuits,<br>drivers</p>
+  </div>
+</section>
+<section class="list" aria-label="What gets in the way">
+  <ol class="rows" data-reveal><li class="row"><span class="num">[ 01 ]</span><h3 class="up">Wires</h3><p>One mistake in the circuit and nothing works.</p><span class="row-x" aria-hidden="true">×</span></li><li class="row"><span class="num">[ 02 ]</span><h3 class="up">Electronics</h3><p>Circuits have to make sense before the interest comes.</p><span class="row-x" aria-hidden="true">×</span></li><li class="row"><span class="num">[ 03 ]</span><h3 class="up">Setup</h3><p>Drivers, a development environment, a computer.</p><span class="row-x" aria-hidden="true">×</span></li></ol>
+</section>
+
+<section class="big" id="solution" data-scene="big">
+  <div class="pin">
+    <h2 class="big-title" data-split="letters"><span class="ln">Connect.</span><span class="ln">Code.</span><span class="ln">Create.</span></h2>
+    <p class="up big-label">q.bit station</p>
+    <img class="big-img" src="assets/station_34.webp" alt="The q.bit station in a black case with modules in its ports" loading="lazy" width="1600" height="827">
+    <p class="up big-cap">No wires, no soldering.<br>Nothing to install.<br>Blocks → Python.</p>
+    <p class="big-lead">Magnetic modules and a block program in the browser. The first result comes in the very first lesson.</p>
+  </div>
+</section>
+
+<section class="film" id="how" data-scene="film">
+  <div class="pin">
+    <div class="film-head"><p class="up film-kicker">Four steps:</p><h2 class="film-word">how it works</h2></div>
+    <p class="film-intro">One example from start to finish: a button in port 1 turns on the RGB in port 2.</p>
+    <div class="film-frame" aria-hidden="true"><i></i></div>
+    <div class="film-thumbs" aria-hidden="true"><img class="film-thumb" style="--i:0" src="assets/mod_rgb.webp" alt="" loading="lazy" width="380" height="238"><img class="film-thumb" style="--i:1" src="assets/station_top.webp" alt="" loading="lazy" width="380" height="238"><img class="film-thumb" style="--i:2" src="assets/blocks_prog.webp" alt="" loading="lazy" width="380" height="238"><img class="film-thumb" style="--i:3" src="assets/station_34.webp" alt="" loading="lazy" width="380" height="238"></div>
+    <ol class="film-steps"><li class="film-step" style="--i:0"><div class="film-shot"><picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/mod_rgb.webp"><img src="assets/how_snap.webp" alt="The RGB module drops into port 2 of the station and lands on its magnets" loading="lazy" width="760" height="476"></picture></div><div class="film-cap"><p class="num">[ 1/4 ]</p><h3 class="up">Snap a module in</h3><p>Magnets hold it, contacts carry the signal.</p></div></li><li class="film-step" style="--i:1"><div class="film-shot"><picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/station_top.webp"><img src="assets/how_recog.webp" alt="A wave spreads from the port, the LED blinks, the label “RGB · port 2” appears" loading="lazy" width="760" height="476"></picture></div><div class="film-cap"><p class="num">[ 2/4 ]</p><h3 class="up">The station knows it</h3><p>Module type and port show at once.</p></div></li><li class="film-step" style="--i:2"><div class="film-shot"><picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/blocks_prog.webp"><img src="assets/how_blocks.webp" alt="The block “RGB port 2 color green” snaps under the block “when button port 1 pressed”" loading="lazy" width="760" height="476"></picture></div><div class="film-cap"><p class="num">[ 3/4 ]</p><h3 class="up">Build a program</h3><p>Blocks in the browser, nothing to install.</p></div></li><li class="film-step" style="--i:3"><div class="film-shot"><picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/station_34.webp"><img src="assets/how_run.webp" alt="The button in port 1 is pressed, the RGB module lights up green" loading="lazy" width="760" height="476"></picture></div><div class="film-cap"><p class="num">[ 4/4 ]</p><h3 class="up">Run it — it works!</h3><p>Press the button, the RGB lights up green.</p></div></li></ol>
+    <a class="film-link" href="https://javohir-g.github.io/qbit-ide/?lang=en" target="_blank" rel="noopener">Build this program yourself in the editor<svg class="arr" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12L12 4M6 4h6v6"/></svg></a>
+  </div>
+</section>
+
+<section class="feat" id="station" data-scene="feat">
+  <div class="pin">
+    <div class="feat-head"><h2 class="up">q.bit station</h2><p>The station, 32 modules and the editor — one system</p></div>
+    <div class="feat-view"><div class="feat-fig"><img src="assets/station_front.webp" alt="The q.bit station in a black case with modules, front view" loading="lazy" width="2192" height="770"><i class="feat-mark" aria-hidden="true"><b></b></i></div></div>
+    <ol class="feat-list"><li class="feat-item" style="--i:0" data-x="0.263" data-y="0.194"><span class="feat-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="3"/><path d="M9 12l2 2 4-4"/></svg></span><p class="num">[ 1/5 ]</p><h3 class="up feat-title">Knows the module</h3><p class="up feat-sub">The station reads its passport</p><p class="feat-body">Every module carries a passport. The station reads it and knows at once what is plugged in and where.</p><p class="feat-spec"><span class="up">Type and port</span><b class="serif">at once</b></p></li><li class="feat-item" style="--i:1" data-x="0.416" data-y="0.484"><span class="feat-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="3.6" height="3.6" rx=".8"/><rect x="8" y="7" width="3.6" height="3.6" rx=".8"/><rect x="13" y="7" width="3.6" height="3.6" rx=".8"/><rect x="18" y="7" width="3.6" height="3.6" rx=".8"/><rect x="3" y="13.4" width="3.6" height="3.6" rx=".8"/><rect x="8" y="13.4" width="3.6" height="3.6" rx=".8"/><rect x="13" y="13.4" width="3.6" height="3.6" rx=".8"/><rect x="18" y="13.4" width="3.6" height="3.6" rx=".8"/></svg></span><p class="num">[ 2/5 ]</p><h3 class="up feat-title">8 ports</h3><p class="up feat-sub">Magnetic modules, no wires</p><p class="feat-body">A module lands on magnets: they hold it, the contacts carry the signal. No wires, no soldering.</p><p class="feat-spec"><span class="up">Ports</span><b class="serif">8</b></p></li><li class="feat-item" style="--i:2" data-x="0.844" data-y="0.388"><span class="feat-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 9.5a12 12 0 0117 0M6.5 12.8a7.8 7.8 0 0111 0M9.5 16a3.6 3.6 0 015 0"/><circle cx="12" cy="19" r=".9"/></svg></span><p class="num">[ 3/5 ]</p><h3 class="up feat-title">ESP32-S3 and Wi-Fi</h3><p class="up feat-sub">Its own access point</p><p class="feat-body">The station runs its own Wi-Fi access point. The editor opens from a link or straight from the station.</p><p class="feat-spec"><span class="up">Processor</span><b class="serif">ESP32-S3</b></p></li><li class="feat-item" style="--i:3" data-x="0.5" data-y="0.06"><span class="feat-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8.5" width="18" height="7" rx="3.5"/><path d="M7.5 12h9"/></svg></span><p class="num">[ 4/5 ]</p><h3 class="up feat-title">USB-C</h3><p class="up feat-sub">Power and firmware</p><p class="feat-body">One USB-C port for both power and firmware.</p><p class="feat-spec"><span class="up">Power and firmware</span><b class="serif">USB-C</b></p></li><li class="feat-item" style="--i:4" data-x="0.55" data-y="0.877"><span class="feat-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="16" height="8" rx="2"/><path d="M21 10.8v2.4M7 10.8v2.4M10.2 10.8v2.4"/></svg></span><p class="num">[ 5/5 ]</p><h3 class="up feat-title">Battery</h3><p class="up feat-sub">Inside the case</p><p class="feat-body">The battery sits inside the case: the station works away from a socket.</p><p class="feat-spec"><span class="up">Power</span><b class="serif">cordless</b></p></li></ol>
+  </div>
+</section>
+
+<section class="flip" id="modules" data-scene="flip">
+  <div class="pin">
+    <p class="up flip-top">Bought one at a time</p>
+    <div class="flip-block"><p class="up flip-kicker">Buttons, sensors, displays, motors</p>
+      <h2 class="flip-word" data-fit>32 modules</h2>
+      <p class="flip-text">32 module types.<br>A new project, a new module.</p></div>
+  </div>
+</section>
+<section class="cards" data-tone="ink" aria-label="Modules">
+  <div class="cards-row" data-reveal>
+    <article class="card"><h3 class="up">Snap onto<br>magnets</h3><img src="assets/mod_rgb.webp" alt="The RGB module in its tray" loading="lazy" width="640" height="420"><p>Magnets hold, contacts carry the signal. No wires, no soldering.</p></article>
+    <article class="card"><h3 class="up">32 types</h3><div class="chips" aria-label="All module types"><span>Button</span><span>Potentiometer</span><span>Slider</span><span>Touch button</span><span>Encoder</span><span>Joystick</span><span>Keypad</span><span>Temperature & humidity</span><span>Light</span><span>Pressure</span><span>Color sensor</span><span>Air quality</span><span>Motion</span><span>Ultrasonic</span><span>Gyroscope</span><span>Compass</span><span>Hall sensor</span><span>Tilt</span><span>IR receiver</span><span>Gestures</span><span>Pulse</span><span>LED</span><span>RGB</span><span>OLED display</span><span>Buzzer</span><span>Servo</span><span>Motor</span><span>Relay</span><span>IR transmitter</span><span>Prototyping module</span><span>RFID</span><span>Clock</span></div><p>Buttons, sensors, displays, motors and sound.</p></article>
+  </div>
+  <ul class="mods" data-reveal><li class="mod"><img src="assets/mod_button.webp" alt="The “Button” module in its tray" loading="lazy" width="640" height="420"><p class="up">Button</p><p class="num">[ input ]</p></li><li class="mod"><img src="assets/mod_pot.webp" alt="The “Potentiometer” module in its tray" loading="lazy" width="640" height="420"><p class="up">Potentiometer</p><p class="num">[ input ]</p></li><li class="mod"><img src="assets/mod_rgb.webp" alt="The “RGB LED” module in its tray" loading="lazy" width="640" height="420"><p class="up">RGB LED</p><p class="num">[ light ]</p></li><li class="mod"><img src="assets/mod_led.webp" alt="The “LED” module in its tray" loading="lazy" width="640" height="420"><p class="up">LED</p><p class="num">[ light ]</p></li><li class="mod"><img src="assets/mod_buzzer.webp" alt="The “Buzzer” module in its tray" loading="lazy" width="640" height="420"><p class="up">Buzzer</p><p class="num">[ sound ]</p></li><li class="mod"><img src="assets/mod_oled.webp" alt="The “OLED display” module in its tray" loading="lazy" width="640" height="420"><p class="up">OLED display</p><p class="num">[ display ]</p></li><li class="mod"><img src="assets/mod_temphum.webp" alt="The “Temperature & humidity” module in its tray" loading="lazy" width="640" height="420"><p class="up">Temperature & humidity</p><p class="num">[ sensor ]</p></li><li class="mod"><img src="assets/mod_ultrasonic.webp" alt="The “Distance, ultrasonic” module in its tray" loading="lazy" width="640" height="420"><p class="up">Distance, ultrasonic</p><p class="num">[ sensor ]</p></li></ul>
+</section>
+
+<section class="editor" id="editor">
+  <div class="center" data-reveal><p class="up kick">Blocks and Python</p><h2 class="up">The qblock editor</h2><p class="lead">A block program comes together in a minute and runs right away — on the station or in the simulator.</p></div>
+  <div class="editor-fig" data-reveal><picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/qblock_ipad_still.webp"><img src="assets/qblock_ipad.webp" alt="An iPad with the qblock editor: the cursor drags two blocks, presses Run and the button in the simulator, the station’s RGB lights up green" loading="lazy" width="1354" height="979"></picture></div>
+  <div class="b2p" data-reveal>
+    <figure class="b2p-blocks"><figcaption class="up">Blocks</figcaption><img src="assets/blocks_prog.webp" alt="A two-block program: when the button in port 1 is pressed, the RGB in port 2 lights up green" loading="lazy" width="1238" height="387"></figure>
+    <span class="b2p-arrow" aria-hidden="true">→</span>
+    <figure class="b2p-code"><figcaption class="up">Python</figcaption><pre><code><span class="k">import</span> qbit
+
+<span class="k">async def</span> <span class="f">when_button_p1_press</span>():
+    qbit.rgb(<span class="n">2</span>).color(<span class="s">'green'</span>)
+
+qbit.button(<span class="n">1</span>).when(<span class="s">'press'</span>, when_button_p1_press)
+qbit.run()</code></pre></figure>
+  </div>
+  <ol class="rows" data-reveal><li class="row"><span class="num">[ 01 ]</span><h3 class="up">Blocks → Python</h3><p>The same code, when the child is ready.</p><span class="row-ok" aria-hidden="true"></span></li><li class="row"><span class="num">[ 02 ]</span><h3 class="up">Nothing to install</h3><p>From a link or from the station over Wi-Fi.</p><span class="row-ok" aria-hidden="true"></span></li><li class="row"><span class="num">[ 03 ]</span><h3 class="up">UZ · RU · EN</h3><p>Uzbek, Russian and English.</p><span class="row-ok" aria-hidden="true"></span></li></ol>
+  <p class="center" data-reveal><a class="pill" href="https://javohir-g.github.io/qbit-ide/?lang=en" target="_blank" rel="noopener">Try it in the browser<svg class="arr" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12L12 4M6 4h6v6"/></svg></a></p>
+</section>
+
+<section class="shelf" id="kits" data-scene="shelf">
+  <div class="pin">
+    <div class="shelf-track"><div class="shelf-head"><p class="up kick">Kits</p><h2 class="up">Start with the station,<br>grow with the modules</h2><p>Begin with the starter kit and add modules for new projects.</p></div><article class="panel panel-1" style="--i:0"><p class="up panel-cap">Starter kit<span>The station and 12 modules — the first buy for a family or a class.</span></p><h3 class="panel-word">Starter</h3><img src="assets/kit_starter.webp" alt="Station and modules of the starter kit" loading="lazy" width="900" height="358"></article><article class="panel panel-2" style="--i:1"><p class="up panel-cap">Extra modules<span>32 types, bought one at a time for a new project.</span></p><h3 class="panel-word">Modules</h3><img src="assets/kit_modules.webp" alt="Three modules in trays: button, RGB, buzzer" loading="lazy" width="900" height="227"></article><article class="panel panel-3" style="--i:2"><p class="up panel-cap">Education kit<span>All 32 modules and lessons — for schools and learning centers.</span></p><h3 class="panel-word">Schools</h3><img src="assets/kit_edu.webp" alt="Station and modules of the education kit" loading="lazy" width="900" height="370"></article></div>
+  </div>
+</section>
+<section class="pick" aria-label="Kit comparison">
+  <div class="center" data-reveal><p class="up kick">Choose your</p><h2 class="pick-word">kit</h2></div>
+  <div class="pick-scroll" data-reveal><table class="pick-table"><thead><tr><th scope="col"><span class="new">Kit 1</span><b>Starter kit</b><span class="th-desc">The station and 12 modules — the first buy for a family or a class.</span></th><th scope="col"><span class="new">Kit 2</span><b>Extra modules</b><span class="th-desc">32 types, bought one at a time for a new project.</span></th><th scope="col"><span class="new">Kit 3</span><b>Education kit</b><span class="th-desc">All 32 modules and lessons — for schools and learning centers.</span></th></tr></thead><tbody><tr><td><span class="td-lab up">Station:</span><span class="up">Yes</span></td><td><span class="td-lab up">Station:</span><span class="up">—</span></td><td><span class="td-lab up">Station:</span><span class="up">Yes</span></td></tr><tr><td><span class="td-lab up">Modules:</span><span class="up">12</span></td><td><span class="td-lab up">Modules:</span><span class="up">One at a time, 32 types</span></td><td><span class="td-lab up">Modules:</span><span class="up">All 32</span></td></tr><tr><td><span class="td-lab up">Lessons:</span><span class="up">—</span></td><td><span class="td-lab up">Lessons:</span><span class="up">—</span></td><td><span class="td-lab up">Lessons:</span><span class="up">Yes</span></td></tr><tr><td><span class="td-lab up">For:</span><span class="up">Family or class</span></td><td><span class="td-lab up">For:</span><span class="up">A new project</span></td><td><span class="td-lab up">For:</span><span class="up">Schools and learning centers</span></td></tr></tbody></table></div>
+</section>
+
+<section class="specs" id="specs">
+  <div class="specs-in">
+    <div data-reveal><p class="up kick">Specifications</p><h2 class="specs-word"><svg class="px" viewBox="0 0 41 7" aria-hidden="true"><path d="M1 0h4v1h-4zM0 1h1v1h-1zM0 2h1v1h-1zM1 3h3v1h-3zM4 4h1v1h-1zM4 5h1v1h-1zM0 6h4v1h-4zM6 0h5v1h-5zM8 1h1v1h-1zM8 2h1v1h-1zM8 3h1v1h-1zM8 4h1v1h-1zM8 5h1v1h-1zM8 6h1v1h-1zM13 0h3v1h-3zM12 1h1v1h-1zM16 1h1v1h-1zM12 2h1v1h-1zM16 2h1v1h-1zM12 3h5v1h-5zM12 4h1v1h-1zM16 4h1v1h-1zM12 5h1v1h-1zM16 5h1v1h-1zM12 6h1v1h-1zM16 6h1v1h-1zM18 0h5v1h-5zM20 1h1v1h-1zM20 2h1v1h-1zM20 3h1v1h-1zM20 4h1v1h-1zM20 5h1v1h-1zM20 6h1v1h-1zM25 0h3v1h-3zM26 1h1v1h-1zM26 2h1v1h-1zM26 3h1v1h-1zM26 4h1v1h-1zM26 5h1v1h-1zM25 6h3v1h-3zM31 0h3v1h-3zM30 1h1v1h-1zM34 1h1v1h-1zM30 2h1v1h-1zM34 2h1v1h-1zM30 3h1v1h-1zM34 3h1v1h-1zM30 4h1v1h-1zM34 4h1v1h-1zM30 5h1v1h-1zM34 5h1v1h-1zM31 6h3v1h-3zM36 0h1v1h-1zM40 0h1v1h-1zM36 1h1v1h-1zM40 1h1v1h-1zM36 2h2v1h-2zM40 2h1v1h-1zM36 3h1v1h-1zM38 3h1v1h-1zM40 3h1v1h-1zM36 4h1v1h-1zM39 4h2v1h-2zM36 5h1v1h-1zM40 5h1v1h-1zM36 6h1v1h-1zM40 6h1v1h-1z"/></svg></h2></div>
+    <dl class="rows" data-reveal><div class="row"><dt class="up">Processor</dt><dd>ESP32-S3</dd></div><div class="row"><dt class="up">Connectivity</dt><dd>its own Wi-Fi access point, USB-C</dd></div><div class="row"><dt class="up">Ports</dt><dd>8, magnetic modules</dd></div><div class="row"><dt class="up">Modules</dt><dd>32 types: sensors, displays, motors, sound</dd></div><div class="row"><dt class="up">Power</dt><dd>battery inside the case, USB-C</dd></div><div class="row"><dt class="up">Firmware</dt><dd>C on ESP-IDF and MicroPython</dd></div><div class="row"><dt class="up">Editor</dt><dd>qblock: blocks and Python, simulator, UZ · RU · EN</dd></div></dl>
+    <p class="specs-note" data-reveal>Specifications may change.</p>
+  </div>
+</section>
+
+<section class="end" id="try">
+  <div class="end-main" data-reveal>
+    <span class="end-logo"><svg class="px" viewBox="0 0 84 36" role="img" aria-label="q.bit"><path d="M4 8h16v4h-16zM0 12h4v4h-4zM16 12h4v4h-4zM0 16h4v4h-4zM16 16h4v4h-4zM0 20h4v4h-4zM16 20h4v4h-4zM4 24h16v4h-16zM16 28h4v4h-4zM16 32h4v4h-4zM24 20h8v4h-8zM24 24h8v4h-8zM36 0h4v4h-4zM36 4h4v4h-4zM36 8h16v4h-16zM36 12h4v4h-4zM52 12h4v4h-4zM36 16h4v4h-4zM52 16h4v4h-4zM36 20h4v4h-4zM52 20h4v4h-4zM36 24h16v4h-16zM60 0h4v4h-4zM60 8h4v4h-4zM60 12h4v4h-4zM60 16h4v4h-4zM60 20h4v4h-4zM60 24h4v4h-4zM72 0h4v4h-4zM72 4h4v4h-4zM68 8h16v4h-16zM72 12h4v4h-4zM72 16h4v4h-4zM72 20h4v4h-4zM76 24h8v4h-8z"/></svg></span>
+    <div class="end-text"><h2 class="up">Try the editor right now.</h2><p class="up">The editor runs in the browser — nothing to install.</p>
+      <a class="pill" href="https://javohir-g.github.io/qbit-ide/?lang=en" target="_blank" rel="noopener">Open the editor<svg class="arr" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12L12 4M6 4h6v6"/></svg></a></div>
+  </div>
+  <footer class="foot">
+    <figure class="foot-qr"><img src="assets/qr.png" alt="QR code: javohir-g.github.io/qbit-ide" loading="lazy" width="528" height="528"><figcaption class="up">Editor<br>online<span>javohir-g.github.io/qbit-ide</span></figcaption></figure>
+    <nav class="foot-nav up" aria-label="Links"><a href="#how">How it works</a><a href="#station">Station</a><a href="#modules">Modules</a><a href="#editor">Editor</a><a href="#kits">Kits</a><a href="#specs">Specs</a></nav>
+    <nav class="lang lang-foot" aria-label="Language"><a href="index.html" hreflang="uz" lang="uz">UZ</a><a href="ru.html" hreflang="ru" lang="ru">RU</a><a href="en.html" hreflang="en" lang="en" aria-current="true">EN</a></nav>
+    <p class="up foot-note">Made in Uzbekistan<br>© 2026 q.bit</p>
+  </footer>
+</section>
+</main>
+<script src="main.js"></script>
+</body>
+</html>

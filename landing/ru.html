@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>q.bit station — образовательная робототехника</title>
+<meta name="description" content="q.bit station — конструктор электроники и программирования для детей 7–18 лет: модули на магнитах, блоки и Python в браузере.">
+<meta name="theme-color" content="#0A0B0F">
+<link rel="alternate" hreflang="uz" href="index.html">
+<link rel="alternate" hreflang="ru" href="ru.html">
+<link rel="alternate" hreflang="en" href="en.html">
+<link rel="alternate" hreflang="x-default" href="index.html">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500&family=Literata:opsz,wght@7..72,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+<script>if (matchMedia('(min-width: 900px) and (min-height: 520px) and (prefers-reduced-motion: no-preference)').matches && !/[?&](plain|no3d)(=|&|$)/.test(location.search)) document.documentElement.classList.add('loading');</script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<a class="skip" href="#problem">К содержанию</a>
+<div class="loader" aria-hidden="true"><div class="loader-fig"><span class="loader-fill"></span><svg viewBox="-80.6 -45.6 161.2 91.2" aria-hidden="true"><path class="g" d="M-900 -45.6H900M-900 45.6H900M-80.6 -900V900M80.6 -900V900M-900 -43.7H900M-900 43.7H900"/><rect class="o" x="-80.6" y="-45.6" width="161.2" height="91.2" rx="17.0"/><rect class="o o2" x="-78.7" y="-43.7" width="157.4" height="87.4" rx="15.2"/><rect class="k" style="--k:0.060" x="-68.8" y="-33.8" width="32.6" height="32.6" rx=".8"/><rect class="k" style="--k:0.504" x="-33.8" y="-33.8" width="32.6" height="32.6" rx=".8"/><rect class="k" style="--k:0.949" x="1.1999999999999993" y="-33.8" width="32.6" height="32.6" rx=".8"/><rect class="k" style="--k:1.393" x="36.2" y="-33.8" width="32.6" height="32.6" rx=".8"/><rect class="k" style="--k:0.171" x="-68.8" y="1.1999999999999993" width="32.6" height="32.6" rx=".8"/><rect class="k" style="--k:0.616" x="-33.8" y="1.1999999999999993" width="32.6" height="32.6" rx=".8"/><rect class="k" style="--k:1.060" x="1.1999999999999993" y="1.1999999999999993" width="32.6" height="32.6" rx=".8"/><rect class="k" style="--k:1.504" x="36.2" y="1.1999999999999993" width="32.6" height="32.6" rx=".8"/><path class="h" d="M-26 -45.6L26 -45.6"/><rect class="hs" x="-0.9" y="-46.5" width="1.8" height="1.8"/><circle class="hd" cx="-26" cy="-45.6" r="0.75"/><circle class="hd" cx="26" cy="-45.6" r="0.75"/><path class="h" d="M-26 45.6L26 45.6"/><rect class="hs" x="-0.9" y="44.7" width="1.8" height="1.8"/><circle class="hd" cx="-26" cy="45.6" r="0.75"/><circle class="hd" cx="26" cy="45.6" r="0.75"/><path class="h" d="M-80.6 -20L-80.6 20"/><rect class="hs" x="-81.5" y="-0.9" width="1.8" height="1.8"/><circle class="hd" cx="-80.6" cy="-20" r="0.75"/><circle class="hd" cx="-80.6" cy="20" r="0.75"/><path class="h" d="M80.6 -20L80.6 20"/><rect class="hs" x="79.69999999999999" y="-0.9" width="1.8" height="1.8"/><circle class="hd" cx="80.6" cy="-20" r="0.75"/><circle class="hd" cx="80.6" cy="20" r="0.75"/><path class="h" d="M-15 -43.7L15 -43.7"/><rect class="hs" x="-0.7200000000000001" y="-44.42" width="1.4400000000000002" height="1.4400000000000002"/><circle class="hd" cx="-15" cy="-43.7" r="0.6000000000000001"/><circle class="hd" cx="15" cy="-43.7" r="0.6000000000000001"/><path class="h" d="M-15 43.7L15 43.7"/><rect class="hs" x="-0.7200000000000001" y="42.980000000000004" width="1.4400000000000002" height="1.4400000000000002"/><circle class="hd" cx="-15" cy="43.7" r="0.6000000000000001"/><circle class="hd" cx="15" cy="43.7" r="0.6000000000000001"/><path class="h" d="M-78.7 -11L-78.7 11"/><rect class="hs" x="-79.42" y="-0.7200000000000001" width="1.4400000000000002" height="1.4400000000000002"/><circle class="hd" cx="-78.7" cy="-11" r="0.6000000000000001"/><circle class="hd" cx="-78.7" cy="11" r="0.6000000000000001"/><path class="h" d="M78.7 -11L78.7 11"/><rect class="hs" x="77.98" y="-0.7200000000000001" width="1.4400000000000002" height="1.4400000000000002"/><circle class="hd" cx="78.7" cy="-11" r="0.6000000000000001"/><circle class="hd" cx="78.7" cy="11" r="0.6000000000000001"/></svg></div></div>
+<div class="bg" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="top-l">
+    <a class="top-logo" href="#top" aria-label="q.bit station — наверх"><i class="top-dot"></i><svg class="px" viewBox="0 0 84 36" role="img" aria-label="q.bit"><path d="M4 8h16v4h-16zM0 12h4v4h-4zM16 12h4v4h-4zM0 16h4v4h-4zM16 16h4v4h-4zM0 20h4v4h-4zM16 20h4v4h-4zM4 24h16v4h-16zM16 28h4v4h-4zM16 32h4v4h-4zM24 20h8v4h-8zM24 24h8v4h-8zM36 0h4v4h-4zM36 4h4v4h-4zM36 8h16v4h-16zM36 12h4v4h-4zM52 12h4v4h-4zM36 16h4v4h-4zM52 16h4v4h-4zM36 20h4v4h-4zM52 20h4v4h-4zM36 24h16v4h-16zM60 0h4v4h-4zM60 8h4v4h-4zM60 12h4v4h-4zM60 16h4v4h-4zM60 20h4v4h-4zM60 24h4v4h-4zM72 0h4v4h-4zM72 4h4v4h-4zM68 8h16v4h-16zM72 12h4v4h-4zM72 16h4v4h-4zM72 20h4v4h-4zM76 24h8v4h-8z"/></svg></a>
+    <nav class="lang" aria-label="Язык"><a href="index.html" hreflang="uz" lang="uz">UZ</a><a href="ru.html" hreflang="ru" lang="ru" aria-current="true">RU</a><a href="en.html" hreflang="en" lang="en">EN</a></nav>
+  </div>
+  <nav class="top-nav" aria-label="Разделы"><a href="#how">Как работает</a><a href="#station">Станция</a><a href="#modules">Модули</a><a href="#editor">Редактор</a><a href="#kits">Наборы</a></nav>
+</header>
+<a class="side" href="https://javohir-g.github.io/qbit-ide/?lang=ru" target="_blank" rel="noopener"><span><i></i>Открыть редактор</span></a>
+<p class="hint" aria-hidden="true"><i></i>Листайте дальше</p>
+
+<main>
+<section class="hero" id="top" data-scene="hero">
+  <div class="pin">
+    <div class="hero-stage"><img class="hero-poster" src="assets/cover_scene3d_v2.jpg" alt="Станция q.bit в чёрном корпусе с модулями на синем коврике, рядом модули, планшет с программой из блоков и стилус" width="2880" height="1620"></div>
+    <div class="hero-ui">
+      <p class="up hero-tag">Модули на магнитах. Программы из блоков.</p>
+      <h1 class="hero-mark" aria-label="q.bit station"><svg class="px" viewBox="0 0 84 36" role="img" aria-label="q.bit"><path d="M4 8h16v4h-16zM0 12h4v4h-4zM16 12h4v4h-4zM0 16h4v4h-4zM16 16h4v4h-4zM0 20h4v4h-4zM16 20h4v4h-4zM4 24h16v4h-16zM16 28h4v4h-4zM16 32h4v4h-4zM24 20h8v4h-8zM24 24h8v4h-8zM36 0h4v4h-4zM36 4h4v4h-4zM36 8h16v4h-16zM36 12h4v4h-4zM52 12h4v4h-4zM36 16h4v4h-4zM52 16h4v4h-4zM36 20h4v4h-4zM52 20h4v4h-4zM36 24h16v4h-16zM60 0h4v4h-4zM60 8h4v4h-4zM60 12h4v4h-4zM60 16h4v4h-4zM60 20h4v4h-4zM60 24h4v4h-4zM72 0h4v4h-4zM72 4h4v4h-4zM68 8h16v4h-16zM72 12h4v4h-4zM72 16h4v4h-4zM72 20h4v4h-4zM76 24h8v4h-8z"/></svg></h1>
+      <p class="hero-lead">Конструктор электроники и программирования для детей <span class="nw">7–18 лет</span>. Первый результат — на&nbsp;первом же уроке.</p>
+      <div class="hero-card"><p class="up">Образовательная робототехника, доступная каждому.</p><i class="dots"></i><p class="hero-card-s">q.bit station.<br>Сделано<br>в Узбекистане.</p></div>
+      <button class="hero-hint" type="button"><i></i><span>Нажмите кнопку</span></button>
+    </div>
+  </div>
+</section>
+
+<section class="say" id="problem" data-scene="say">
+  <div class="pin">
+    <h2 class="up say-title" data-split="words">Начать заниматься робототехникой сложно.</h2>
+    <p class="say-text" data-split="words">Слишком много нужно понять раньше, чем появится первый результат.*</p>
+    <p class="up say-note"><i class="dots"></i>* Провода, схемы,<br>драйверы</p>
+  </div>
+</section>
+<section class="list" aria-label="Что мешает начать">
+  <ol class="rows" data-reveal><li class="row"><span class="num">[ 01 ]</span><h3 class="up">Провода</h3><p>Одна ошибка в схеме — и ничего не работает.</p><span class="row-x" aria-hidden="true">×</span></li><li class="row"><span class="num">[ 02 ]</span><h3 class="up">Электроника</h3><p>Схемы нужно понять до того, как появится интерес.</p><span class="row-x" aria-hidden="true">×</span></li><li class="row"><span class="num">[ 03 ]</span><h3 class="up">Настройка</h3><p>Драйверы, среда разработки, нужен компьютер.</p><span class="row-x" aria-hidden="true">×</span></li></ol>
+</section>
+
+<section class="big" id="solution" data-scene="big">
+  <div class="pin">
+    <h2 class="big-title" data-split="letters"><span class="ln">Подключи.</span><span class="ln">Запрограммируй.</span><span class="ln">Создай.</span></h2>
+    <p class="up big-label">q.bit station</p>
+    <img class="big-img" src="assets/station_34.webp" alt="Станция q.bit в чёрном корпусе с модулями в портах" loading="lazy" width="1600" height="827">
+    <p class="up big-cap">Без проводов и пайки.<br>Без установки.<br>Блоки → Python.</p>
+    <p class="big-lead">Модули на магнитах и программа из блоков в браузере. Первый результат — на первом же уроке.</p>
+  </div>
+</section>
+
+<section class="film" id="how" data-scene="film">
+  <div class="pin">
+    <div class="film-head"><p class="up film-kicker">Четыре шага,</p><h2 class="film-word">как это работает</h2></div>
+    <p class="film-intro">Один пример от начала до конца: кнопка в порту 1 включает RGB в порту 2.</p>
+    <div class="film-frame" aria-hidden="true"><i></i></div>
+    <div class="film-thumbs" aria-hidden="true"><img class="film-thumb" style="--i:0" src="assets/mod_rgb.webp" alt="" loading="lazy" width="380" height="238"><img class="film-thumb" style="--i:1" src="assets/station_top.webp" alt="" loading="lazy" width="380" height="238"><img class="film-thumb" style="--i:2" src="assets/blocks_prog.webp" alt="" loading="lazy" width="380" height="238"><img class="film-thumb" style="--i:3" src="assets/station_34.webp" alt="" loading="lazy" width="380" height="238"></div>
+    <ol class="film-steps"><li class="film-step" style="--i:0"><div class="film-shot"><picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/mod_rgb.webp"><img src="assets/how_snap.webp" alt="Модуль RGB опускается в порт 2 станции и встаёт на магниты" loading="lazy" width="760" height="476"></picture></div><div class="film-cap"><p class="num">[ 1/4 ]</p><h3 class="up">Прижми модуль</h3><p>Магниты держат, контакты дают сигнал.</p></div></li><li class="film-step" style="--i:1"><div class="film-shot"><picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/station_top.webp"><img src="assets/how_recog.webp" alt="От порта расходится волна, светодиод мигает, появляется подпись «RGB · порт 2»" loading="lazy" width="760" height="476"></picture></div><div class="film-cap"><p class="num">[ 2/4 ]</p><h3 class="up">Станция узнаёт его</h3><p>Тип модуля и порт видны сразу.</p></div></li><li class="film-step" style="--i:2"><div class="film-shot"><picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/blocks_prog.webp"><img src="assets/how_blocks.webp" alt="Блок «RGB порт 2 цвет зелёный» защёлкивается под блоком «когда кнопка порт 1 нажата»" loading="lazy" width="760" height="476"></picture></div><div class="film-cap"><p class="num">[ 3/4 ]</p><h3 class="up">Собери программу</h3><p>Блоки в браузере, без установки.</p></div></li><li class="film-step" style="--i:3"><div class="film-shot"><picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/station_34.webp"><img src="assets/how_run.webp" alt="Нажатие кнопки в порту 1, модуль RGB загорается зелёным" loading="lazy" width="760" height="476"></picture></div><div class="film-cap"><p class="num">[ 4/4 ]</p><h3 class="up">Запусти — работает!</h3><p>Кнопка нажата — RGB горит зелёным.</p></div></li></ol>
+    <a class="film-link" href="https://javohir-g.github.io/qbit-ide/?lang=ru" target="_blank" rel="noopener">Соберите эту программу сами в редакторе<svg class="arr" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12L12 4M6 4h6v6"/></svg></a>
+  </div>
+</section>
+
+<section class="feat" id="station" data-scene="feat">
+  <div class="pin">
+    <div class="feat-head"><h2 class="up">q.bit station</h2><p>Станция, 32 модуля и редактор — одна система</p></div>
+    <div class="feat-view"><div class="feat-fig"><img src="assets/station_front.webp" alt="Станция q.bit в чёрном корпусе с модулями, вид спереди" loading="lazy" width="2192" height="770"><i class="feat-mark" aria-hidden="true"><b></b></i></div></div>
+    <ol class="feat-list"><li class="feat-item" style="--i:0" data-x="0.263" data-y="0.194"><span class="feat-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="3"/><path d="M9 12l2 2 4-4"/></svg></span><p class="num">[ 1/5 ]</p><h3 class="up feat-title">Узнаёт модуль</h3><p class="up feat-sub">Станция читает его паспорт</p><p class="feat-body">У каждого модуля есть паспорт. Станция читает его и сразу знает, что подключено и в какой порт.</p><p class="feat-spec"><span class="up">Тип и порт</span><b class="serif">сразу</b></p></li><li class="feat-item" style="--i:1" data-x="0.416" data-y="0.484"><span class="feat-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="3.6" height="3.6" rx=".8"/><rect x="8" y="7" width="3.6" height="3.6" rx=".8"/><rect x="13" y="7" width="3.6" height="3.6" rx=".8"/><rect x="18" y="7" width="3.6" height="3.6" rx=".8"/><rect x="3" y="13.4" width="3.6" height="3.6" rx=".8"/><rect x="8" y="13.4" width="3.6" height="3.6" rx=".8"/><rect x="13" y="13.4" width="3.6" height="3.6" rx=".8"/><rect x="18" y="13.4" width="3.6" height="3.6" rx=".8"/></svg></span><p class="num">[ 2/5 ]</p><h3 class="up feat-title">8 портов</h3><p class="up feat-sub">Модули на магнитах, без проводов</p><p class="feat-body">Модуль встаёт на магниты: они держат, контакты дают сигнал. Ни проводов, ни пайки.</p><p class="feat-spec"><span class="up">Портов</span><b class="serif">8</b></p></li><li class="feat-item" style="--i:2" data-x="0.844" data-y="0.388"><span class="feat-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 9.5a12 12 0 0117 0M6.5 12.8a7.8 7.8 0 0111 0M9.5 16a3.6 3.6 0 015 0"/><circle cx="12" cy="19" r=".9"/></svg></span><p class="num">[ 3/5 ]</p><h3 class="up feat-title">ESP32-S3 и Wi-Fi</h3><p class="up feat-sub">Своя точка доступа</p><p class="feat-body">Станция поднимает свою точку доступа Wi-Fi. Редактор открывается по ссылке или прямо с неё.</p><p class="feat-spec"><span class="up">Процессор</span><b class="serif">ESP32-S3</b></p></li><li class="feat-item" style="--i:3" data-x="0.5" data-y="0.06"><span class="feat-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8.5" width="18" height="7" rx="3.5"/><path d="M7.5 12h9"/></svg></span><p class="num">[ 4/5 ]</p><h3 class="up feat-title">USB-C</h3><p class="up feat-sub">Питание и прошивка</p><p class="feat-body">Один разъём USB-C — и для питания, и для прошивки.</p><p class="feat-spec"><span class="up">Питание и прошивка</span><b class="serif">USB-C</b></p></li><li class="feat-item" style="--i:4" data-x="0.55" data-y="0.877"><span class="feat-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="16" height="8" rx="2"/><path d="M21 10.8v2.4M7 10.8v2.4M10.2 10.8v2.4"/></svg></span><p class="num">[ 5/5 ]</p><h3 class="up feat-title">Аккумулятор</h3><p class="up feat-sub">Внутри корпуса</p><p class="feat-body">Аккумулятор внутри корпуса: станция работает без розетки.</p><p class="feat-spec"><span class="up">Питание</span><b class="serif">без розетки</b></p></li></ol>
+  </div>
+</section>
+
+<section class="flip" id="modules" data-scene="flip">
+  <div class="pin">
+    <p class="up flip-top">Докупаются по одному</p>
+    <div class="flip-block"><p class="up flip-kicker">Кнопки, датчики, дисплеи, моторы</p>
+      <h2 class="flip-word" data-fit>32 модуля</h2>
+      <p class="flip-text">32 типа модулей.<br>Под новый проект — новый модуль.</p></div>
+  </div>
+</section>
+<section class="cards" data-tone="ink" aria-label="Модули">
+  <div class="cards-row" data-reveal>
+    <article class="card"><h3 class="up">Встают<br>на магниты</h3><img src="assets/mod_rgb.webp" alt="Модуль RGB в лотке" loading="lazy" width="640" height="420"><p>Магниты держат, контакты дают сигнал. Ни проводов, ни пайки.</p></article>
+    <article class="card"><h3 class="up">32 типа</h3><div class="chips" aria-label="Все типы модулей"><span>Кнопка</span><span>Потенциометр</span><span>Ползунок</span><span>Сенсорная кнопка</span><span>Энкодер</span><span>Джойстик</span><span>Клавиатура</span><span>Температура и влажность</span><span>Освещённость</span><span>Давление</span><span>Датчик цвета</span><span>Качество воздуха</span><span>Движение</span><span>Ультразвук</span><span>Гироскоп</span><span>Компас</span><span>Датчик Холла</span><span>Наклон</span><span>ИК-приёмник</span><span>Жесты</span><span>Пульс</span><span>Светодиод</span><span>RGB</span><span>OLED-дисплей</span><span>Зуммер</span><span>Сервопривод</span><span>Мотор</span><span>Реле</span><span>ИК-передатчик</span><span>Макетный модуль</span><span>RFID</span><span>Часы</span></div><p>Кнопки, датчики, дисплеи, моторы и звук.</p></article>
+  </div>
+  <ul class="mods" data-reveal><li class="mod"><img src="assets/mod_button.webp" alt="Модуль «Кнопка» в лотке" loading="lazy" width="640" height="420"><p class="up">Кнопка</p><p class="num">[ ввод ]</p></li><li class="mod"><img src="assets/mod_pot.webp" alt="Модуль «Потенциометр» в лотке" loading="lazy" width="640" height="420"><p class="up">Потенциометр</p><p class="num">[ ввод ]</p></li><li class="mod"><img src="assets/mod_rgb.webp" alt="Модуль «RGB-светодиод» в лотке" loading="lazy" width="640" height="420"><p class="up">RGB-светодиод</p><p class="num">[ свет ]</p></li><li class="mod"><img src="assets/mod_led.webp" alt="Модуль «Светодиод» в лотке" loading="lazy" width="640" height="420"><p class="up">Светодиод</p><p class="num">[ свет ]</p></li><li class="mod"><img src="assets/mod_buzzer.webp" alt="Модуль «Зуммер» в лотке" loading="lazy" width="640" height="420"><p class="up">Зуммер</p><p class="num">[ звук ]</p></li><li class="mod"><img src="assets/mod_oled.webp" alt="Модуль «Дисплей OLED» в лотке" loading="lazy" width="640" height="420"><p class="up">Дисплей OLED</p><p class="num">[ дисплей ]</p></li><li class="mod"><img src="assets/mod_temphum.webp" alt="Модуль «Температура и влажность» в лотке" loading="lazy" width="640" height="420"><p class="up">Температура и влажность</p><p class="num">[ датчик ]</p></li><li class="mod"><img src="assets/mod_ultrasonic.webp" alt="Модуль «Расстояние, ультразвук» в лотке" loading="lazy" width="640" height="420"><p class="up">Расстояние, ультразвук</p><p class="num">[ датчик ]</p></li></ul>
+</section>
+
+<section class="editor" id="editor">
+  <div class="center" data-reveal><p class="up kick">Блоки и Python</p><h2 class="up">Редактор qblock</h2><p class="lead">Программа из блоков собирается за минуту и сразу работает — на станции или в симуляторе.</p></div>
+  <div class="editor-fig" data-reveal><picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/qblock_ipad_still.webp"><img src="assets/qblock_ipad.webp" alt="iPad с редактором qblock: курсор перетаскивает два блока, нажимает «Запустить» и кнопку в симуляторе, RGB станции загорается зелёным" loading="lazy" width="1354" height="979"></picture></div>
+  <div class="b2p" data-reveal>
+    <figure class="b2p-blocks"><figcaption class="up">Блоки</figcaption><img src="assets/blocks_prog.webp" alt="Программа из двух блоков: когда кнопка в порту 1 нажата, RGB в порту 2 загорается зелёным" loading="lazy" width="1238" height="387"></figure>
+    <span class="b2p-arrow" aria-hidden="true">→</span>
+    <figure class="b2p-code"><figcaption class="up">Python</figcaption><pre><code><span class="k">import</span> qbit
+
+<span class="k">async def</span> <span class="f">when_button_p1_press</span>():
+    qbit.rgb(<span class="n">2</span>).color(<span class="s">'green'</span>)
+
+qbit.button(<span class="n">1</span>).when(<span class="s">'press'</span>, when_button_p1_press)
+qbit.run()</code></pre></figure>
+  </div>
+  <ol class="rows" data-reveal><li class="row"><span class="num">[ 01 ]</span><h3 class="up">Блоки → Python</h3><p>Тот же код, когда ребёнок готов.</p><span class="row-ok" aria-hidden="true"></span></li><li class="row"><span class="num">[ 02 ]</span><h3 class="up">Без установки</h3><p>По ссылке или со станции по Wi-Fi.</p><span class="row-ok" aria-hidden="true"></span></li><li class="row"><span class="num">[ 03 ]</span><h3 class="up">RU · UZ · EN</h3><p>Русский, узбекский, английский.</p><span class="row-ok" aria-hidden="true"></span></li></ol>
+  <p class="center" data-reveal><a class="pill" href="https://javohir-g.github.io/qbit-ide/?lang=ru" target="_blank" rel="noopener">Попробовать в браузере<svg class="arr" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12L12 4M6 4h6v6"/></svg></a></p>
+</section>
+
+<section class="shelf" id="kits" data-scene="shelf">
+  <div class="pin">
+    <div class="shelf-track"><div class="shelf-head"><p class="up kick">Наборы</p><h2 class="up">Станция приводит,<br>модули остаются</h2><p>Начните со стартового комплекта и докупайте модули под новые проекты.</p></div><article class="panel panel-1" style="--i:0"><p class="up panel-cap">Стартовый комплект<span>Станция и 12 модулей — первая покупка семьи или класса.</span></p><h3 class="panel-word">Стартовый</h3><img src="assets/kit_starter.webp" alt="Станция и модули стартового комплекта" loading="lazy" width="900" height="358"></article><article class="panel panel-2" style="--i:1"><p class="up panel-cap">Дополнительные модули<span>32 типа, докупаются по одному под новый проект.</span></p><h3 class="panel-word">Модули</h3><img src="assets/kit_modules.webp" alt="Три модуля в лотках: кнопка, RGB, зуммер" loading="lazy" width="900" height="227"></article><article class="panel panel-3" style="--i:2"><p class="up panel-cap">Образовательный набор<span>Все 32 модуля и уроки — для школ и учебных центров.</span></p><h3 class="panel-word">Школам</h3><img src="assets/kit_edu.webp" alt="Станция и модули образовательного набора" loading="lazy" width="900" height="370"></article></div>
+  </div>
+</section>
+<section class="pick" aria-label="Сравнение наборов">
+  <div class="center" data-reveal><p class="up kick">Выберите свой</p><h2 class="pick-word">набор</h2></div>
+  <div class="pick-scroll" data-reveal><table class="pick-table"><thead><tr><th scope="col"><span class="new">Набор 1</span><b>Стартовый комплект</b><span class="th-desc">Станция и 12 модулей — первая покупка семьи или класса.</span></th><th scope="col"><span class="new">Набор 2</span><b>Дополнительные модули</b><span class="th-desc">32 типа, докупаются по одному под новый проект.</span></th><th scope="col"><span class="new">Набор 3</span><b>Образовательный набор</b><span class="th-desc">Все 32 модуля и уроки — для школ и учебных центров.</span></th></tr></thead><tbody><tr><td><span class="td-lab up">Станция:</span><span class="up">Есть</span></td><td><span class="td-lab up">Станция:</span><span class="up">—</span></td><td><span class="td-lab up">Станция:</span><span class="up">Есть</span></td></tr><tr><td><span class="td-lab up">Модули:</span><span class="up">12</span></td><td><span class="td-lab up">Модули:</span><span class="up">По одному, 32 типа</span></td><td><span class="td-lab up">Модули:</span><span class="up">Все 32</span></td></tr><tr><td><span class="td-lab up">Уроки:</span><span class="up">—</span></td><td><span class="td-lab up">Уроки:</span><span class="up">—</span></td><td><span class="td-lab up">Уроки:</span><span class="up">Есть</span></td></tr><tr><td><span class="td-lab up">Для кого:</span><span class="up">Семья или класс</span></td><td><span class="td-lab up">Для кого:</span><span class="up">Новый проект</span></td><td><span class="td-lab up">Для кого:</span><span class="up">Школы и учебные центры</span></td></tr></tbody></table></div>
+</section>
+
+<section class="specs" id="specs">
+  <div class="specs-in">
+    <div data-reveal><p class="up kick">Характеристики</p><h2 class="specs-word"><svg class="px" viewBox="0 0 41 7" aria-hidden="true"><path d="M1 0h4v1h-4zM0 1h1v1h-1zM0 2h1v1h-1zM1 3h3v1h-3zM4 4h1v1h-1zM4 5h1v1h-1zM0 6h4v1h-4zM6 0h5v1h-5zM8 1h1v1h-1zM8 2h1v1h-1zM8 3h1v1h-1zM8 4h1v1h-1zM8 5h1v1h-1zM8 6h1v1h-1zM13 0h3v1h-3zM12 1h1v1h-1zM16 1h1v1h-1zM12 2h1v1h-1zM16 2h1v1h-1zM12 3h5v1h-5zM12 4h1v1h-1zM16 4h1v1h-1zM12 5h1v1h-1zM16 5h1v1h-1zM12 6h1v1h-1zM16 6h1v1h-1zM18 0h5v1h-5zM20 1h1v1h-1zM20 2h1v1h-1zM20 3h1v1h-1zM20 4h1v1h-1zM20 5h1v1h-1zM20 6h1v1h-1zM25 0h3v1h-3zM26 1h1v1h-1zM26 2h1v1h-1zM26 3h1v1h-1zM26 4h1v1h-1zM26 5h1v1h-1zM25 6h3v1h-3zM31 0h3v1h-3zM30 1h1v1h-1zM34 1h1v1h-1zM30 2h1v1h-1zM34 2h1v1h-1zM30 3h1v1h-1zM34 3h1v1h-1zM30 4h1v1h-1zM34 4h1v1h-1zM30 5h1v1h-1zM34 5h1v1h-1zM31 6h3v1h-3zM36 0h1v1h-1zM40 0h1v1h-1zM36 1h1v1h-1zM40 1h1v1h-1zM36 2h2v1h-2zM40 2h1v1h-1zM36 3h1v1h-1zM38 3h1v1h-1zM40 3h1v1h-1zM36 4h1v1h-1zM39 4h2v1h-2zM36 5h1v1h-1zM40 5h1v1h-1zM36 6h1v1h-1zM40 6h1v1h-1z"/></svg></h2></div>
+    <dl class="rows" data-reveal><div class="row"><dt class="up">Процессор</dt><dd>ESP32-S3</dd></div><div class="row"><dt class="up">Связь</dt><dd>своя точка доступа Wi-Fi, USB-C</dd></div><div class="row"><dt class="up">Порты</dt><dd>8, модули на магнитах</dd></div><div class="row"><dt class="up">Модули</dt><dd>32 типа: датчики, дисплеи, моторы, звук</dd></div><div class="row"><dt class="up">Питание</dt><dd>аккумулятор внутри корпуса, USB-C</dd></div><div class="row"><dt class="up">Прошивка</dt><dd>C на ESP-IDF и MicroPython</dd></div><div class="row"><dt class="up">Редактор</dt><dd>qblock: блоки и Python, симулятор, RU · UZ · EN</dd></div></dl>
+    <p class="specs-note" data-reveal>Характеристики могут измениться.</p>
+  </div>
+</section>
+
+<section class="end" id="try">
+  <div class="end-main" data-reveal>
+    <span class="end-logo"><svg class="px" viewBox="0 0 84 36" role="img" aria-label="q.bit"><path d="M4 8h16v4h-16zM0 12h4v4h-4zM16 12h4v4h-4zM0 16h4v4h-4zM16 16h4v4h-4zM0 20h4v4h-4zM16 20h4v4h-4zM4 24h16v4h-16zM16 28h4v4h-4zM16 32h4v4h-4zM24 20h8v4h-8zM24 24h8v4h-8zM36 0h4v4h-4zM36 4h4v4h-4zM36 8h16v4h-16zM36 12h4v4h-4zM52 12h4v4h-4zM36 16h4v4h-4zM52 16h4v4h-4zM36 20h4v4h-4zM52 20h4v4h-4zM36 24h16v4h-16zM60 0h4v4h-4zM60 8h4v4h-4zM60 12h4v4h-4zM60 16h4v4h-4zM60 20h4v4h-4zM60 24h4v4h-4zM72 0h4v4h-4zM72 4h4v4h-4zM68 8h16v4h-16zM72 12h4v4h-4zM72 16h4v4h-4zM72 20h4v4h-4zM76 24h8v4h-8z"/></svg></span>
+    <div class="end-text"><h2 class="up">Попробуйте редактор прямо сейчас.</h2><p class="up">Редактор работает в браузере — без установки.</p>
+      <a class="pill" href="https://javohir-g.github.io/qbit-ide/?lang=ru" target="_blank" rel="noopener">Открыть редактор<svg class="arr" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12L12 4M6 4h6v6"/></svg></a></div>
+  </div>
+  <footer class="foot">
+    <figure class="foot-qr"><img src="assets/qr.png" alt="QR-код: javohir-g.github.io/qbit-ide" loading="lazy" width="528" height="528"><figcaption class="up">Редактор<br>онлайн<span>javohir-g.github.io/qbit-ide</span></figcaption></figure>
+    <nav class="foot-nav up" aria-label="Ссылки"><a href="#how">Как работает</a><a href="#station">Станция</a><a href="#modules">Модули</a><a href="#editor">Редактор</a><a href="#kits">Наборы</a><a href="#specs">Характеристики</a></nav>
+    <nav class="lang lang-foot" aria-label="Язык"><a href="index.html" hreflang="uz" lang="uz">UZ</a><a href="ru.html" hreflang="ru" lang="ru" aria-current="true">RU</a><a href="en.html" hreflang="en" lang="en">EN</a></nav>
+    <p class="up foot-note">Сделано в Узбекистане<br>© 2026 q.bit</p>
+  </footer>
+</section>
+</main>
+<script src="main.js"></script>
+</body>
+</html>
