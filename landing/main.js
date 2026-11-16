@@ -2,7 +2,8 @@
    Two modes. "cine" (wide screen, motion allowed): sections with data-scene are pinned and driven by scroll;
    every frame the script writes --p (0..1 through the pinned stretch), --in and --out on them and style.css does
    the choreography. Otherwise (phone, reduced motion, no script) the same markup is a plain page.
-   ?plain forces the plain page, ?no3d keeps the poster instead of the live scene, ?still switches easing off. */
+   ?plain forces the plain page, ?no3d keeps the poster instead of the live scene, ?still switches easing and the
+   scroll magnet off, ?nosnap only the magnet. */
 (function () {
   'use strict';
   var doc = document.documentElement, QB = (window.QB = window.QB || {});
@@ -95,6 +96,7 @@
       film.wy = film.head.offsetTop + film.word.offsetTop; film.ky = film.head.offsetTop + film.kick.offsetTop; film.kh = film.kick.offsetHeight;
     }
     if (shelf) shelf.w = shelf.track.scrollWidth;
+    buildZones();
   }
 
   var H = {
@@ -166,6 +168,80 @@
   addEventListener('load', function () { measure(); kick(); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { measure(); kick(); });
   measure(); kick();
+
+  /* ---------------------------------------------------------------- scroll magnet (cine only)
+     A pinned scene has frames that are composed (a step of the film, a feature, a panel of the shelf) and stretches in
+     between where things are half faded or the screen is nearly empty. When the scroll comes to rest inside such a
+     stretch, the page glides on to the next composed frame in the direction of travel. Plain sections scroll freely.
+     zones: merged runs of scenes that follow each other without a plain section between; pts: the rest positions. */
+  var SNAP = { hero: [0], say: [0.66], big: [0.82], film: [0, 0.22, 0.4267, 0.6133, 0.82], flip: [0.3, 0.8] };
+  var BLANK_IN = { big: 1 }, BLANK_OUT = { say: 1 };     // scenes that are empty when they enter / after they fade out
+  var zones = [], mag = { on: cine && !STILL && !Q.has('nosnap'), dir: 0, y: scrollY, timer: 0, auto: false, raf: 0, held: false };
+  function unsmooth(a, b, f) {                           // inverse of smooth(): where between a and b it reaches f
+    for (var lo = 0, hi = 1, i = 0; i < 24; i++) { var m = (lo + hi) / 2; if (m * m * (3 - 2 * m) < f) lo = m; else hi = m; }
+    return a + (b - a) * (lo + hi) / 2;
+  }
+  function restsOf(s) {                                  // rest points of a scene, as its progress 0..1
+    if (s.name === 'feat' && feat) { var n = feat.items.length; return feat.items.map(function (el, i) { return i ? 0.03 + 0.8 * i / (n - 1) : 0; }); }
+    if (s.name === 'shelf' && shelf) {                   // the head with the first panel, every middle panel centred, the last one
+      var room = shelf.w - vw, out = [0];
+      if (room > 0) $$('.panel', shelf.track).slice(1, -1).forEach(function (el) { out.push(unsmooth(0.04, 0.96, clamp((el.offsetLeft + el.offsetWidth / 2 - vw / 2) / room, 0, 1))); });
+      out.push(0.97); return out;
+    }
+    return SNAP[s.name] || [];
+  }
+  function buildZones() {
+    zones = []; if (!mag || !mag.on) return;
+    var z = null;
+    scenes.forEach(function (s, i) {
+      var span = Math.max(1, s.h - vh), prev = scenes[i - 1], next = scenes[i + 1];
+      if (!(z && prev && s.top <= prev.top + Math.max(1, prev.h - vh) + 2)) {
+        var floor = z ? z.b : 0;                         // a short section between two scenes: never reach back into the zone before
+        z = { a: s.top, b: 0, pts: [] }; zones.push(z);
+        if (BLANK_IN[s.name]) { z.a = Math.max(floor, s.top - vh * 0.85); z.pts.push(Math.max(floor, s.top - vh)); }   // back out: the section above, flush with the bottom
+      }
+      restsOf(s).forEach(function (p) { z.pts.push(s.top + p * span); });
+      z.b = s.top + span;
+      if (BLANK_OUT[s.name] && !(next && next.top <= s.top + span + 2)) { z.b = s.top + s.h; z.pts.push(s.top + s.h); }   // on: the top of the section below
+    });
+  }
+  function glide(to) {
+    var from = scrollY, t0 = performance.now(), dur = clamp(380 + Math.abs(to - from) / vh * 520, 450, 1400);
+    mag.auto = true; mag.until = t0 + dur + 400;
+    (function step(now) {
+      if (!mag.auto) return;
+      var x = clamp((now - t0) / dur, 0, 1), e = x < 0.5 ? 4 * x * x * x : 1 - Math.pow(2 - 2 * x, 3) / 2;
+      scrollTo({ top: from + (to - from) * e, behavior: 'instant' });
+      if (x < 1) mag.raf = requestAnimationFrame(step); else mag.auto = false;
+    })(t0);
+  }
+  function settle() {
+    if (mag.auto && performance.now() > mag.until) mag.auto = false;                    // a glide that never finished (a frozen tab)
+    if (!mag.on || mag.auto || mag.held || doc.classList.contains('loading')) return;
+    var y = scrollY, z = null, dir = mag.dir, best = null, i, d;
+    for (i = 0; i < zones.length; i++) if (y > zones[i].a + 2 && y < zones[i].b - 2) { z = zones[i]; break; }
+    if (!z) return;
+    for (i = 0; i < z.pts.length; i++) if (Math.abs(z.pts[i] - y) < 3) return;          // already resting on a frame
+    for (i = 0; i < scenes.length; i++) if (Math.abs(scenes[i].top - y) < 3) dir = 1;   // landed on a scene's top (a menu link): go in
+    for (i = 0; i < z.pts.length; i++) {
+      d = z.pts[i] - y;
+      if (dir > 0 ? d > 0 && (best === null || d < best - y) : dir < 0 ? d < 0 && (best === null || d > best - y) : best === null || Math.abs(d) < Math.abs(best - y)) best = z.pts[i];
+    }
+    if (best !== null) glide(best);
+  }
+  QB.mag = mag; QB.zones = function () { return zones; };                              // for tools/snaptest.js
+  function rest() { clearTimeout(mag.timer); mag.timer = setTimeout(settle, 160); }
+  function letGo() { if (mag.auto) { mag.auto = false; cancelAnimationFrame(mag.raf); } }   // the visitor takes over
+  if (mag.on) {
+    buildZones();
+    addEventListener('scroll', function () { var y = scrollY; if (!mag.auto) { if (y !== mag.y) mag.dir = y > mag.y ? 1 : -1; if (mag.held) mag.moved = true; else rest(); } mag.y = y; }, { passive: true });
+    addEventListener('wheel', letGo, { passive: true });
+    addEventListener('keydown', function (e) { if (/^(Arrow|Page|Home|End| $)/.test(e.key)) letGo(); });
+    ['touchstart', 'mousedown'].forEach(function (t) { addEventListener(t, function () { letGo(); mag.held = true; }, { passive: true }); });   // also a drag of the scrollbar
+    var free = function () { mag.held = false; if (mag.moved) { mag.moved = false; rest(); } };
+    ['touchend', 'touchcancel', 'mouseup'].forEach(function (t) { addEventListener(t, free, { passive: true }); });
+    addEventListener('mousemove', function (e) { if (mag.held && !e.buttons) free(); }, { passive: true });                               // a mouseup the scrollbar swallowed
+  }
 
   /* ---------------------------------------------------------------- the glass card catches the light under the cursor */
   $$('.hero-card').forEach(function (card) {
