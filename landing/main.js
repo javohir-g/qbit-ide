@@ -13,7 +13,7 @@
   var smooth = function (a, b, x) { x = clamp((x - a) / (b - a), 0, 1); return x * x * (3 - 2 * x); };
   var Q = new URLSearchParams(location.search);
 
-  var mq = matchMedia('(min-width: 900px) and (min-height: 520px) and (prefers-reduced-motion: no-preference)');
+  var mq = matchMedia('(min-width: 320px) and (min-height: 480px) and (prefers-reduced-motion: no-preference)');
   var cine = mq.matches && !Q.has('plain');
   doc.classList.add('js'); doc.classList.toggle('cine', cine);
   var STILL = Q.has('still');                            // ?still: no easing, no transitions (screenshots, hidden tabs)

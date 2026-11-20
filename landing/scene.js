@@ -206,11 +206,11 @@ function distFor(widthPx) {                     // camera distance at which the 
   return 161.2 / (widthPx / W) / (2 * Math.tan(rad(FOV / 2)) * (W / H));
 }
 function poses() {
-  const sw = Math.min(0.36 * W, 0.7425 * H);           // = the loader drawing (CSS --sw)
+  const narrow = W < 900, sw = narrow ? Math.min(0.82 * W, 0.62 * H) : Math.min(0.36 * W, 0.7425 * H);   // = the loader drawing (CSS --sw)
   return {
     hero: { tx: 0, ty: RIM, tz: 0, el: 90, az: 0, d: distFor(sw) },
     near: { tx: 0, ty: RIM, tz: 0, el: 90, az: 0, d: distFor(sw * 1.14) },
-    say: { tx: 0, ty: TOP + 7, tz: 2, el: 54, az: -22, d: distFor(Math.min(0.3 * W, 0.62 * H)) },
+    say: { tx: 0, ty: TOP + 7, tz: 2, el: 54, az: -22, d: distFor(narrow ? Math.min(0.7 * W, 0.5 * H) : Math.min(0.3 * W, 0.62 * H)) },
   };
 }
 let P = null;

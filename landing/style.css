@@ -181,7 +181,7 @@ dl.rows dd { grid-column: 1; color: var(--paper); font: 500 var(--f-h4)/1.2 var(
 .hero-hint { display: none; }
 
 .cine .hero { height: 170vh; }
-.cine .pin { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+.cine .pin { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
 .cine .hero-stage { position: absolute; inset: 0; height: auto; opacity: clamp(0, calc(1 - (var(--p) - .3) * 2.6), 1); }
 .cine .hero-stage::after { content: ""; position: absolute; inset: 0; background: rgba(10, 11, 15, .5); }
 .live .hero-stage { display: none; }
@@ -469,6 +469,58 @@ dl.rows dd { grid-column: 1; color: var(--paper); font: 500 var(--f-h4)/1.2 var(
   .foot { margin-top: 26vh; grid-template-columns: auto 1fr auto auto; align-items: end; gap: calc(var(--pad) * 1.2); }
   .foot-nav { justify-content: center; }
   .foot-note { text-align: right; }
+}
+
+/* ================================================================ PORTRAIT (phones, narrow windows): the same scenes, laid out top to bottom.
+   The station stays in the middle (--sw = scene.js poses() on a narrow screen), texts go above and below it. */
+@media (max-width: 899px) {
+  :root { --sw: min(82vw, 62vh); }
+  .cine .hero-tag { left: var(--pad); right: var(--pad); top: calc(var(--pad) + 42px); font-size: max(12px, 3.1vw); }
+  .cine .hero-mark { left: calc(var(--pad) - 1vw); top: calc(var(--pad) + 74px); }
+  .cine .hero-mark > svg { height: min(11vh, 21vw); }
+  .cine .hero-lead { left: var(--pad); right: var(--pad); width: auto; top: calc(50vh + var(--sw) * .3 + 22px); font-size: max(17px, 4.6vw); }
+  .cine .hero-card { left: var(--pad); right: var(--pad); width: auto; min-width: 0; height: auto; bottom: calc(var(--pad) + 44px); padding: 1em 1.1em .9em; display: grid; grid-template-columns: 1fr auto; gap: 1em; align-items: end; }
+  .cine .hero-card .up { font-size: max(12px, 3.2vw); }
+  .cine .hero-card .dots { display: none; }
+  .cine .hero-card-s { font-size: max(11px, 2.9vw); }
+
+  .cine .say-title { left: var(--pad); right: var(--pad); width: auto; top: 17vh; transform: none; font-size: max(24px, 7.4vw); }
+  .cine .say-text { left: var(--pad); right: var(--pad); width: auto; top: auto; bottom: 15vh; transform: none; font-size: max(20px, 5.6vw); }
+
+  .cine .big-title { top: 11vh; font-size: min(15.4vw, 14vh); }
+  .cine .big-label { top: calc(11vh + min(15.4vw, 14vh) * 2.86); }
+  .cine .big-cap { left: var(--pad); right: auto; top: calc(11vh + min(15.4vw, 14vh) * 3.35); text-align: left; font-size: max(12px, 3.2vw); }
+  .cine .big-img { right: -14vw; bottom: 13vh; width: 118vw; }
+  .cine .big-lead { right: var(--pad); width: auto; bottom: calc(var(--pad) + 40px); font-size: max(14px, 3.7vw); }
+
+  .cine .film { --fw: calc(100vw - var(--pad) * 2); }
+  .cine .film-head { top: 12vh; }
+  .cine .film-intro { top: calc(12vh + var(--f-h4) * 2.9); right: var(--pad); width: auto; font-size: max(13px, 3.4vw); }
+  .cine .film-thumbs { display: none; }
+  .cine .film-frame, .cine .film-shot { top: 50%; }
+  .cine .film-cap { top: calc(50% + var(--fh) / 2 + 3vh); grid-template-columns: auto 1fr; gap: .5em 1em; }
+  .cine .film-cap p:last-child { grid-column: 1 / -1; text-align: left; font-size: max(13px, 3.4vw); }
+  .cine .film-link { left: var(--pad); right: auto; bottom: calc(var(--pad) + 44px); }
+
+  .cine .feat .pin::before { display: none; }
+  .cine .feat-head { left: var(--pad); top: calc(var(--pad) + 42px); flex-direction: column; gap: .3em; }
+  .cine .feat-view { left: 0; top: 13vh; bottom: auto; height: 38vh; }
+  .cine .feat-fig { left: -6vw; right: -6vw; }
+  .cine .feat-item { padding: 53vh var(--pad) calc(var(--pad) + 44px); }
+  .cine .feat-ico { width: 40px; height: 40px; min-width: 40px; min-height: 40px; }
+  .cine .feat-sub { margin-top: 2vh; font-size: max(14px, 3.8vw); }
+  .cine .feat-body { margin-top: 1.4vh; font-size: max(14px, 3.8vw); }
+  .cine .feat-title { text-align: left; font-size: max(24px, 7vw); padding-top: .6em; }
+  .cine .feat-spec { display: none; }
+
+  .cine .flip-text { font-size: max(15px, 4vw); }
+
+  .cine .shelf-track { gap: 3vw; height: 74vh; margin-top: 6vh; }
+  .cine .shelf-head { flex: 0 0 76vw; }
+  .cine .panel { flex: 0 0 82vw; }
+  .cine .panel-word { left: 5vw; top: 4vw; font-size: min(15vw, 12vh); }
+  .cine .panel-cap { left: 5vw; right: 5vw; bottom: 5vw; }
+  .cine .panel img { right: 5%; bottom: 30%; width: 90%; }
 }
 
 /* ?still: screenshots */
