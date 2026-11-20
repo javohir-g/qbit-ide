@@ -92,7 +92,12 @@
     });
     if (film) {
       film.fw = film.frame.offsetWidth; film.tw = film.thumbs[0] ? film.thumbs[0].offsetWidth : 0;
+      // the giant word is laid out at its big size and scaled DOWN into the small title: scaling a small word up blurs it
+      film.word.style.fontSize = film.word.style.marginTop = '';
+      var mt = getComputedStyle(film.word).marginTop;    // keep the small title's gap above it
       film.pad = film.head.offsetLeft; film.ww = film.word.offsetWidth; film.wh = film.word.offsetHeight;
+      film.S = (vw - film.pad * 2) / Math.max(1, film.ww);
+      film.word.style.fontSize = (parseFloat(getComputedStyle(film.word).fontSize) * film.S).toFixed(2) + 'px'; film.word.style.marginTop = mt;
       film.wy = film.head.offsetTop + film.word.offsetTop; film.ky = film.head.offsetTop + film.kick.offsetTop; film.kh = film.kick.offsetHeight;
     }
     if (shelf) shelf.w = shelf.track.scrollWidth;
@@ -106,8 +111,8 @@
       var n = film.steps.length, t = clamp((s.p - 0.24) / 0.56, 0, 1) * (n - 1), b = Math.min(Math.floor(t), n - 2);   // the last step rests from 0.8 to the fade at 0.93
       t = b + smooth(0.3, 0.7, t - b);
       // the giant word spans the page, then shrinks into the small title on the left
-      var kk = smooth(0.07, 0.2, s.p), S = (vw - film.pad * 2) / Math.max(1, film.ww), bigTop = vh * 0.5 - film.wh * S * 0.5;
-      film.word.style.transform = 'translate3d(0,' + ((1 - kk) * (bigTop - film.wy)).toFixed(1) + 'px,0) scale(' + (1 + (1 - kk) * (S - 1)).toFixed(4) + ')';
+      var kk = smooth(0.07, 0.2, s.p), S = film.S, bigTop = vh * 0.5 - film.wh * S * 0.5;
+      film.word.style.transform = 'translate3d(0,' + ((1 - kk) * (bigTop - film.wy)).toFixed(1) + 'px,0) scale(' + ((1 + (1 - kk) * (S - 1)) / S).toFixed(4) + ')';
       film.kick.style.transform = 'translate3d(0,' + ((1 - kk) * (bigTop - film.kh * 1.35 - film.ky)).toFixed(1) + 'px,0)';
       s.el.style.setProperty('--k', kk.toFixed(3)); s.el.style.setProperty('--big', (1 - kk).toFixed(3)); s.el.style.setProperty('--end', smooth(n - 1.5, n - 1.02, t).toFixed(3));
       var gap = vw * 0.012, k = film.fw / 2 + gap + film.tw / 2;
