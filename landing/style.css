@@ -98,6 +98,10 @@ main { position: relative; z-index: 1; }
 .top-nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: .35em; height: 1px; background: linear-gradient(90deg, currentColor 1px, transparent 1px) 0 0 / 3px 1px repeat-x; transform: scaleX(0); transform-origin: 0 50%; transition: transform .35s var(--ease); }
 .top-nav a:hover::after, .top-nav a[aria-current]::after { transform: scaleX(1); }
 [data-tone="ink"] .top { color: var(--ink); }
+.top::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: calc(100% + 34px); z-index: -1; pointer-events: none; opacity: 0; transition: opacity .35s;
+  background: linear-gradient(rgba(10, 11, 15, .92), rgba(10, 11, 15, .78) 55%, rgba(10, 11, 15, 0)); }
+.cine.scrolled .top::before { opacity: 1; }
+.cine[data-tone="ink"] .top::before { background: linear-gradient(rgba(241, 240, 236, .95), rgba(241, 240, 236, .8) 55%, rgba(241, 240, 236, 0)); }
 html:not(.cine) .top { background: rgba(10, 11, 15, .72); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
 html:not(.cine)[data-tone="ink"] .top { background: rgba(241, 240, 236, .8); }
 .top-l { display: flex; align-items: center; gap: calc(var(--pad) * .55); }
@@ -226,8 +230,8 @@ dl.rows dd { grid-column: 1; color: var(--paper); font: 500 var(--f-h4)/1.2 var(
 .cine .say-title .w { --a: calc(.03 + var(--i) * .035); }
 .cine .say-text .w { --a: calc(.2 + var(--i) * .028); }
 
-.list { padding: 8vw var(--pad) 22vw; }
-@media (min-width: 900px) { .list { padding: 6vh var(--pad) 26vh; } }
+.list { padding: 8vw var(--pad) 10vw; }
+@media (min-width: 900px) { .list { padding: 6vh var(--pad) 8vh; } }
 
 /* ================================================================ BIG: the solution, letters come out of a blur */
 .big .pin { padding: 6vw var(--pad) 18vw; display: grid; gap: 7vw; }
@@ -241,7 +245,7 @@ dl.rows dd { grid-column: 1; color: var(--paper); font: 500 var(--f-h4)/1.2 var(
 .cine .big { height: 330vh; }
 .cine .big .pin { padding: 0; display: block; opacity: clamp(0, calc((1 - var(--p)) * 10), 1); }
 .cine .big-title { position: absolute; left: var(--pad); top: 13vh; font-size: min(11.2vw, 23vh); white-space: nowrap; }
-.cine .big-title .ch { --t: clamp(0, calc((var(--p) - .03 - var(--i) * .0155) * 9), 1); opacity: var(--t); filter: blur(calc((1 - var(--t)) * .32em)); will-change: opacity, filter; }
+.cine .big-title .ch { --t: clamp(0, calc((var(--in) * .3 + var(--p) - .12 - var(--i) * .0155) * 9), 1); opacity: var(--t); filter: blur(calc((1 - var(--t)) * .32em)); will-change: opacity, filter; }
 .cine .big-label { position: absolute; left: calc(var(--pad) + .3vw); top: calc(13vh + min(11.2vw, 23vh) * 2.86); margin: 0; font-size: var(--f-h4); opacity: clamp(0, calc((var(--p) - .52) * 8), 1); }
 .cine .big-img { position: absolute; right: -3vw; bottom: 4vh; width: min(56vw, 104vh); --t: clamp(0, calc((var(--p) - .3) * 3.6), 1); opacity: var(--t); transform: translateY(calc((1 - var(--t)) * 16vh)) scale(calc(.92 + var(--t) * .08)); transform-origin: 70% 100%; }
 .cine .big-cap { position: absolute; right: var(--pad); top: 15vh; text-align: right; line-height: 1.22; opacity: clamp(0, calc((var(--p) - .58) * 8), 1); }
@@ -264,16 +268,16 @@ dl.rows dd { grid-column: 1; color: var(--paper); font: 500 var(--f-h4)/1.2 var(
 @media (min-width: 640px) and (max-width: 899px) { .film-steps { grid-template-columns: 1fr 1fr; gap: 6vw 4vw; } }
 
 .cine .film { height: 620vh; margin-top: -100vh; --fw: min(45vw, 118vh); --fh: calc(var(--fw) * 476 / 760); }
-.cine .film .pin { padding: 0; opacity: calc(clamp(0, calc((var(--in) - .9) * 10), 1) * clamp(0, calc((1 - var(--p)) * 14), 1)); }
+.cine .film .pin { padding: 0; opacity: calc(clamp(0, calc((var(--in) - .9) * 10), 1) * clamp(0, calc((.975 - var(--p)) * 22), 1)); }
 .cine .film-head { position: absolute; left: var(--pad); top: 24vh; }
 .cine .film-kicker { font-size: var(--f-h4); color: var(--paper); opacity: .8; }
 .cine .film-word { font-size: var(--f-h4); margin: .14em 0 0; white-space: nowrap; width: max-content; transform-origin: 0 0; will-change: transform; text-shadow: 0 0 .26em rgba(241, 240, 236, calc(var(--big, 0) * .75)); }
 .cine .film-intro { position: absolute; left: var(--pad); top: calc(24vh + var(--f-h4) * 2.9); width: 19vw; margin: 0; font-size: var(--f-b3); opacity: clamp(0, calc((var(--k, 0) - .7) * 3.4), 1); }
-.cine .film-frame { display: block; position: absolute; left: 50%; top: 47%; width: calc(var(--fw) + 18px); height: calc(var(--fh) + 18px); transform: translate(-50%, -50%); border: 1px dotted rgba(241, 240, 236, .7); background: var(--ink); z-index: 2; opacity: var(--k, 0); }
+.cine .film-frame { display: block; position: absolute; left: 50%; top: 47%; width: calc(var(--fw) + 18px); height: calc(var(--fh) + 18px); transform: translate(-50%, -50%); border: 1px dotted rgba(241, 240, 236, .7); background: var(--ink); z-index: 2; opacity: clamp(0, calc((var(--k, 0) - .55) * 2.3), 1); }
 .cine .film-frame i { position: absolute; right: 9px; top: 9px; width: 6px; height: 6px; border-radius: 50%; background: var(--paper); z-index: 5; }
-.cine .film-thumbs { display: block; position: absolute; left: 50%; top: 47%; z-index: 1; opacity: var(--k, 0); }
+.cine .film-thumbs { display: block; position: absolute; left: 50%; top: 47%; z-index: 1; opacity: clamp(0, calc((var(--k, 0) - .55) * 2.3), 1); }
 .cine .film-thumb { position: absolute; left: 0; top: 0; width: 9.6vw; height: auto; aspect-ratio: 760 / 476; object-fit: contain; padding: .5vw; max-width: none; border-radius: 2px; background: #F2F3F5; will-change: transform, opacity; }
-.cine .film-steps { margin: 0; display: block; opacity: var(--k, 0); }
+.cine .film-steps { margin: 0; display: block; opacity: clamp(0, calc((var(--k, 0) - .55) * 2.3), 1); }
 .cine .film-step { position: absolute; inset: 0; pointer-events: none; }
 .cine .film-shot { position: absolute; left: 50%; top: 47%; width: var(--fw); height: var(--fh); transform: translate(-50%, -50%); border-radius: 0; z-index: 3; background: none; }
 .cine .film-shot picture { display: block; height: 100%; background: #F2F3F5; transform: translateX(calc(var(--d, 1) * 101.5%)); will-change: transform; }
@@ -303,7 +307,7 @@ dl.rows dd { grid-column: 1; color: var(--paper); font: 500 var(--f-h4)/1.2 var(
 @media (min-width: 640px) and (max-width: 899px) { .feat-list { grid-template-columns: 1fr 1fr; column-gap: 5vw; } }
 
 .cine .feat { height: 620vh; margin-top: -100vh; --pw: 31.4vw; }
-.cine .feat .pin { padding: 0; opacity: calc(clamp(0, calc((var(--in) - .9) * 10), 1) * clamp(0, calc((1 - var(--p)) * 14), 1)); }
+.cine .feat .pin { padding: 0; opacity: calc(clamp(0, calc((var(--in) - .9) * 10), 1) * clamp(0, calc((.975 - var(--p)) * 22), 1)); }
 .cine .feat .pin::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: var(--pw); background: linear-gradient(180deg, rgba(241, 240, 236, .075), rgba(241, 240, 236, .03)); }
 .cine .feat-head { position: absolute; left: calc(var(--pw) + var(--pad)); top: calc(var(--pad) * .5 + 3.4em); display: flex; gap: 1.6em; align-items: baseline; }
 .cine .feat-head h2 { font-size: var(--f-h5); }
