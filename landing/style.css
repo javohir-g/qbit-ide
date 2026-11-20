@@ -244,9 +244,9 @@ dl.rows dd { grid-column: 1; color: var(--paper); font: 500 var(--f-h4)/1.2 var(
 .ch { display: inline-block; }
 .cine .big { height: 330vh; }
 .cine .big .pin { padding: 0; display: block; opacity: clamp(0, calc((1 - var(--p)) * 10), 1); }
-.cine .big-title { position: absolute; left: var(--pad); top: 13vh; font-size: min(11.2vw, 23vh); white-space: nowrap; }
+.cine .big-title { position: absolute; left: var(--pad); top: 13vh; font-size: min(11.2vw, 19vh); white-space: nowrap; }
 .cine .big-title .ch { --t: clamp(0, calc((var(--in) * .3 + var(--p) - .12 - var(--i) * .0155) * 9), 1); opacity: var(--t); filter: blur(calc((1 - var(--t)) * .32em)); will-change: opacity, filter; }
-.cine .big-label { position: absolute; left: calc(var(--pad) + .3vw); top: calc(13vh + min(11.2vw, 23vh) * 2.86); margin: 0; font-size: var(--f-h4); opacity: clamp(0, calc((var(--p) - .52) * 8), 1); }
+.cine .big-label { position: absolute; left: calc(var(--pad) + .3vw); top: calc(13vh + min(11.2vw, 19vh) * 2.86); margin: 0; font-size: var(--f-h4); opacity: clamp(0, calc((var(--p) - .52) * 8), 1); }
 .cine .big-img { position: absolute; right: -3vw; bottom: 4vh; width: min(56vw, 104vh); --t: clamp(0, calc((var(--p) - .3) * 3.6), 1); opacity: var(--t); transform: translateY(calc((1 - var(--t)) * 16vh)) scale(calc(.92 + var(--t) * .08)); transform-origin: 70% 100%; }
 .cine .big-cap { position: absolute; right: var(--pad); top: 15vh; text-align: right; line-height: 1.22; opacity: clamp(0, calc((var(--p) - .58) * 8), 1); }
 .cine .big-lead { position: absolute; left: var(--pad); bottom: calc(var(--pad) * 1.5); width: 27vw; font-size: var(--f-b2); line-height: 1.4; font-family: var(--text); letter-spacing: 0; color: var(--mute); opacity: clamp(0, calc((var(--p) - .64) * 8), 1); }
